@@ -1,18 +1,18 @@
 export const NavRoutes = [
     {
-        name: "About",
-        path: "/",
+        label: "About",
+        href: "/",
     },
     {
-        name: "Articles",
-        path: "/",
+        label: "Articles",
+        href: "/articles",
     },
     {
-        name: "Projects",
-        path:"/",
+        label: "Projects",
+        href:"/projects",
     },
     {
-        name: "Speaking",
-        path: "/"
+        label: "Speaking",
+        href: "/speaking"
     }
 ]

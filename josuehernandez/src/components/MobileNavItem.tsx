@@ -1,8 +1,9 @@
 import { Popover } from "@headlessui/react";
 import Link from "next/link";
+import { UrlObject } from "url";
 
 interface MobileNavItemProps {
-    href: string;
+    href: string | UrlObject;
     children: React.ReactNode;
   }
 

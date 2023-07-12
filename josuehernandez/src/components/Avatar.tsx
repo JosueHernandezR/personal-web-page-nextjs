@@ -4,12 +4,15 @@ import Image from "next/image";
 import avatarImage from "@/images/avatar.jpg";
 
 interface AvatarContainerProps {
-  className: string;
+  className?: string;
+  children?: React.ReactNode;
+  [key: string]: any;
 }
 
 interface AvatarProps {
   large?: boolean;
   className?: string;
+  [key: string]: any;
 }
 
 export function clamp(number: number, a: number, b: number) {
@@ -18,7 +21,7 @@ export function clamp(number: number, a: number, b: number) {
   return Math.min(Math.max(number, min), max);
 }
 
-export function AvatarContainer({ className, ...props }: AvatarContainerProps) {
+export function AvatarContainer({ className, children, ...props }: AvatarContainerProps): JSX.Element {
   return (
     <div
       className={clsx(
@@ -30,7 +33,7 @@ export function AvatarContainer({ className, ...props }: AvatarContainerProps) {
   );
 }
 
-export function Avatar({ large = false, className, ...props }: AvatarProps) {
+export function Avatar({ large = false, className, ...props }: AvatarProps):JSX.Element {
   return (
     <Link
       href="/"

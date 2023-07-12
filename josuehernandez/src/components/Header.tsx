@@ -1,22 +1,20 @@
 "use client";
 
 import { Fragment, useEffect, useRef, useState } from "react";
-import { Dialog, Popover, Transition } from "@headlessui/react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import avatarImage from "@/images/avatar.jpg";
 import { Avatar, AvatarContainer, clamp } from "./Avatar";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 import { Container } from "./Container";
 import { MobileNavigation } from "./MobileNavigation";
 import { DesktopNavigation } from "./DesktopNavigation";
-import { ModeToggle } from "./ModeToggle";
+import ThemeSelector from "./ThemeSelector";
+import { NavRoutes } from "@/constants/nav_routes";
 
 export default function HeaderComponent() {
   let isHomePage = usePathname() === "/";
 
-  let headerRef = useRef<HTMLHeadingElement>(null);
+  let headerRef = useRef<HTMLHeadingElement>();
   let avatarRef = useRef<HTMLDivElement>(null);
   let isInitial = useRef(true);
 
@@ -24,7 +22,7 @@ export default function HeaderComponent() {
     let downDelay = avatarRef.current?.offsetTop ?? 0;
     let upDelay = 64;
 
-    function setProperty(property: string, value: string) {
+    function setProperty({ property, value }: { [key: string]: any }): void {
       document.documentElement.style.setProperty(property, value);
     }
 
@@ -44,35 +42,43 @@ export default function HeaderComponent() {
       );
 
       if (isInitial.current) {
-        setProperty("--header-position", "sticky");
+        setProperty({ property: "--header-position", value: "sticky" });
       }
 
-      setProperty("--content-offset", `${downDelay}px`);
+      setProperty({ property: "--content-offset", value: `${downDelay}px` });
 
       if (isInitial.current || scrollY < downDelay) {
-        setProperty("--header-height", `${downDelay + height}px`);
-        setProperty("--header-mb", `${-downDelay}px`);
+        setProperty({
+          property: "--header-height",
+          value: `${downDelay + height}px`,
+        });
+        setProperty({ property: "--header-mb", value: `${-downDelay}px` });
       } else if (top + height < -upDelay) {
         let offset = Math.max(height, scrollY - upDelay);
-        setProperty("--header-height", `${offset}px`);
-        setProperty("--header-mb", `${height - offset}px`);
+        setProperty({ property: "--header-height", value: `${offset}px` });
+        setProperty({ property: "--header-mb", value: `${height - offset}px` });
       } else if (top === 0) {
-        setProperty("--header-height", `${scrollY + height}px`);
-        setProperty("--header-mb", `${-scrollY}px`);
+        setProperty({
+          property: "--header-height",
+          value: `${scrollY + height}px`,
+        });
+        setProperty({ property: "--header-mb", value: `${-scrollY}px` });
       }
 
       if (top === 0 && scrollY > 0 && scrollY >= downDelay) {
-        setProperty("--header-inner-position", "fixed");
-        removeProperty("--header-top");
-        removeProperty("--avatar-top");
+        setProperty({
+          property: "--header-height",
+          value: `${scrollY + height}px`,
+        });
+        setProperty({ property: "--header-mb", value: `${-scrollY}px` });
       } else {
         removeProperty("--header-inner-position");
-        setProperty("--header-top", "0px");
-        setProperty("--avatar-top", "0px");
+        setProperty({ property: "--header-top", value: "0px" });
+        setProperty({ property: "--avatar-top", value: "0px" });
       }
     }
 
-    function updateAvatarStyles() {
+    function updateAvatarStyles(): void {
       if (!isHomePage) {
         return;
       }
@@ -90,17 +96,23 @@ export default function HeaderComponent() {
       let x = (scrollY * (fromX - toX)) / downDelay + toX;
       x = clamp(x, fromX, toX);
 
-      setProperty(
-        "--avatar-image-transform",
-        `translate3d(${x}rem, 0, 0) scale(${scale})`
-      );
+      setProperty({
+        property: "--avatar-image-transform",
+        value: `translate3d(${x}rem, 0, 0) scale(${scale})`,
+      });
 
       let borderScale = 1 / (toScale / scale);
       let borderX = (-toX + x) * borderScale;
       let borderTransform = `translate3d(${borderX}rem, 0, 0) scale(${borderScale})`;
 
-      setProperty("--avatar-border-transform", borderTransform);
-      setProperty("--avatar-border-opacity", scale === toScale ? "1" : "0");
+      setProperty({
+        property: "--avatar-border-transform",
+        value: borderTransform,
+      });
+      setProperty({
+        property: "--avatar-border-opacity",
+        value: scale === toScale ? 1 : 0,
+      });
     }
 
     function updateStyles() {
@@ -119,8 +131,6 @@ export default function HeaderComponent() {
     };
   }, [isHomePage]);
 
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
   return (
     <>
       <header
@@ -138,54 +148,49 @@ export default function HeaderComponent() {
             />
             <Container
               className="top-0 order-last -mb-3 pt-3"
-              style={{ position: 'var(--header-position)' }}
+              style={{ position: "var(--header-position)" as any}}
             >
-              <div
-                className="top-[var(--avatar-top,theme(spacing.3))] w-full"
-                style={{ position: 'var(--header-inner-position)' }}
-              >
-                <div className="relative">
-                  <AvatarContainer
-                    className="absolute left-0 top-3 origin-left transition-opacity"
-                    style={{
-                      opacity: 'var(--avatar-border-opacity, 0)',
-                      transform: 'var(--avatar-border-transform)',
-                    }}
-                  />
-                  <Avatar
-                    large
-                    className="block h-16 w-16 origin-left"
-                    style={{ transform: 'var(--avatar-image-transform)' }}
-                  />
-                </div>
+              <div className="relative">
+                <AvatarContainer
+                  className="absolute left-0 top-3 origin-left transition-opacity"
+                  style={{
+                    opacity: "var(--avatar-border-opacity, 0)",
+                    transform: "var(--avatar-border-transform)",
+                  }}
+                />
+                <Avatar
+                  large
+                  className="block h-16 w-16 origin-left"
+                  style={{ transform: "var(--avatar-image-transform)" }}
+                />
               </div>
             </Container>
           </>
         )}
         <div
-          ref={headerRef}
+          ref={headerRef as any}
           className="top-0 z-10 h-16 pt-6"
-          style={{ position: 'var(--header-position)' }}
+          style={{ position: "var(--header-position)" as any}}
         >
           <Container
             className="top-[var(--header-top,theme(spacing.6))] w-full"
-            style={{ position: 'var(--header-inner-position)' }}
+            style={{ position: "var(--header-inner-position)" }}
           >
             <div className="relative flex gap-4">
               <div className="flex flex-1">
                 {!isHomePage && (
-                  <AvatarContainer className={""}>
+                  <AvatarContainer>
                     <Avatar />
                   </AvatarContainer>
                 )}
               </div>
               <div className="flex flex-1 justify-end md:justify-center">
-                <MobileNavigation className="pointer-events-auto md:hidden" />
-                <DesktopNavigation className="pointer-events-auto hidden md:block" />
+                <MobileNavigation links={NavRoutes} className="pointer-events-auto md:hidden"/>
+                <DesktopNavigation links={NavRoutes} className="pointer-events-auto hidden md:block" />
               </div>
               <div className="flex justify-end md:flex-1">
                 <div className="pointer-events-auto">
-                  <ModeToggle />
+                  <ThemeSelector />
                 </div>
               </div>
             </div>

@@ -36,7 +36,9 @@ const InnerContainer = forwardRef<HTMLDivElement, InnerContainerProps>(
 );
 
 interface ContainerProps {
+  className?: string;
   children?: React.ReactNode;
+  [key: string]: any;
 }
 
 interface ContainerComponent extends React.ForwardRefExoticComponent<ContainerProps & RefAttributes<HTMLDivElement>> {
