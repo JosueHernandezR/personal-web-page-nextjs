@@ -1,30 +1,9 @@
-"use client";
-import HeaderComponent from "@/components/Header";
 import "@/styles/globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "focus-visible";
-import { useEffect, useRef } from "react";
+import HeaderComponent from "@/components/Header";
 import Footer from "@/components/Footer";
 import ClientThemeProvider from "./theme_provider";
 
-const inter = Inter({ subsets: ["latin"] });
-
-function usePrevious<T>(value: T): T | undefined {
-  const ref = useRef<T>();
-
-  useEffect(() => {
-    ref.current = value;
-  }, [value]);
-
-  return ref.current;
-}
-
-type AppProps = {
-  Component: React.ComponentType<any>;
-  pageProps: any;
-  router: any;
-};
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -37,8 +16,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
+    <html lang="en" className="h-full antialiased">
+      <head />
+      <body className="flex h-full flex-col bg-zinc-50 dark:bg-black min-h-screen">
         <ClientThemeProvider>
           <div className="fixed inset-0 flex justify-center sm:px-8">
             <div className="flex w-full max-w-7xl lg:px-8">

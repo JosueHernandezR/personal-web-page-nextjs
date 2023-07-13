@@ -15,7 +15,7 @@ export default function HeaderComponent() {
   let isHomePage = usePathname() === "/";
 
   let headerRef = useRef<HTMLHeadingElement>();
-  let avatarRef = useRef<HTMLDivElement>(null);
+  let avatarRef = useRef<HTMLDivElement>();
   let isInitial = useRef(true);
 
   useEffect(() => {
@@ -31,10 +31,7 @@ export default function HeaderComponent() {
     }
 
     function updateHeaderStyles() {
-      let { top, height } = headerRef.current?.getBoundingClientRect() ?? {
-        top: 0,
-        height: 0,
-      };
+      let { top, height } = (headerRef.current as any).getBoundingClientRect();
       let scrollY = clamp(
         window.scrollY,
         0,
@@ -143,7 +140,7 @@ export default function HeaderComponent() {
         {isHomePage && (
           <>
             <div
-              ref={avatarRef}
+              ref={avatarRef as any}
               className="order-last mt-[calc(theme(spacing.16)-theme(spacing.3))]"
             />
             <Container
@@ -169,8 +166,10 @@ export default function HeaderComponent() {
         )}
         <div
           ref={headerRef as any}
-          className="top-0 z-10 h-16 pt-6"
-          style={{ position: "var(--header-position)" as any}}
+          className="top-0 z-10 pt-6"
+          style={{
+            position: "var(--header-position)" as any,
+          }}
         >
           <Container
             className="top-[var(--header-top,theme(spacing.6))] w-full"
