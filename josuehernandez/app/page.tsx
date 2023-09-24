@@ -12,6 +12,9 @@ export default function Home() {
     <Suspense>
       <Server component="Educations"/>
     </Suspense>
+    <Suspense>
+      <Server component="Experiences"/>
+    </Suspense>
   </>);
 }
 

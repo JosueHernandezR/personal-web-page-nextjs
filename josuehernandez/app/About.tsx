@@ -1,9 +1,9 @@
 import Link from "next/link";
 import fs, { promises as ps } from "fs";
-import { Container } from "@/app/components/Container";
+import { Container } from "@/components/Container";
 import { server } from "@/config";
-import { GitHubIcon, GoogleScholarIcon, LinkedInIcon, TwitterIcon } from "./components/SocialLinks";
-import { DownloadFileIcon } from "./components/Icons";
+import { GitHubIcon, GoogleScholarIcon, LinkedInIcon, TwitterIcon } from "../components/SocialLinks";
+import { DownloadFileIcon } from "../components/Icons";
 
 async function getAbout(): Promise<any> {
   if (fs.existsSync("public/content/about.json")) {

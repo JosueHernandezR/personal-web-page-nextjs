@@ -1,0 +1,39 @@
+[
+    {
+      "title": "FullStack Developer",
+      "company": "GAFSACOMM",
+      "companyURL": "https://grupoolmecamayamexica.com.mx/",
+      "companyLogo": "/images/mexico_escudo.png",
+      "location": "Carretera Federal México-Pachuca Campo Militar Estratégico Conjunto No. 37-D 'Gral. Div. P.A. Alfredo Lezama Álvarez', Santa Lucía, Edo. de Méx.",
+      "type": "Full-time",
+      "date": "Jan 2023 - Present",
+      "description": "Actively collaborated in the design and development of an efficient and customized Document Management System for GAFSACOMM. Participated in the development and design of an informational website for the Group.",
+      "skills": [
+        "Backend",
+        "Frontend",
+        "Docker",
+        "Python",
+        "FastAPI",
+        "TypeScript",
+        "NextJS"
+      ]
+    },
+    {
+      "title": "Mobile Developer",
+      "company": "GeekInc",
+      "companyURL": "https://www.geekinc.mx/",
+      "companyLogo": "/images/geekinc_vertical.webp",
+      "location": "",
+      "type": "Full-time",
+      "date": "Jan 2022 - Jan 2023",
+      "description": "Led the development of a mobile application using Flutter, GraphQL, and AWS. Engaged in negotiations and gathered requirements directly from the client.",
+      "skills": [
+        "Flutter",
+        "Mobile Dev",
+        "AWS",
+        "GraphQL",
+        "Management",
+        "Leadership"
+      ]
+    }
+  ]

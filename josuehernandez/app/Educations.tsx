@@ -1,7 +1,7 @@
 "use client";
-import { Container } from "@/app/components/Container";
-import EducationCard from "@/app/components/EducationCard";
-import { ChevronDownIcon, ChevronUpIcon } from "@/app/components/Icons";
+import { Container } from "@/components/Container";
+import EducationCard from "@/components/EducationCard";
+import { ChevronDownIcon, ChevronUpIcon } from "@/components/Icons";
 import { useRef, useState } from "react";
 
 export default function Educations({ educations }: any): JSX.Element {

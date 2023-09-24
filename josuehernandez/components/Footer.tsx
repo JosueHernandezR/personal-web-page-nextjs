@@ -1,4 +1,4 @@
-import { Container } from "@/app/components/Container";
+import { Container } from "@/components/Container";
 import { NavLink } from "./NavLink";
 import { NavRoutes } from "@/constants/nav_routes";
 
