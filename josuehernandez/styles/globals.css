@@ -2,13 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .thin-scrollbar::-webkit-scrollbar {
+    height: 10px !important;
+  }
+
+  .thin-scrollbar::-webkit-scrollbar-thumb {
+    background-color: theme("colors.teal.500");
+    border-radius: 6px;
+  }
+}
+
 .title {
   @apply text-3xl font-bold tracking-tight text-zinc-800 dark:text-zinc-100 sm:text-5xl;
 }
 .subtitle {
   @apply text-gray-600 dark:text-gray-400 tracking-tighter mb-4;
 }
-
 .paragraph {
   @apply mt-6 text-base text-zinc-600 dark:text-zinc-400;
 }

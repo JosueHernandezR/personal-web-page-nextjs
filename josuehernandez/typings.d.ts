@@ -22,3 +22,16 @@ declare type Education = {
     description: string;
     activitiesandsocieties: string[];
   };
+
+  declare type Project = {
+    title: string;
+    description: string;
+    link: {
+      href: string;
+      label: string;
+    };
+    logo: {
+      src: string;
+      alt: string;
+    };
+  };

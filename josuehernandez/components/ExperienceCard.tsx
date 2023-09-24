@@ -53,8 +53,8 @@ export default function ExperienceCard({
           </div>
         </div>
       </Link>
-      <span className="absolute w-[50%] -bottom-px right-px h-px bg-gradient-to-r from-teal-500/0 via-teal-500/40 to-teal-500/0 dark:from-teal-400/0 dark:via-teal-400/40 dark:to-teal-400/0"></span>
-      <span className="absolute w-px -left-px top-[40%] h-[40%] bg-gradient-to-b from-teal-500/0 via-teal-500/40 to-teal-500/0 dark:from-teal-400/0 dark:via-teal-400/40 dark:to-teal-400/0"></span>
+      <span className="absolute w-[50%] -bottom-px right-px h-px bg-gradient-to-r from-cyan-500/0 via-cyan-500/40 to-cyan-500/0 dark:from-cyan-400/0 dark:via-cyan-400/40 dark:to-cyan-400/0"></span>
+      <span className="absolute w-px -left-px top-[40%] h-[40%] bg-gradient-to-b from-cyan-500/0 via-cyan-500/40 to-cyan-500/0 dark:from-cyan-400/0 dark:via-cyan-400/40 dark:to-cyan-400/0"></span>
     </div>
   );
 }

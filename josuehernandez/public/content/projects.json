@@ -1,0 +1,14 @@
+[
+    {
+      "title": "Redesign UI/UX for a translate service",
+      "description": "Redesign a static page to make it responsive. 🚀",
+      "link": {
+        "href": "https://traduccion-project.vercel.app/",
+        "label": "Translate Service 'Del Campo Capital Humano'"
+      },
+      "logo": {
+        "src": "/images/logo_1.png",
+        "alt": "People"
+      }
+    }
+  ]

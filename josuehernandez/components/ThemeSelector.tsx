@@ -20,7 +20,6 @@ export default function ThemeSelector(): JSX.Element {
 
   function toggleTheme(): void {
     disableTransitionsTemporarily();
-    console.log(currtentTheme);
     if (currtentTheme === "dark") {
       setTheme("light");
     } else {

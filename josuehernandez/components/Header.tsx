@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { Avatar, AvatarContainer, clamp } from "./Avatar";
 import { usePathname } from "next/navigation";
-
 import { Container } from "./Container";
 import { MobileNavigation } from "./MobileNavigation";
 import { DesktopNavigation } from "./DesktopNavigation";
-import ThemeSelector from "./ThemeSelector";
+import { Avatar, AvatarContainer, clamp } from "./Avatar";
 import { NavRoutes } from "@/constants/nav_routes";
+import ThemeSelector from "./ThemeSelector";
+
 
 export default function HeaderComponent() {
   let isHomePage = usePathname() === "/";
@@ -144,7 +144,7 @@ export default function HeaderComponent() {
             />
             <Container
               className="top-0 order-last -mb-3 pt-3"
-              style={{ position: "var(--header-position)" as any}}
+              style={{ position: "var(--header-position)" }}
             >
               <div className="relative">
                 <AvatarContainer
@@ -163,6 +163,7 @@ export default function HeaderComponent() {
             </Container>
           </>
         )}
+        {/* Nav for other pages */}
         <div
           ref={headerRef as any}
           className="top-0 z-10 pt-6"
@@ -170,21 +171,26 @@ export default function HeaderComponent() {
             position: "var(--header-position)" as any,
           }}
         >
-          <Container
-            className="top-[var(--header-top,theme(spacing.6))] w-full"
-            style={{ position: "var(--header-inner-position)" }}
-          >
+          <Container>
             <div className="relative flex gap-4">
               <div className="flex flex-1">
                 {!isHomePage && (
-                  <AvatarContainer>
+                  <>
+                    <AvatarContainer>
                     <Avatar />
-                  </AvatarContainer>
+                    </AvatarContainer>
+                  </>
                 )}
               </div>
               <div className="flex flex-1 justify-end md:justify-center">
-                <MobileNavigation links={NavRoutes} className="pointer-events-auto md:hidden"/>
-                <DesktopNavigation links={NavRoutes} className="pointer-events-auto hidden md:block" />
+                <MobileNavigation
+                  links={NavRoutes}
+                  className="pointer-events-auto md:hidden"
+                />
+                <DesktopNavigation
+                  links={NavRoutes}
+                  className="pointer-events-auto hidden md:block"
+                />
               </div>
               <div className="flex justify-end md:flex-1">
                 <div className="pointer-events-auto">
