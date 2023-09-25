@@ -1,14 +1,26 @@
 [
-    {
-      "title": "Redesign UI/UX for a translate service",
-      "description": "Redesign a static page to make it responsive. 🚀",
-      "link": {
-        "href": "https://traduccion-project.vercel.app/",
-        "label": "Translate Service 'Del Campo Capital Humano'"
-      },
-      "logo": {
-        "src": "/images/logo_1.png",
-        "alt": "People"
-      }
+  {
+    "title": "Home automation through blockchain in the polkadot network",
+    "description": "This project won second place at the Hackathon Web3 ITAM 2023, the FastAPI framework was used for the backend where data from different sensors was received using Robonomics tools and it was complemented with a mobile application to control lights using blockchain.",
+    "link": {
+      "href": "https://github.com/JosueHernandezR/hackaton-itam-2023-blockchain",
+      "label": "Team INSOMNIA"
+    },
+    "logo":{
+      "src":"/images/robonomics.png",
+      "alt":"Web3"
     }
-  ]
+  },
+  {
+    "title": "Redesign UI/UX for a translate service",
+    "description": "Redesign a static page to make it responsive. 🚀",
+    "link": {
+      "href": "https://traduccion-project.vercel.app/",
+      "label": "Translate Service 'Del Campo Capital Humano'"
+    },
+    "logo": {
+      "src": "/images/logo_1.png",
+      "alt": "People"
+    }
+  }
+]
