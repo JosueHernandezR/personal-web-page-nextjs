@@ -22,5 +22,17 @@
       "src": "/images/logo_1.png",
       "alt": "People"
     }
+  },
+  {
+    "title": "Designer and programmer Airport International of Tulum",
+    "description": "Design and build the official page for Airport International of Tulum using NextJS and TailwindCSS. 🥳",
+    "link": {
+      "href": "https://aitulum.com",
+      "label": "Official Page for Airport International of Tulum."
+    },
+    "logo": {
+      "src": "/images/tulum.png",
+      "alt": "Logo for Airport International of Tulum"
+    }
   }
 ]
