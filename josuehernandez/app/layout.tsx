@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import ClientThemeProvider from "./theme_provider";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -36,6 +37,7 @@ export default function RootLayout({
             <Footer />
           </div>
         </ClientThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
