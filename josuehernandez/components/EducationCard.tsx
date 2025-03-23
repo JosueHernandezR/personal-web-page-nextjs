@@ -17,7 +17,7 @@ export default function EducationCard({
       )}
     >
       <Link href={props.schoolURL} target={"_blank"}>
-        <div className="flex items-start dark:bg-zinc-800/90 dark:border-zinc-700/40 rounded p-4 relative">
+        <div className="flex items-start dark:bg-zinc-800/90 dark:border-zinc-700/40 rounded-sm p-4 relative">
           <div className="mt-2">
             <Image
               src={props.schoolLogo}
@@ -53,8 +53,8 @@ export default function EducationCard({
           </div>
         </div>
       </Link>
-      <span className="absolute w-[50%] -bottom-px right-px h-px bg-gradient-to-r from-cyan-500/0 via-cyan-500/40 to-cyan-500/0 dark:from-cyan-400/0 dark:via-cyan-400/40 dark:to-cyan-400/0"></span>
-      <span className="absolute w-px -left-px top-[40%] h-[40%] bg-gradient-to-b from-cyan-500/0 via-cyan-500/40 to-cyan-500/0 dark:from-cyan-400/0 dark:via-cyan-400/40 dark:to-cyan-400/0"></span>
+      <span className="absolute w-[50%] -bottom-px right-px h-px bg-linear-to-r from-cyan-500/0 via-cyan-500/40 to-cyan-500/0 dark:from-cyan-400/0 dark:via-cyan-400/40 dark:to-cyan-400/0"></span>
+      <span className="absolute w-px -left-px top-[40%] h-[40%] bg-linear-to-b from-cyan-500/0 via-cyan-500/40 to-cyan-500/0 dark:from-cyan-400/0 dark:via-cyan-400/40 dark:to-cyan-400/0"></span>
     </div>
   );
 }

@@ -12,9 +12,9 @@ export default function ThemeSelector(): JSX.Element {
   const currtentTheme = theme === "system" ? systemTheme : theme;
 
   function disableTransitionsTemporarily() {
-    document.documentElement.classList.add("[&_*]:!transition-none");
+    document.documentElement.classList.add("**:transition-none!");
     window.setTimeout(() => {
-      document.documentElement.classList.remove("[&_*]:!transition-none");
+      document.documentElement.classList.remove("**:transition-none!");
     }, 0);
   }
 
@@ -31,7 +31,7 @@ export default function ThemeSelector(): JSX.Element {
     <button
       type="button"
       aria-label="Toggle dark mode"
-      className="group rounded-full bg-white/90 px-3 py-2 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur transition dark:bg-zinc-800/90 dark:ring-white/10 dark:hover:ring-white/20"
+      className="group rounded-full bg-white/90 px-3 py-2 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur-sm transition dark:bg-zinc-800/90 dark:ring-white/10 dark:hover:ring-white/20"
       onClick={toggleTheme}
     >
       <SunIcon className="h-6 w-6 fill-zinc-100 stroke-zinc-500 transition group-hover:fill-zinc-200 group-hover:stroke-zinc-700 dark:hidden [@media(prefers-color-scheme:dark)]:fill-cyan-50 [@media(prefers-color-scheme:dark)]:stroke-cyan-500 [@media(prefers-color-scheme:dark)]:group-hover:fill-cyan-50 [@media(prefers-color-scheme:dark)]:group-hover:stroke-cyan-600" />

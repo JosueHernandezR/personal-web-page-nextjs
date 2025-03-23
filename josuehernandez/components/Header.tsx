@@ -140,7 +140,7 @@ export default function HeaderComponent() {
           <>
             <div
               ref={avatarRef as any}
-              className="order-last mt-[calc(theme(spacing.16)-theme(spacing.3))]"
+              className="order-last mt-[calc(--spacing(16)-(--spacing(3)))]"
             />
             <Container
               className="top-0 order-last -mb-3 pt-3"
