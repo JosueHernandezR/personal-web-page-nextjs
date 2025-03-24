@@ -1,13 +1,13 @@
 import { Container } from '@/components/Container'
 import Link from 'next/link'
-import { useTranslation } from '../../i18n'
+import { getServerTranslation } from '../../i18n'
 
 export default async function NotFoundPage({
   params: { lng }
 }: {
   params: { lng: string }
 }) {
-  const { t } = await useTranslation(lng);
+  const t  = await getServerTranslation(lng);
 
   return (
     <div className="bg-orange-100 dark:bg-amber-900 min-h-screen flex items-center">
