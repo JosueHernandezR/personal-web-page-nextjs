@@ -27,7 +27,7 @@ export default async function LngLayout({
   children: React.ReactNode;
   params: { lng: string };
 }) {
-  const { lng } = params;
+  const { lng } = await params;
   
   return (
     <html lang={lng} className={inter.className} suppressHydrationWarning>
