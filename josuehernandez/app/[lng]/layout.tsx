@@ -27,15 +27,18 @@ export async function generateStaticParams() {
   return languages.map((lng) => ({ lng }));
 }
 
-export default async function RootLayout({ children, params }: RootLayoutProps) {
-  const { lng } = params;
+export default async function RootLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: Promise<{ lng: string }>;
+}) {
+  const { lng } = await params;
 
   return (
-    <html lang={lng} className={inter.className} suppressHydrationWarning>
-      <body
-        className="bg-zinc-50 dark:bg-black min-h-screen"
-        suppressHydrationWarning
-      >
+    <html lang={lng} suppressHydrationWarning>
+      <body className={`${inter.className} bg-zinc-50 dark:bg-black min-h-screen`}>
         <ClientThemeProvider>
           <div className="relative">
             <Header lng={lng} />

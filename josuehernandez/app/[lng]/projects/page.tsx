@@ -10,10 +10,11 @@ export const metadata: Metadata = {
 };
 
 interface PageProps {
-  params: {
+  params: Promise<{
     lng: string;
-  };
+  }>;
 }
+
 export default async function Projects({ params }: PageProps): Promise<JSX.Element> {
   const { lng } = await params;
   const t = await getServerTranslation(lng, "projects");

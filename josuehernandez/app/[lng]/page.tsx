@@ -3,9 +3,9 @@ import { Suspense } from "react";
 import About from "./About";
 import Server from "./Server";
 interface PageProps {
-  params: {
+  params: Promise<{
     lng: string;
-  };
+  }>;
 }
 export default async function Home({ params }: PageProps) {
   const { lng } = await params;

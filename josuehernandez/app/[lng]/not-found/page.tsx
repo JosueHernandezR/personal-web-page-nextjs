@@ -3,11 +3,12 @@ import Link from 'next/link'
 import { getServerTranslation } from '../../i18n'
 
 export default async function NotFoundPage({
-  params: { lng }
+  params
 }: {
-  params: { lng: string }
+  params: Promise<{ lng: string }>;
 }) {
-  const t  = await getServerTranslation(lng);
+  const { lng } = await params;
+  const t = await getServerTranslation(lng);
 
   return (
     <div className="bg-orange-100 dark:bg-amber-900 min-h-screen flex items-center">
