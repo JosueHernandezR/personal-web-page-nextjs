@@ -8,7 +8,8 @@ import Footer from "../../components/Footer";
 import "@/styles/globals.css";
 import { languages } from "../i18n/settings";
 
-interface LngLayoutProps {
+// Usar la interfaz que espera Next.js
+interface RootLayoutProps {
   children: React.ReactNode;
   params: {
     lng: string;
@@ -26,7 +27,7 @@ export async function generateStaticParams() {
   return languages.map((lng) => ({ lng }));
 }
 
-export default async function LngLayout({ children, params }: LngLayoutProps) {
+export default async function RootLayout({ children, params }: RootLayoutProps) {
   const { lng } = await params;
 
   return (
@@ -48,4 +49,3 @@ export default async function LngLayout({ children, params }: LngLayoutProps) {
     </html>
   );
 }
-
