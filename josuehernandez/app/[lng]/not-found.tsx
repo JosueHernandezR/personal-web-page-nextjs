@@ -3,14 +3,16 @@ import Link from 'next/link'
 import { getServerTranslation } from '../i18n'
 
 interface PageProps {
-  params: {
+  params?: {
     lng: string;
   };
 }
-export default async function NotFound({ params }: PageProps) {
-  const { lng } = await params;
-  const  t  = await getServerTranslation(lng);
 
+export default async function NotFound({ params }: PageProps) {
+  // Usa un valor predeterminado si params o params.lng no están disponibles
+  const lng = params?.lng || 'en'; // 'en' como idioma predeterminado
+  const t = await getServerTranslation(lng);
+  
   return (
     <div className="bg-orange-100 dark:bg-amber-900 min-h-screen flex items-center">
       <Container className="flex h-full items-center pt-16 sm:pt-32">

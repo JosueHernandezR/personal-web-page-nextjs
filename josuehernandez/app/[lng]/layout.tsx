@@ -6,8 +6,14 @@ import ClientThemeProvider from "./theme_provider";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import "@/styles/globals.css";
-import { dir } from 'i18next';
-import { languages } from '../i18n/settings';
+import { languages } from "../i18n/settings";
+
+interface LngLayoutProps {
+  children: React.ReactNode;
+  params: {
+    lng: string;
+  };
+}
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,18 +26,15 @@ export async function generateStaticParams() {
   return languages.map((lng) => ({ lng }));
 }
 
-export default async function LngLayout({
-  children,
-  params
-}: {
-  children: React.ReactNode;
-  params: { lng: string };
-}) {
+export default async function LngLayout({ children, params }: LngLayoutProps) {
   const { lng } = await params;
-  
+
   return (
     <html lang={lng} className={inter.className} suppressHydrationWarning>
-      <body className="bg-zinc-50 dark:bg-black min-h-screen" suppressHydrationWarning>
+      <body
+        className="bg-zinc-50 dark:bg-black min-h-screen"
+        suppressHydrationWarning
+      >
         <ClientThemeProvider>
           <div className="relative">
             <Header lng={lng} />
