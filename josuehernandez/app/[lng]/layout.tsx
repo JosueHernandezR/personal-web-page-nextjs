@@ -28,7 +28,7 @@ export async function generateStaticParams() {
 }
 
 export default async function RootLayout({ children, params }: RootLayoutProps) {
-  const { lng } = await params;
+  const { lng } = params;
 
   return (
     <html lang={lng} className={inter.className} suppressHydrationWarning>
