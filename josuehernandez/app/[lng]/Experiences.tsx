@@ -2,28 +2,48 @@
 import { Container } from "@/components/Container";
 import ExperienceCard from "@/components/ExperienceCard";
 import { ChevronDownIcon, ChevronUpIcon } from "@/components/Icons";
+import { experiences } from "@/constants/experiences";
 import { useRef, useState } from "react";
+import { useTranslation } from "../i18n/client";
+import { Experience } from "@/types";
 
-export default function Experiences({
-  experiences,
-}: {
-  experiences: any;
-}): JSX.Element {
+interface ExperiencesProps {
+  lng: string;
+}
+
+export default function Experiences({ lng }: ExperiencesProps): JSX.Element {
   let [isExpanded, setIsExpanded] = useState(false);
   const parentRef = useRef();
+  const { t } = useTranslation(lng, 'experiences');
+
+  // Mapear las experiencias con las traducciones
+  const translatedExperiences = experiences.map(experience => {
+    // No traducir la ruta de la imagen, usar directamente la ruta definida en las constantes
+    return {
+      title: t(experience.title),
+      company: t(experience.company),
+      companyURL: t(experience.companyURL),
+      companyLogo: experience.companyLogo, // Usar directamente la ruta
+      location: t(experience.location),
+      type: t(experience.type),
+      date: t(experience.date),
+      description: t(experience.description),
+      skills: experience.skills
+    };
+  });
 
   return (
     <>
       {experiences.length > 0 && (
         <Container className="mt-9">
           <h3 className="font-bold text-2xl md:text-4xl tracking-tight mb-6 text-zinc-800 dark:text-zinc-100">
-            Experiences
+            {t('title', 'Experiences')}
           </h3>
 
-          {experiences.slice(0, 2).map((experience: any, index: any) => (
-            <ExperienceCard key={index} props={experience} />
+          {translatedExperiences.slice(0, 2).map((experience: Experience, index: number) => (
+            <ExperienceCard key={index} experience={experience} />
           ))}
-          {experiences.slice(2).map((experience: any, index: any) => (
+          {translatedExperiences.slice(2).map((experience: Experience, index: number) => (
             <div
               key={index}
               className={
@@ -36,7 +56,7 @@ export default function Experiences({
                   : 0,
               }}
             >
-              <ExperienceCard key={index} props={experience} />
+              <ExperienceCard key={index} experience={experience} />
             </div>
           ))}
           {experiences.length > 2 && (
@@ -47,12 +67,12 @@ export default function Experiences({
               >
                 {isExpanded ? (
                   <>
-                    Show less
+                    {t('showLess', 'Show less')}
                     <ChevronUpIcon className="ml-3 h-auto w-[10px] stroke-zinc-500 group-hover:stroke-cyan-500 dark:group-hover:stroke-cyan-500" />
                   </>
                 ) : (
                   <>
-                    Show more
+                    {t('showMore', 'Show more')}
                     <ChevronDownIcon className="ml-3 h-auto w-[10px] stroke-zinc-500 group-hover:stroke-cyan-500 dark:group-hover:stroke-cyan-500" />
                   </>
                 )}

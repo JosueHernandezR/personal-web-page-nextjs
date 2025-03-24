@@ -38,14 +38,16 @@ async function getExperiencies(): Promise<any>{
 
 export default async function Server({
     component,
+    params,
   }: {
     component: string;
+    params: { lng: string };
   }): Promise<JSX.Element>{
     switch (component) {
         case "Educations":
-            return <Educations educations={await getEducations()} />;
+            return <Educations lng={params.lng} />;
         case "Experiences":
-            return <Experiences experiences={await getExperiencies()}/>
+            return <Experiences lng={params.lng} />
         default:
             return <></>;
     }

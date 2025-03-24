@@ -5,6 +5,9 @@ import { server } from "@/config";
 import fs, { promises as ps } from "fs";
 import Image from "next/image";
 
+interface ListProjectsProps {
+  lng: string;
+}
 // get projects from local file
 async function getListProjects(): Promise<Project[]> {
   if (fs.existsSync("public/content/projects.json")) {
@@ -22,7 +25,9 @@ async function getListProjects(): Promise<Project[]> {
   return projects;
 }
 
-export default async function ListProjects(): Promise<JSX.Element> {
+export default async function ListProjects({
+  lng,
+}: ListProjectsProps): Promise<JSX.Element> {
   const projects: Project[] = await getListProjects();
   return (
     <ul

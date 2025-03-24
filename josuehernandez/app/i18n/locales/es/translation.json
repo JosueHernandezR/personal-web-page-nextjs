@@ -1,0 +1,41 @@
+{
+  "notFound": {
+    "title": "Página no encontrada",
+    "description": "Lo sentimos, no pudimos encontrar la página que estás buscando.",
+    "goBack": "Volver al inicio"
+  },
+  "about": {
+    "title": "{name}",
+    "designation": "{designation} en",
+    "socialLinks": {
+      "github": "Perfil de GitHub",
+      "linkedin": "Perfil de LinkedIn",
+      "twitter": "Perfil de Twitter",
+      "googleScholar": "Perfil de Google Scholar",
+      "downloadResume": "Descargar CV"
+    }
+  },
+  "projects": {
+    "title": "Proyectos",
+    "description": "Algunos de los proyectos en los que he trabajado."
+  },
+  "common": {
+    "loading": "Cargando...",
+    "viewMore": "Ver más"
+  },
+  "education": {
+    "title": "Educación",
+    "showMore": "Mostrar más",
+    "showLess": "Mostrar menos"
+  },
+  "experience": {
+    "title": "Experiencia",
+    "showMore": "Mostrar más",
+    "showLess": "Mostrar menos"
+  },
+  "error": {
+    "title": "Algo salió mal",
+    "description": "Ha ocurrido un error inesperado.",
+    "retry": "Intentar de nuevo"
+  }
+} 

@@ -1,14 +1,33 @@
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
+import { Education } from "@/types";
 
 export default function EducationCard({
   classNames,
-  props,
+  education,
 }: {
   classNames?: string;
-  props: Education;
+  education: Education;
 }): JSX.Element {
+  // Validar y limpiar la URL de la imagen
+  let imageUrl = '';
+  try {
+    // Si es una URL absoluta, usarla directamente
+    if (education.schoolLogo.startsWith('http')) {
+      imageUrl = education.schoolLogo;
+    } else {
+      // Si es una ruta relativa, asegurarse de que comience con '/'
+      imageUrl = education.schoolLogo.startsWith('/') 
+        ? education.schoolLogo 
+        : `/${education.schoolLogo}`;
+    }
+  } catch (error) {
+    console.error("Error con la URL de la imagen:", error);
+    // Fallback a una imagen por defecto o placeholder
+    imageUrl = '/images/placeholder.png';
+  }
+
   return (
     <div
       className={clsx(
@@ -16,12 +35,12 @@ export default function EducationCard({
         classNames
       )}
     >
-      <Link href={props.schoolURL} target={"_blank"}>
+      <Link href={education.schoolURL} target={"_blank"}>
         <div className="flex items-start dark:bg-zinc-800/90 dark:border-zinc-700/40 rounded-sm p-4 relative">
           <div className="mt-2">
             <Image
-              src={props.schoolLogo}
-              alt={props.school + " logo"}
+              src={imageUrl}
+              alt={education.school + " logo"}
               width={50}
               height={45}
               className="h-7 w-8 ml-2 mr-12"
@@ -29,19 +48,19 @@ export default function EducationCard({
           </div>
           <div>
             <h4 className="text-lg font-bold tracking-tight text-zinc-800 dark:text-zinc-100">
-              {props.school}
+              {education.school}
             </h4>
             <p className="text-xs text-zinc-400 dark:text-zinc-500 leading-5">
-              {props.degree}, {props.major} · {props.date}{" "}
+              {education.degree}, {education.major} · {education.date}{" "}
             </p>
             <p className="text-xs text-zinc-400 dark:text-zinc-500 leading-5">
-              {props.schoolLocation}
+              {education.schoolLocation}
             </p>{" "}
             <p className="leading-5 text-zinc-600 dark:text-zinc-400 mt-2">
-              {props.description}
+              {education.description}
             </p>
             <div className="pt-2 flex md:flex-row flex-wrap">
-              {props.activitiesandsocieties.map((aors, index) => (
+              {education.activitiesandsocieties.map((aors, index) => (
                 <p
                   key={index}
                   className="leading-5 dark:border dark:border-zinc-700 text-zinc-600 dark:text-zinc-400 dark:bg-transparent rounded-md text-xs italic bg-gray-50  mr-2 px-1"

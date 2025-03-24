@@ -8,7 +8,8 @@ interface NavItemProps {
   }
 
 export function NavItem({ href, children }: NavItemProps) {
-    let isActive = usePathname() === href
+    const pathname = usePathname()
+    const isActive = pathname === href || (pathname && href && href !== '/' && pathname.startsWith(href))
   
     return (
       <li>

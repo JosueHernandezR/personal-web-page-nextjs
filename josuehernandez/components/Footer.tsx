@@ -2,7 +2,11 @@ import { Container } from "@/components/Container";
 import { NavLink } from "./NavLink";
 import { NavRoutes } from "@/constants/nav_routes";
 
-export default function Footer(): JSX.Element {
+interface FooterProps {
+  lng: string;
+}
+
+export default function Footer({ lng }: FooterProps): JSX.Element {
   return (
     <footer className="mt-32">
       <Container.Outer>
@@ -11,7 +15,10 @@ export default function Footer(): JSX.Element {
             <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
               <div className="flex gap-6 text-sm font-medium text-zinc-800 dark:text-zinc-200">
                 {NavRoutes.map((navigation) => (
-                  <NavLink key={navigation.href} href={navigation.href}>
+                  <NavLink 
+                    key={navigation.href} 
+                    href={`/${lng}${navigation.href === '/' ? '' : navigation.href}`}
+                  >
                     {navigation.label}
                   </NavLink>
                 ))}

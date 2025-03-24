@@ -8,10 +8,14 @@ import { DesktopNavigation } from "./DesktopNavigation";
 import { Avatar, AvatarContainer, clamp } from "./Avatar";
 import { NavRoutes } from "@/constants/nav_routes";
 import ThemeSelector from "./ThemeSelector";
+import TranslateSelector from "@/app/[lng]/components/ui/TranslateSelector";
 
+interface HeaderProps {
+  lng: string;
+}
 
-export default function HeaderComponent() {
-  let isHomePage = usePathname() === "/";
+export default function HeaderComponent({ lng }: HeaderProps) {
+  let isHomePage = usePathname() === `/${lng}`;
 
   let headerRef = useRef<HTMLHeadingElement>();
   let avatarRef = useRef<HTMLDivElement>();
@@ -177,24 +181,33 @@ export default function HeaderComponent() {
                 {!isHomePage && (
                   <>
                     <AvatarContainer>
-                    <Avatar />
+                      <Avatar />
                     </AvatarContainer>
                   </>
                 )}
               </div>
               <div className="flex flex-1 justify-end md:justify-center">
                 <MobileNavigation
-                  links={NavRoutes}
+                  links={NavRoutes.map((route) => ({
+                    ...route,
+                    href: `/${lng}${route.href === "/" ? "" : route.href}`,
+                  }))}
                   className="pointer-events-auto md:hidden"
                 />
                 <DesktopNavigation
-                  links={NavRoutes}
+                  links={NavRoutes.map((route) => ({
+                    ...route,
+                    href: `/${lng}${route.href === "/" ? "" : route.href}`,
+                  }))}
                   className="pointer-events-auto hidden md:block"
                 />
               </div>
-              <div className="flex justify-end md:flex-1">
+              <div className="flex flex-row justify-end md:flex-1 gap-x-1">
                 <div className="pointer-events-auto">
                   <ThemeSelector />
+                </div>
+                <div className="pointer-events-auto">
+                  <TranslateSelector />
                 </div>
               </div>
             </div>
