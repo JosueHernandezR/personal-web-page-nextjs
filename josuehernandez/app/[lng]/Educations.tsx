@@ -3,34 +3,29 @@ import { Container } from "@/components/Container";
 import EducationCard from "@/components/EducationCard";
 import { ChevronDownIcon, ChevronUpIcon } from "@/components/Icons";
 import { useRef, useState } from "react";
-import { useTranslation } from "../i18n/client";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useTranslationWithContext } from "@/contexts/LanguageContext";
 import { educations } from "@/constants/educations";
 import { Education } from "@/types";
 
-interface EducationsProps {
-  lng: string;
-}
-export default function Educations({ lng }: EducationsProps): JSX.Element {
+export default function Educations(): JSX.Element {
   let [isExpanded, setIsExpanded] = useState(false);
   const parentRef = useRef();
-  const { t } = useTranslation(lng, "educations");
+  const { t } = useTranslationWithContext("educations");
 
   // Mapear las educaciones con las traducciones
-  const translatedEducations = educations.map((education) => {
-    // No traducir la ruta de la imagen, usar directamente la ruta definida en las constantes
-    return {
-      school: t(education.school),
-      schoolURL: t(education.schoolURL),
-      schoolLogo: education.schoolLogo, // Usar directamente la ruta
-      schoolLocation: t(education.schoolLocation),
-      degree: t(education.degree),
-      major: t(education.major),
-      minor: t(education.minor),
-      date: t(education.date),
-      description: t(education.description),
-      activitiesandsocieties: education.activitiesandsocieties,
-    };
-  });
+  const translatedEducations = educations.map((education) => ({
+    school: t(education.school),
+    schoolURL: education.schoolURL,
+    schoolLogo: education.schoolLogo,
+    schoolLocation: t(education.schoolLocation),
+    degree: t(education.degree),
+    major: t(education.major),
+    minor: education.minor ? t(education.minor) : "",
+    date: t(education.date),
+    description: t(education.description),
+    activitiesandsocieties: education.activitiesandsocieties,
+  }));
 
   return (
     <>
@@ -48,10 +43,8 @@ export default function Educations({ lng }: EducationsProps): JSX.Element {
             .slice(2)
             .map((education: Education, index: number) => (
               <div
-                key={index}
-                className={
-                  "h-0 overflow-hidden transition-height ease-in-out duration-[400ms] "
-                }
+                key={`expanded-${index}`}
+                className="h-0 overflow-hidden transition-height ease-in-out duration-[400ms]"
                 ref={parentRef as any}
                 style={{
                   height: isExpanded
@@ -59,7 +52,7 @@ export default function Educations({ lng }: EducationsProps): JSX.Element {
                     : 0,
                 }}
               >
-                <EducationCard key={index} education={education} />
+                <EducationCard key={`card-${index}`} education={education} />
               </div>
             ))}
           {educations.length > 2 && (
@@ -70,12 +63,12 @@ export default function Educations({ lng }: EducationsProps): JSX.Element {
               >
                 {isExpanded ? (
                   <>
-                    {t("showLess", "Show less")}
+                    {t("showLess")}
                     <ChevronUpIcon className="ml-3 h-auto w-[10px] stroke-zinc-500 group-hover:stroke-cyan-500 dark:group-hover:stroke-cyan-500" />
                   </>
                 ) : (
                   <>
-                    {t("showMore", "Show more")}
+                    {t("showMore")}
                     <ChevronDownIcon className="ml-3 h-auto w-[10px] stroke-zinc-500 group-hover:stroke-cyan-500 dark:group-hover:stroke-cyan-500" />
                   </>
                 )}

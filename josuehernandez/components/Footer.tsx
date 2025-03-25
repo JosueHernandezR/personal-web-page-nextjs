@@ -1,12 +1,11 @@
+'use client';
+
 import { Container } from "@/components/Container";
 import { NavLink } from "./NavLink";
 import { NavRoutes } from "@/constants/nav_routes";
 
-interface FooterProps {
-  lng: string;
-}
-
-export default function Footer({ lng }: FooterProps): JSX.Element {
+export default function Footer(): JSX.Element {
+  
   return (
     <footer className="mt-32">
       <Container.Outer>
@@ -17,7 +16,7 @@ export default function Footer({ lng }: FooterProps): JSX.Element {
                 {NavRoutes.map((navigation) => (
                   <NavLink 
                     key={navigation.href} 
-                    href={`/${lng}${navigation.href === '/' ? '' : navigation.href}`}
+                    href={`${navigation.href}`}
                   >
                     {navigation.label}
                   </NavLink>

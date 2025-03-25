@@ -1,3 +1,5 @@
+'use client';
+
 import Link from "next/link";
 import { Container } from "@/components/Container";
 import {
@@ -7,9 +9,8 @@ import {
   TwitterIcon,
 } from "../../components/SocialLinks";
 import { DownloadFileIcon } from "../../components/Icons";
-import { getServerTranslation } from "../i18n";
 import { socialLinks } from "@/constants/social_links";
-
+import { useTranslationWithContext } from "@/contexts/LanguageContext";
 
 function SocialLink({
   icon: Icon,
@@ -24,12 +25,8 @@ function SocialLink({
   );
 }
 
-export default async function About({
-  params: { lng },
-}: {
-  params: { lng: string };
-}) {
-  const t = await getServerTranslation(lng, 'about');
+export default function About(): JSX.Element {
+  const { t } = useTranslationWithContext('about');
 
   return (
     <Container className="mt-9">

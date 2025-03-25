@@ -9,12 +9,10 @@ import { Avatar, AvatarContainer, clamp } from "./Avatar";
 import { NavRoutes } from "@/constants/nav_routes";
 import ThemeSelector from "./ThemeSelector";
 import TranslateSelector from "@/app/[lng]/components/ui/TranslateSelector";
+import { useLanguage } from '@/contexts/LanguageContext';
 
-interface HeaderProps {
-  lng: string;
-}
-
-export default function HeaderComponent({ lng }: HeaderProps) {
+export default function Header() {
+  const { lng } = useLanguage();
   let isHomePage = usePathname() === `/${lng}`;
 
   let headerRef = useRef<HTMLHeadingElement>();

@@ -33,7 +33,7 @@ export default function TranslateSelector(): JSX.Element {
                     collapsed: { opacity: 0, height: 0 },
                   }}
                   anchor="bottom"
-                  className="flex origin-top flex-col bg-white dark:bg-principal/90 z-30"
+                  className="flex origin-top flex-col bg-white dark:bg-black/90 z-30 mt-2 rounded-2xl p-1.5"
                 >
                   {languages.map((item, i) => (
                     <div

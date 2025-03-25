@@ -1,13 +1,23 @@
 @import 'tailwindcss';
 
-@custom-variant dark (&:is(.dark *));
-
+@variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 @theme {
   --background-image-gradient-radial: radial-gradient(var(--tw-gradient-stops));
   --background-image-gradient-conic: conic-gradient(
     from 180deg at 50% 50%,
     var(--tw-gradient-stops)
   );
+}
+:root {
+  --background: #ededed;
+  --foreground: #171717;
+  --x: 0;
+  --y: 0;
+}
+
+[data-theme="dark"] {
+  --background: #171717;
+  --foreground: #ededed;
 }
 
 /*
