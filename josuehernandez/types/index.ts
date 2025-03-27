@@ -22,3 +22,16 @@ export interface Experience {
   description: string;
   skills: string[];
 } 
+
+export interface Project {
+    title: string;
+    description: string;
+    link: {
+        href: string;
+        label: string;
+    };
+    logo: {
+        src: string;
+        alt: string;
+    };
+}

@@ -22,9 +22,7 @@ export default async function Projects({ params }: PageProps): Promise<JSX.Eleme
   return (
     <SimpleLayout title={t("title_page")} intro={t("introduction_page")}>
       <div className="mt-16 sm:mt-20">
-        <Suspense>
           <ListProjects lng={lng} />
-        </Suspense>
       </div>
     </SimpleLayout>
   );
