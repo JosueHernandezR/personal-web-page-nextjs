@@ -38,7 +38,7 @@ export default async function NotFound() {
   return (
     <ClientThemeProvider>
       <div className="relative">
-        <Header lng={lng} />
+        <Header />
         <div className="bg-orange-100 dark:bg-amber-900 min-h-screen flex items-center">
           <Container className="flex h-full items-center pt-16 sm:pt-32">
             <div className="flex flex-col items-center">
@@ -57,7 +57,7 @@ export default async function NotFound() {
             </div>
           </Container>
         </div>
-        <Footer lng={lng} />
+        <Footer />
       </div>
     </ClientThemeProvider>
   )
