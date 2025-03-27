@@ -4,12 +4,15 @@ import { classNames } from "@/utils/tools";
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import { LanguageIcon } from "@heroicons/react/24/outline";
 import { AnimatePresence, motion } from "framer-motion";
-import Link from "next/link";
+import { useLanguageChange } from "@/hooks/useLanguageChange";
 import { usePathname } from "next/navigation";
 import { JSX } from "react";
 
 export default function TranslateSelector(): JSX.Element {
   const pathname = usePathname();
+  const { changeLanguage } = useLanguageChange();
+  const currentLang = pathname.split('/')[1];
+
   return (
     <>
       <Popover>
@@ -35,17 +38,18 @@ export default function TranslateSelector(): JSX.Element {
                   anchor="bottom"
                   className="flex origin-top flex-col bg-white dark:bg-black/90 z-30 mt-2 rounded-2xl p-1.5"
                 >
-                  {languages.map((item, i) => (
+                  {languages.map((lang) => (
                     <div
-                      key={i}
-                      className="flex flex-col px-2.5 py-1.5 rounded-xl"
+                      key={lang}
+                      className={classNames(
+                        "flex flex-col px-2.5 py-1.5 rounded-xl cursor-pointer",
+                        currentLang === lang ? "bg-zinc-100 dark:bg-zinc-800" : "hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
+                      )}
+                      onClick={() => changeLanguage(lang)}
                     >
-                      <Link
-                        href={`/${item}${pathname.slice(3)}`}
-                        className="text-sm/6 text-principal dark:text-white"
-                      >
-                        {item.toLocaleUpperCase()}
-                      </Link>
+                      <span className="text-sm/6 text-principal dark:text-white">
+                        {lang.toLocaleUpperCase()}
+                      </span>
                     </div>
                   ))}
                 </PopoverPanel>

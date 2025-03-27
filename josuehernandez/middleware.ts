@@ -71,26 +71,26 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(newUrl);
   }
 
-  // Manejar el referer para mantener consistencia en la navegación
-  const referer = req.headers.get("referer");
-  if (referer) {
-    try {
-      const refererUrl = new URL(referer);
-      const lngInReferer = languages.find(l =>
-        refererUrl.pathname.startsWith(`/${l}`)
-      );
-      if (lngInReferer) {
-        const response = NextResponse.next();
-        response.cookies.set(cookieName, lngInReferer);
-        return response;
-      }
-    } catch (error) {
-      console.error('Error parsing referer URL:', error);
-    }
+  // Manejar el cambio de idioma
+  const currentLang = pathname.split('/')[1];
+  if (languages.includes(currentLang) && currentLang !== lng) {
+    // Si el idioma en la URL es diferente al idioma de la cookie,
+    // actualizar la cookie y continuar
+    const response = NextResponse.next();
+    response.cookies.set(cookieName, currentLang, {
+      path: '/',
+      maxAge: 31536000, // 1 año
+      sameSite: 'lax'
+    });
+    return response;
   }
 
   // Si llegamos aquí, continuar normalmente
   const response = NextResponse.next();
-  response.cookies.set(cookieName, lng);
+  response.cookies.set(cookieName, lng, {
+    path: '/',
+    maxAge: 31536000, // 1 año
+    sameSite: 'lax'
+  });
   return response;
 }

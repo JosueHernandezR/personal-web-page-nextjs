@@ -186,14 +186,14 @@ export default function Header() {
                 <MobileNavigation
                   links={NavRoutes.map((route) => ({
                     ...route,
-                    href: `/${lng}${route.href === "/" ? "" : route.href}`,
+                    href: `${route.href}`,
                   }))}
                   className="pointer-events-auto md:hidden"
                 />
                 <DesktopNavigation
                   links={NavRoutes.map((route) => ({
                     ...route,
-                    href: `/${lng}${route.href === "/" ? "" : route.href}`,
+                    href: `${route.href}`,
                   }))}
                   className="pointer-events-auto hidden md:block"
                 />
