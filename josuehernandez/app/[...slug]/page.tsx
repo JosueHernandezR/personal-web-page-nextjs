@@ -6,9 +6,9 @@ import { NotFoundPage } from '@/components/NotFoundPage'
 import { dir } from 'i18next'
 
 interface CatchAllProps {
-  params: {
+  params: Promise<{
     slug: string[]
-  }
+  }>
 }
 
 // Este componente captura todas las rutas que no coinciden con ninguna otra ruta
@@ -20,8 +20,9 @@ export default async function CatchAll({ params }: CatchAllProps) {
   // Usar el fallback si no hay cookie o el idioma no está soportado
   const lng = cookieLang && languages.includes(cookieLang) ? cookieLang : fallbackLng
   
-  // Construir la URL original
-  const originalPath = `/${params.slug.join('/')}`
+  // Esperar a que los parámetros estén disponibles
+  const resolvedParams = await params
+  const originalPath = `/${resolvedParams.slug.join('/')}`
 
   return (
     <ClientThemeProvider>
