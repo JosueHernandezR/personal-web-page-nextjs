@@ -11,7 +11,7 @@ import { JSX } from "react";
 export default function TranslateSelector(): JSX.Element {
   const pathname = usePathname();
   const { changeLanguage } = useLanguageChange();
-  const currentLang = pathname.split('/')[1];
+  const currentLang = pathname.split("/")[1];
 
   return (
     <>
@@ -20,7 +20,10 @@ export default function TranslateSelector(): JSX.Element {
           <>
             <PopoverButton className="group rounded-full bg-white/90 px-3 py-2 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur-sm transition dark:bg-zinc-800/90 dark:ring-white/10 dark:hover:ring-white/20">
               <LanguageIcon
-                className="h-6 w-6 fill-zinc-100 stroke-zinc-500 transition group-hover:fill-zinc-200 group-hover:stroke-zinc-700 [@media(prefers-color-scheme:dark)]:fill-cyan-50 [@media(prefers-color-scheme:dark)]:stroke-cyan-500 [@media(prefers-color-scheme:dark)]:group-hover:fill-cyan-50 [@media(prefers-color-scheme:dark)]:group-hover:stroke-cyan-600"
+                className="h-6 w-6 stroke-cyan-500 transition 
+             group-hover:stroke-cyan-600 
+             dark:stroke-zinc-500 
+             dark:group-hover:stroke-zinc-400"
               />
             </PopoverButton>
             <AnimatePresence>
@@ -43,7 +46,9 @@ export default function TranslateSelector(): JSX.Element {
                       key={lang}
                       className={classNames(
                         "flex flex-col px-2.5 py-1.5 rounded-xl cursor-pointer",
-                        currentLang === lang ? "bg-zinc-100 dark:bg-zinc-800" : "hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
+                        currentLang === lang
+                          ? "bg-zinc-100 dark:bg-zinc-800"
+                          : "hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
                       )}
                       onClick={() => changeLanguage(lang)}
                     >
