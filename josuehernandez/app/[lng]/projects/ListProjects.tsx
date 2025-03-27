@@ -1,6 +1,6 @@
 import { getServerTranslation } from "@/app/i18n";
-import { Card } from "@/components/Card";
-import { LinkIcon } from "@/components/Icons";
+import { Card } from "@/components";
+import { LinkIcon } from "@/components/icons/Icons";
 import { server } from "@/config";
 import { projects } from "@/constants/projects";
 import { useTranslationWithContext } from "@/contexts/LanguageContext";

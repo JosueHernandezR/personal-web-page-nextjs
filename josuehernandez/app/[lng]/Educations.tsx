@@ -1,12 +1,10 @@
 "use client";
-import { Container } from "@/components/Container";
-import EducationCard from "@/components/EducationCard";
-import { ChevronDownIcon, ChevronUpIcon } from "@/components/Icons";
 import { useRef, useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTranslationWithContext } from "@/contexts/LanguageContext";
 import { educations } from "@/constants/educations";
 import { Education } from "@/types";
+import { ChevronDownIcon, ChevronUpIcon, Container, EducationCard } from "@/components";
 
 export default function Educations(): JSX.Element {
   let [isExpanded, setIsExpanded] = useState(false);

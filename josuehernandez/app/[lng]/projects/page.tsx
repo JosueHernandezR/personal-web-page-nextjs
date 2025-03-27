@@ -1,8 +1,8 @@
 import { Metadata } from "next";
 import { Suspense } from "react";
-import SimpleLayout from "@/components/SimpleLayout";
 import ListProjects from "./ListProjects";
 import { getServerTranslation } from "../../i18n";
+import { SimpleLayout } from "@/components";
 
 export const metadata: Metadata = {
   title: "Projects",

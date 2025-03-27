@@ -1,11 +1,9 @@
 "use client";
-import { Container } from "@/components/Container";
-import ExperienceCard from "@/components/ExperienceCard";
-import { ChevronDownIcon, ChevronUpIcon } from "@/components/Icons";
 import { useRef, useState } from "react";
 import { useTranslationWithContext } from "@/contexts/LanguageContext";
 import { experiences } from "@/constants/experiences";
 import { Experience } from "@/types";
+import { ChevronDownIcon, ChevronUpIcon, Container, ExperienceCard } from "@/components";
 
 export default function Experiences(): JSX.Element {
   let [isExpanded, setIsExpanded] = useState(false);

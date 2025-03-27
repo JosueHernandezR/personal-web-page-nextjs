@@ -1,16 +1,10 @@
 'use client';
 
 import Link from "next/link";
-import { Container } from "@/components/Container";
-import {
-  GitHubIcon,
-  GoogleScholarIcon,
-  LinkedInIcon,
-  TwitterIcon,
-} from "../../components/SocialLinks";
-import { DownloadFileIcon } from "../../components/Icons";
-import { socialLinks } from "@/constants/social_links";
+
 import { useTranslationWithContext } from "@/contexts/LanguageContext";
+import { Container, DownloadFileIcon, GitHubIcon, GoogleScholarIcon, LinkedInIcon, TwitterIcon } from "@/components";
+import { socialLinks } from "@/constants/social_links";
 
 function SocialLink({
   icon: Icon,

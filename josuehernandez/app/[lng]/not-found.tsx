@@ -1,7 +1,7 @@
-import { Container } from '@/components/Container'
+
 import Link from 'next/link'
 import { getServerTranslation } from '../i18n'
-
+import { Container } from '@/components'
 interface PageProps {
   params?: {
     lng: string;

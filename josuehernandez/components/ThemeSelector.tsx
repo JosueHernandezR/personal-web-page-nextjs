@@ -1,7 +1,7 @@
 "use client";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import { MoonIcon, SunIcon } from "./Icons";
+import { MoonIcon, SunIcon } from "./icons/Icons";
 
 export default function ThemeSelector(): JSX.Element {
   const { systemTheme, theme, setTheme } = useTheme();

@@ -3,13 +3,11 @@
 import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { Container } from "./Container";
-import { MobileNavigation } from "./MobileNavigation";
-import { DesktopNavigation } from "./DesktopNavigation";
-import { Avatar, AvatarContainer, clamp } from "./Avatar";
 import { NavRoutes } from "@/constants/nav_routes";
-import ThemeSelector from "./ThemeSelector";
 import TranslateSelector from "@/app/[lng]/components/ui/TranslateSelector";
 import { useLanguage } from '@/contexts/LanguageContext';
+import { Avatar, DesktopNavigation, MobileNavigation, ThemeSelector } from "..";
+import { AvatarContainer, clamp } from "../Avatar";
 
 export default function Header() {
   const { lng } = useLanguage();

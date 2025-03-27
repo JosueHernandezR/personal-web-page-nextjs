@@ -1,8 +1,7 @@
 'use client';
 
-import { Container } from "@/components/Container";
-import { NavLink } from "./NavLink";
 import { NavRoutes } from "@/constants/nav_routes";
+import { Container, NavLink } from "..";
 
 export default function Footer(): JSX.Element {
   

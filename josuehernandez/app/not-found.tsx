@@ -1,10 +1,8 @@
-import { Container } from '@/components/Container'
 import Link from 'next/link'
 import { cookies } from 'next/headers'
 import { fallbackLng, cookieName, languages } from './i18n/settings'
-import Header from '../components/Header'
-import Footer from '../components/Footer'
 import ClientThemeProvider from './[lng]/theme_provider'
+import { Container, Footer, Header } from '@/components'
 
 // Usamos una función asíncrona para poder usar await con cookies()
 export default async function NotFound() {
