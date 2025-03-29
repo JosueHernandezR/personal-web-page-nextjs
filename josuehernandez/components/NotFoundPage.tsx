@@ -28,7 +28,7 @@ export function NotFoundPage({ lng, customMessage }: NotFoundPageProps) {
   };
 
   return (
-    <div className="relative min-h-screen bg-orange-100 dark:bg-amber-900">
+    <div className="relative min-h-screen bg-orange-100 dark:bg-blue-900">
       <Container className="flex h-full items-center pt-16 sm:pt-32">
         <div className="flex flex-col items-center text-center">
           <div className="animate-fade-in">
