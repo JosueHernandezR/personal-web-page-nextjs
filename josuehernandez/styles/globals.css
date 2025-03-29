@@ -66,3 +66,17 @@
 .paragraph {
   @apply mt-6 text-base text-zinc-600 dark:text-zinc-400;
 }
+
+.dither-container {
+  width: 100% !important;
+  height: 100% !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  pointer-events: auto !important;
+}
+
+.dither-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
