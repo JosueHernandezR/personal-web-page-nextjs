@@ -16,7 +16,7 @@ export default function WavesWrapper() {
       maxCursorMove={100}
       xGap={24}
       yGap={48}
-      className="text-black/[0.05] dark:text-[#ffffff]/20"
+      className="text-black/[0.03] dark:text-orante-500"
     />
   );
 } 

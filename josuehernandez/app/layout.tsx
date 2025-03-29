@@ -32,13 +32,13 @@ export default async function RootLayout({
   return (
     <html lang={lng} dir={dir(lng)} suppressHydrationWarning>
       <body
-        className={`${inter.className} flex h-full flex-col bg-white dark:bg-black min-h-screen antialiased`}
+        className={`${inter.className} flex h-full flex-col bg-white dark:bg-zinc-900 min-h-screen antialiased`}
       >
         <Providers lng={lng}>
           <WavesWrapper />
           <div className="fixed inset-0 flex justify-center sm:px-8">
             <div className="flex w-full max-w-7xl lg:px-8">
-              <div className="w-full ring-1 bg-white/80 ring-zinc-100 dark:bg-zinc-900 dark:ring-zinc-300/20">
+              <div className="w-full ring-1 bg-white/80 ring-zinc-100 dark:bg-white/5 dark:ring-zinc-300/20">
                 {children}
               </div>
             </div>
