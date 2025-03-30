@@ -31,18 +31,22 @@ export default async function RootLayout({
 
   return (
     <html lang={lng} dir={dir(lng)} suppressHydrationWarning>
-      <body
-        className={`${inter.className} flex h-full flex-col bg-white dark:bg-zinc-900 min-h-screen antialiased`}
-      >
+      <body className={`${inter.className} bg-white dark:bg-zinc-900 antialiased`}>
         <Providers lng={lng}>
-          <WavesWrapper />
-          <div className="fixed inset-0 flex justify-center sm:px-8">
-            <div className="flex w-full max-w-7xl lg:px-8">
-              <div className="w-full ring-1 bg-white/80 ring-zinc-100 dark:bg-white/5 dark:ring-zinc-300/20">
+          {/* Fondo con waves */}
+          <div className="fixed inset-0">
+            <WavesWrapper />
+          </div>
+          
+          {/* Contenedor principal con decoración y contenido */}
+          <div className="sm:px-8">
+            <div className="mx-auto max-w-7xl lg:px-8">
+              <div className="relative ring-1 bg-white/80 ring-zinc-100 dark:bg-white/5 dark:ring-zinc-300/20 pt-16">
                 {children}
               </div>
             </div>
           </div>
+
           <SpeedInsights />
           <Analytics />
         </Providers>
