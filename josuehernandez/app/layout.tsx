@@ -41,7 +41,7 @@ export default async function RootLayout({
           {/* Contenedor principal con decoración y contenido */}
           <div className="sm:px-8">
             <div className="mx-auto max-w-7xl lg:px-8">
-              <div className="relative ring-1 bg-white/80 ring-zinc-100 dark:bg-white/5 dark:ring-zinc-300/20 pt-16">
+              <div className="relative ring-1 bg-white/80 ring-zinc-100 dark:bg-white/5 dark:ring-zinc-300/20">
                 {children}
               </div>
             </div>
