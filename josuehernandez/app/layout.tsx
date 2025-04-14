@@ -4,18 +4,31 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { cookies } from "next/headers";
 import { dir } from "i18next";
+import dynamic from 'next/dynamic';
 import Providers from "./[lng]/providers";
-import WavesWrapper from "./[lng]/components/ui/WavesWrapper";
 import { fallbackLng, cookieName, languages } from "./i18n/settings";
 
 import "@/styles/globals.css";
 
+// Carga dinámica de componentes no críticos
+const WavesWrapper = dynamic(() => import('./[lng]/components/ui/WavesWrapper'), {
+  ssr: false,
+  loading: () => <div className="fixed inset-0 bg-gradient-to-b from-white to-gray-100 dark:from-zinc-900 dark:to-zinc-800" />
+});
 
-const inter = Inter({ subsets: ["latin"] });
+// Optimizar la fuente
+const inter = Inter({ 
+  subsets: ["latin"],
+  display: 'swap',
+  preload: true,
+});
 
 export const metadata: Metadata = {
   title: "Josue Hernandez",
   description: "FullStack Developer",
+  // Añadir metadatos para optimización
+  viewport: 'width=device-width, initial-scale=1',
+  themeColor: '#ffffff',
 };
 
 export default async function RootLayout({
@@ -23,7 +36,6 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // Detectar el idioma en uso
   const cookieStore = await cookies();
   const cookieLang = cookieStore.get(cookieName)?.value;
   const lng =
@@ -31,6 +43,10 @@ export default async function RootLayout({
 
   return (
     <html lang={lng} dir={dir(lng)} suppressHydrationWarning>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      </head>
       <body className={`${inter.className} bg-white dark:bg-zinc-900 antialiased`}>
         <Providers lng={lng}>
           {/* Fondo con waves */}
