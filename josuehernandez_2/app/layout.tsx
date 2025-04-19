@@ -4,17 +4,11 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { cookies } from "next/headers";
 import { dir } from "i18next";
-import dynamic from 'next/dynamic';
 import Providers from "./[lng]/providers";
 import { fallbackLng, cookieName, languages } from "./i18n/settings";
 
 import "@/styles/globals.css";
-
-// Carga dinámica de componentes no críticos
-const WavesWrapper = dynamic(() => import('./[lng]/components/ui/WavesWrapper'), {
-  ssr: false,
-  loading: () => <div className="fixed inset-0 bg-gradient-to-b from-white to-gray-100 dark:from-zinc-900 dark:to-zinc-800" />
-});
+import DynamicWavesWrapper from "./[lng]/components/ui/DynamicWavesWrapper";
 
 // Optimizar la fuente
 const inter = Inter({ 
@@ -51,7 +45,7 @@ export default async function RootLayout({
         <Providers lng={lng}>
           {/* Fondo con waves */}
           <div className="fixed inset-0">
-            <WavesWrapper />
+            <DynamicWavesWrapper />
           </div>
           
           {/* Contenedor principal con decoración y contenido */}

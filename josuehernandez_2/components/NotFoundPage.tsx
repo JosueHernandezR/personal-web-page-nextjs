@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '@/node_modules/react-i18next';
 import { Container } from './layout/Container';
 import { NotFoundIcon } from './icons/Icons';
 import { COMPONENT_ANIMATIONS, COMPONENT_TRANSITIONS } from '@/constants/components';

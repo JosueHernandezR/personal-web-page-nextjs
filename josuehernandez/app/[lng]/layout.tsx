@@ -1,27 +1,55 @@
 import type { Metadata } from "next";
-import { Header, Footer } from "@/components";
-import { languages } from "../i18n/settings";
+import { ThemeProvider } from "next-themes";
+import { Geist, Geist_Mono } from "next/font/google";
+
+import "@/styles/globals.css";
+import { LanguageProvider } from "@/contexts/LanguageContext";
+import Navbar from "@/components/ui/Navbar";
+import Footer from "@/components/ui/Footer";
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: "Josue Hernandez",
   description: "FullStack Developer",
+  // Añadir metadatos para optimización
+  viewport: 'width=device-width, initial-scale=1',
+  themeColor: '#ffffff',
 };
 
-export async function generateStaticParams() {
-  return languages.map((lng) => ({ lng }));
-}
-
-export default async function LngLayout({
+export default async function RootLayout({
   children,
-}: {
+  params,
+}: Readonly<{
   children: React.ReactNode;
-}) {
-
+  params: Promise<{
+    lng: string;
+  }>;
+}>) {
+  const { lng } = await params;
   return (
-    <>
-      <Header />
-      {children}
-      <Footer />
-    </>
+    <html lang={lng} suppressHydrationWarning>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        suppressHydrationWarning
+      >
+        <LanguageProvider initialLng={lng}>
+          <ThemeProvider>
+            <Navbar />
+            {children}
+            <Footer />
+          </ThemeProvider>
+        </LanguageProvider>
+      </body>
+    </html>
   );
 }
+

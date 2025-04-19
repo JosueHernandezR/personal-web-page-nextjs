@@ -1,7 +1,7 @@
 {
   "notFound": {
     "title": "Page non trouvée",
-    "description": "Désolé, nous n'avons pas pu trouver la page que vous cherchez.",
+    "description": "Désolé, nous n'avons pas pu trouver la page que vous recherchez.",
     "goBack": "Retour à l'accueil"
   },
   "about": {
@@ -37,5 +37,17 @@
     "title": "Une erreur s'est produite",
     "description": "Une erreur inattendue s'est produite.",
     "retry": "Réessayer"
-  }
+  },
+  "carousel_title_1": "Développeur & Photographe",
+  "carousel_title_2": "Explorer la créativité",
+  "carousel_title_3": "Technologie & Art",
+  "carousel_title_4": "Créer des expériences",
+  "carousel_description_1": "Ingénieur en Systèmes Informatiques spécialisé dans le développement mobile avec Flutter et passionné de photographie. Je trouve l'inspiration en capturant des moments uniques.",
+  "carousel_description_2": "Toujours à la recherche de nouvelles perspectives à travers mon objectif. Les images que je capture reflètent ma vision du monde et ma passion pour les détails.",
+  "carousel_description_3": "Combinant mon expertise technique avec ma passion pour la photographie pour créer des solutions innovantes et des expériences visuelles impressionnantes.",
+  "carousel_description_4": "Chaque projet est une opportunité de connecter technologie et créativité, en développant des applications qui améliorent l'expérience utilisateur.",
+  "carousel_button_1": "Découvrir mon travail",
+  "carousel_button_2": "Voir le portfolio",
+  "carousel_button_3": "Explorer les projets",
+  "carousel_button_4": "Me contacter"
 } 

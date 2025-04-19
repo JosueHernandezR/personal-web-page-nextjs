@@ -37,5 +37,17 @@
     "title": "Algo salió mal",
     "description": "Ha ocurrido un error inesperado.",
     "retry": "Intentar de nuevo"
-  }
+  },
+  "carousel_title_1": "Desarrollador & Fotógrafo",
+  "carousel_title_2": "Explorando la creatividad",
+  "carousel_title_3": "Tecnología & Arte",
+  "carousel_title_4": "Construyendo experiencias",
+  "carousel_description_1": "Ingeniero en Sistemas Computacionales especializado en desarrollo móvil con Flutter y apasionado por la fotografía. Encuentro inspiración capturando momentos únicos.",
+  "carousel_description_2": "Siempre buscando nuevas perspectivas a través de mi lente. Las imágenes que capturo reflejan mi visión del mundo y mi pasión por los detalles.",
+  "carousel_description_3": "Combinando mi experiencia técnica con mi pasión por la fotografía para crear soluciones innovadoras y experiencias visuales impactantes.",
+  "carousel_description_4": "Cada proyecto es una oportunidad para conectar tecnología y creatividad, desarrollando aplicaciones que mejoran la experiencia del usuario.",
+  "carousel_button_1": "Conoce mi trabajo",
+  "carousel_button_2": "Ver portafolio",
+  "carousel_button_3": "Explorar proyectos",
+  "carousel_button_4": "Contactar"
 } 

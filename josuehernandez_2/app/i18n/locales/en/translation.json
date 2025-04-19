@@ -1,0 +1,41 @@
+{
+  "notFound": {
+    "title": "Page not found",
+    "description": "Sorry, we couldn't find the page you're looking for.",
+    "goBack": "Go back home"
+  },
+  "about": {
+    "title": "{name}",
+    "designation": "{designation} at",
+    "socialLinks": {
+      "github": "GitHub Profile",
+      "linkedin": "LinkedIn Profile",
+      "twitter": "Twitter Profile",
+      "googleScholar": "Google Scholar Profile",
+      "downloadResume": "Download Resume"
+    }
+  },
+  "projects": {
+    "title": "Projects",
+    "description": "Some of the projects I've worked on."
+  },
+  "common": {
+    "loading": "Loading...",
+    "viewMore": "View more"
+  },
+  "education": {
+    "title": "Education",
+    "showMore": "Show more",
+    "showLess": "Show less"
+  },
+  "experience": {
+    "title": "Experience",
+    "showMore": "Show more",
+    "showLess": "Show less"
+  },
+  "error": {
+    "title": "Something went wrong",
+    "description": "An unexpected error has occurred.",
+    "retry": "Try again"
+  }
+}

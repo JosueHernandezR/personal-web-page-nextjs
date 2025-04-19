@@ -1,0 +1,68 @@
+@import 'tailwindcss';
+
+@variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+@theme {
+  --background-image-gradient-radial: radial-gradient(var(--tw-gradient-stops));
+  --background-image-gradient-conic: conic-gradient(
+    from 180deg at 50% 50%,
+    var(--tw-gradient-stops)
+  );
+}
+:root {
+  --background: #ededed;
+  --foreground: #171717;
+  --x: 0;
+  --y: 0;
+}
+
+[data-theme="dark"] {
+  --background: #171717;
+  --foreground: #ededed;
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
+
+@utility no-scrollbar {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@utility thin-scrollbar {
+  &::-webkit-scrollbar {
+    height: 10px !important;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--color-teal-500);
+    border-radius: 6px;
+  }
+}
+
+.title {
+  @apply text-3xl font-bold tracking-tight text-zinc-800 dark:text-zinc-100 sm:text-5xl;
+}
+.subtitle {
+  @apply text-gray-600 dark:text-gray-400 tracking-tighter mb-4;
+}
+.paragraph {
+  @apply mt-6 text-base text-zinc-600 dark:text-zinc-400;
+}

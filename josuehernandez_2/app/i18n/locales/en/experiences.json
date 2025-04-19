@@ -1,0 +1,19 @@
+{
+  "title": "Experience",
+  "title_1": "FullStack Developer",
+  "company_1": "GAFSACOMM",
+  "companyURL_1": "https://grupoolmecamayamexica.com.mx/",
+  "location_1": "Carretera Federal México-Pachuca Campo Militar Estratégico Conjunto No. 37-D 'Gral. Div. P.A. Alfredo Lezama Álvarez', Santa Lucía, Edo. de Méx.",
+  "type_1": "Full-time",
+  "date_1": "Jan 2023 - Present",
+  "description_1": "Actively collaborated in the design and development of an efficient and customized Document Management System for GAFSACOMM. Participated in the development and design of an informational website for the Group.",
+  "title_2": "Mobile Developer",
+  "company_2": "GeekInc",
+  "companyURL_2": "https://www.geekinc.mx/",
+  "location_2": "",
+  "type_2": "Full-time",
+  "date_2": "Jan 2022 - Jan 2023",
+  "description_2": "Led the development of a mobile application using Flutter, GraphQL, and AWS. Engaged in negotiations and gathered requirements directly from the client.",
+  "showMore": "Show more",
+  "showLess": "Show less"
+}

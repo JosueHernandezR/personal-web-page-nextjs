@@ -1,0 +1,8 @@
+{
+  "error": {
+    "title": "Algo salió mal",
+    "description": "Ha ocurrido un error inesperado. Por favor, intenta recargar la página o volver al inicio.",
+    "tryAgain": "Intentar de nuevo",
+    "goHome": "Volver al inicio"
+  }
+} 

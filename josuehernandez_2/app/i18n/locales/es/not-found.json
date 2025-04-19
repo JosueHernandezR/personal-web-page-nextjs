@@ -1,0 +1,8 @@
+{
+  "notFound": {
+    "title": "Página no encontrada",
+    "description": "Lo sentimos, no pudimos encontrar la página que estás buscando. Es posible que la URL sea incorrecta o que la página se haya movido.",
+    "goBack": "Volver al inicio",
+    "goBackPrevious": "Volver a la página anterior"
+  }
+} 

@@ -37,5 +37,17 @@
     "title": "Something went wrong",
     "description": "An unexpected error has occurred.",
     "retry": "Try again"
-  }
+  },
+  "carousel_title_1": "Developer & Photographer",
+  "carousel_title_2": "Exploring Creativity",
+  "carousel_title_3": "Technology & Art",
+  "carousel_title_4": "Building Experiences",
+  "carousel_description_1": "Computer Systems Engineer specialized in mobile development with Flutter and passionate about photography. I find inspiration by capturing unique moments.",
+  "carousel_description_2": "Always looking for new perspectives through my lens. The images I capture reflect my vision of the world and my passion for details.",
+  "carousel_description_3": "Combining my technical expertise with my passion for photography to create innovative solutions and impactful visual experiences.",
+  "carousel_description_4": "Each project is an opportunity to connect technology and creativity, developing applications that enhance the user experience.",
+  "carousel_button_1": "See my work",
+  "carousel_button_2": "View portfolio",
+  "carousel_button_3": "Explore projects",
+  "carousel_button_4": "Contact me"
 }

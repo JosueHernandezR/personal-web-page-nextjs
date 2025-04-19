@@ -1,0 +1,34 @@
+{
+  "title_page": "Cosas que he creado intentando mejorar mis habilidades de desarrollo de software.",
+  "introduction_page": "Durante mis años universitarios y después de ser estudiante universitario he realizado varios proyectos para aprender alguna tecnología de desarrollo y otros han sido para participar en hackathons.",
+  "title_1": "Automatización del hogar a través de blockchain en la red polkadot",
+  "description_1": "Este proyecto ganó el segundo lugar en el Hackathon Web3 ITAM 2023, se utilizó el framework FastAPI para el backend donde se recibían datos de diferentes sensores usando herramientas de Robonomics y se complementó con una aplicación móvil para controlar luces usando blockchain.",
+  "link_1": {
+    "href": "https://github.com/JosueHernandezR/hackaton-itam-2023-blockchain",
+    "label": "Equipo INSOMNIA"
+  },
+  "logo_1": {
+    "src": "/images/robonomics.png",
+    "alt": "Web3"
+  },
+  "title_2": "Rediseño UI/UX para un servicio de traducción",
+  "description_2": "Rediseño de una página estática para hacerla responsive. 🚀",
+  "link_2": {
+    "href": "https://traduccion-project.vercel.app/",
+    "label": "Servicio de Traducción 'Del Campo Capital Humano'"
+  },
+  "logo_2": {
+    "src": "/images/logo_1.png",
+    "alt": "Personas"
+  },
+  "title_3": "Diseñador y programador del Aeropuerto Internacional de Tulum",
+  "description_3": "Diseño y construcción de la página oficial del Aeropuerto Internacional de Tulum usando NextJS y TailwindCSS. 🥳",
+  "link_3": {
+    "href": "https://aitulum.com",
+    "label": "Página Oficial del Aeropuerto Internacional de Tulum."
+  },
+  "logo_3": {
+    "src": "/images/tulum.png",
+    "alt": "Logo del Aeropuerto Internacional de Tulum"
+  }
+}
