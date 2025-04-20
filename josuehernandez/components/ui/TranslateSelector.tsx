@@ -30,7 +30,7 @@ export default function TranslateSelector() {
       <Popover>
         {({ open, close }) => (
           <>
-            <PopoverButton className="z-10 group rounded-full bg-white/90 px-3 py-2 shadow-lg  backdrop-blur transition dark:bg-principal-dark/90 dark:ring-principal-dark/10 dark:hover:ring-principal-dark/20 dark:hover:bg-principal-dark/50 hover:cursor-pointer">
+            <PopoverButton className="z-10 group rounded-full bg-white/90 px-3 py-2 shadow-lg  backdrop-blur transition dark:bg-black/90 dark:ring-principal-dark/10 dark:hover:ring-principal-dark/20 dark:hover:bg-black/50 hover:cursor-pointer">
               <LanguageIcon className="h-6 w-6 stroke-zinc-400 dark:stroke-zinc-100 transition hover:stroke-zinc-500" />
             </PopoverButton>
             <AnimatePresence>
@@ -46,7 +46,7 @@ export default function TranslateSelector() {
                     collapsed: { opacity: 0, height: 0 },
                   }}
                   anchor="bottom"
-                  className="flex origin-top flex-col bg-white dark:bg-principal-dark z-30 mt-2 rounded-2xl shadow-lg  backdrop-blur px-2 py-2"
+                  className="flex origin-top flex-col bg-white dark:bg-black z-30 mt-2 rounded-2xl shadow-lg  backdrop-blur px-2 py-2"
                 >
                   {languages.map((item, i) => (
                     <div

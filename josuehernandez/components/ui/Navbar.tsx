@@ -41,7 +41,7 @@ export default function Navbar() {
   return (
     <nav
       className={`fixed top-0 left-0 right-0 w-full z-50 transition-all ${
-        scrolled ? "backdrop-blur bg-black/20" : ""
+        scrolled ? "backdrop-blur bg-black/20" : "bg-none"
       }`}
     >
       <div className="w-full px-2 sm:px-6 lg:px-8 mx-0">
@@ -49,7 +49,7 @@ export default function Navbar() {
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
             <button
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className="relative rounded-full bg-white/90 px-3 py-2 shadow-lg shadow-zinc-800/5 backdrop-blur transition dark:bg-principal-dark/90 dark:ring-principal-dark/10 dark:hover:ring-principal-dark/20 dark:hover:bg-principal-dark/50  hover:cursor-pointer"
+              className="relative rounded-full bg-white/90 px-3 py-2 shadow-lg shadow-zinc-800/5 backdrop-blur transition dark:bg-black/90 dark:ring-principal-dark/10 dark:hover:ring-principal-dark/20 dark:hover:bg-black/50  hover:cursor-pointer"
             >
               <span className="absolute -inset-0.5" />
               <span className="sr-only">{t("title")}</span>
@@ -116,7 +116,7 @@ export default function Navbar() {
         as="div"
         className="relative z-50"
       >
-        <div className="fixed inset-0 bg-black/20" aria-hidden="true" />
+        <div className="fixed inset-0 bg-white/20" aria-hidden="true" />
 
         <div className="fixed inset-0 z-50 overflow-hidden">
           <DialogPanel>
@@ -130,7 +130,7 @@ export default function Navbar() {
                       : "translateX(-100%)",
                   }}
                 >
-                  <div className="flex h-full flex-col overflow-y-scroll bg-principal dark:bg-principal-dark shadow-xl">
+                  <div className="flex h-full flex-col overflow-y-scroll bg-white dark:bg-black shadow-xl">
                     <div className="px-4 py-6">
                       <div className="flex items-center justify-between mb-4">
                         <DialogTitle className="text-xl font-bold text-secundary-dark dark:text-white">
@@ -138,7 +138,7 @@ export default function Navbar() {
                         </DialogTitle>
                         <button
                           type="button"
-                          className="rounded-md bg-principal dark:bg-principal-dark text-secundary-dark dark:text-white hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none"
+                          className="rounded-md bg-white dark:bg-black text-secundary-dark dark:text-white hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none"
                           onClick={() => setIsSidebarOpen(false)}
                         >
                           <span className="sr-only">Cerrar menú</span>
@@ -162,7 +162,7 @@ export default function Navbar() {
                                 >
                                   <a
                                     href={`/${lng}${item.href}`}
-                                    className="block px-3 py-2 rounded-md text-base font-medium text-secundary-dark dark:text-white hover:bg-principal-dark/10 dark:hover:bg-gray-700/50 transition-colors"
+                                    className="block px-3 py-2 rounded-md text-base font-medium text-secundary-dark dark:text-white hover:bg-black/10 dark:hover:bg-gray-700/50 transition-colors"
                                     onClick={() => setIsSidebarOpen(false)}
                                   >
                                     {t(item.name)}

@@ -210,16 +210,16 @@ export default function HeroCarousel({
             
             {/* Título principal */}
             <FadeIn>
-              <h1 className={`font-bold text-white mb-3 md:mb-4 ${
-                isMobile ? 'text-4xl text-left leading-none' : 
-                'text-5xl lg:text-7xl xl:text-8xl lg:text-left leading-none'}`}>
+              <h1 className={`font-medium leading-none tracking-tight font-geist text-white mb-3 md:mb-4 ${
+                isMobile ? 'text-4xl text-left' : 
+                'text-5xl lg:text-7xl xl:text-8xl lg:text-left'}`}>
                 {titles[currentIndex]}
               </h1>
             </FadeIn>
             
             {/* Descripción */}
             <FadeIn>
-              <p className={`text-white/90 ${
+              <p className={`text-white/90 font-geist ${
                 isMobile ? 'text-left mb-8 text-lg' : 
                 'mb-8 max-w-xl lg:max-w-2xl text-xl lg:text-2xl lg:text-left lg:ml-auto'}`}>
                 {descriptions[currentIndex]}
