@@ -7,13 +7,10 @@ export const metadata: Metadata = {
   description: "Proyectos desarrollados para mejorar mis habilidades de desarrollo",
 };
 
-interface PageProps {
-  params: {
-    lng: string;
-  };
-}
-
-export default async function ProjectsPage({ params: { lng } }: PageProps) {
+export default async function ProjectsPage({params}: {params: Promise<{
+  lng: string;
+}>}) {
+  const { lng } = await params;
   const t = await getServerTranslation(lng, "projects");
 
   return (
@@ -23,7 +20,7 @@ export default async function ProjectsPage({ params: { lng } }: PageProps) {
         <div className="flex flex-col lg:flex-row gap-12 pb-24 justify-center items-center">
           <div className="flex-1 flex flex-col justify-center">
             <div className="text-sm uppercase text-violet-600 dark:text-violet-400 mb-4 tracking-wider font-medium">Propósito de mis proyectos</div>
-            <h1 className="font-medium leading-none tracking-tight font-geist text-5xl lg:text-7xl xl:text-8xl font-bold text-black dark:text-white mb-6">
+            <h1 className="font-medium leading-none tracking-tight font-geist text-5xl lg:text-7xl xl:text-8xl text-black dark:text-white mb-6">
               {t("title_page")}
             </h1>
             <p className="text-gray-600 dark:text-gray-400 mb-8 text-lg max-w-2xl">
