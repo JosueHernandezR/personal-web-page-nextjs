@@ -1,48 +1,77 @@
 import LiquidSphere from "@/components/ui/LiquidSphere";
-import { Metadata } from "next";
+import { Metadata, Viewport } from "next";
 import { getServerTranslation } from "../../i18n";
+import { FadeIn, FadeInStaggerSection } from "@/components/ui/Fade";
 
 export const metadata: Metadata = {
   title: "Proyectos | Josue Hernandez",
-  description: "Proyectos desarrollados para mejorar mis habilidades de desarrollo",
+  description:
+    "Proyectos desarrollados para mejorar mis habilidades de desarrollo",
 };
 
-export default async function ProjectsPage({params}: {params: Promise<{
-  lng: string;
-}>}) {
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: '#ffffff',
+};
+
+export default async function ProjectsPage({
+  params,
+}: {
+  params: Promise<{
+    lng: string;
+  }>;
+}) {
   const { lng } = await params;
   const t = await getServerTranslation(lng, "projects");
 
   return (
     <main className="min-h-screen">
       {/* Hero Section */}
-      <div className="flex flex-col justify-center w-full px-4 md:px-8 max-w-7xl mx-auto mt-[64px] min-h-screen">
+      <FadeInStaggerSection className="flex flex-col justify-center w-full px-4 md:px-8 max-w-7xl mx-auto mt-[64px] min-h-screen">
         <div className="flex flex-col lg:flex-row gap-12 pb-24 justify-center items-center">
           <div className="flex-1 flex flex-col justify-center">
-            <div className="text-sm uppercase text-violet-600 dark:text-violet-400 mb-4 tracking-wider font-medium">Propósito de mis proyectos</div>
-            <h1 className="font-medium leading-none tracking-tight font-geist text-5xl lg:text-7xl xl:text-8xl text-black dark:text-white mb-6">
-              {t("title_page")}
-            </h1>
-            <p className="text-gray-600 dark:text-gray-400 mb-8 text-lg max-w-2xl">
-              {t("introduction_page")}
-            </p>
-            <div className="flex space-x-4 items-center">
+            <FadeIn className="text-sm uppercase text-violet-600 dark:text-violet-400 mb-4 tracking-wider font-medium">
+              Propósito de mis proyectos
+            </FadeIn>
+            <FadeIn>
+              <h1 className="font-medium leading-none tracking-tight font-geist text-5xl lg:text-7xl xl:text-8xl text-black dark:text-white mb-6">
+                {t("title_page")}
+              </h1>
+            </FadeIn>
+            <FadeIn>
+              <p className="text-gray-600 dark:text-gray-400 mb-8 text-lg max-w-2xl">
+                {t("introduction_page")}
+              </p>
+            </FadeIn>
+            <FadeIn className="flex space-x-4 items-center">
               {/* <a href="#proyectos" className="px-8 py-3 bg-black dark:bg-white text-white dark:text-black rounded-full font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors text-sm uppercase tracking-wider">
                 Ver proyectos
               </a> */}
               <div className="flex items-center text-gray-400 dark:text-gray-500">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
-                  <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
-                  <path d="m17 12-5 5-5-5"/>
-                  <path d="M12 7v10"/>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="mr-2"
+                >
+                  <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
+                  <path d="m17 12-5 5-5-5" />
+                  <path d="M12 7v10" />
                 </svg>
                 <span className="text-sm">Desplázate para más</span>
               </div>
-            </div>
+            </FadeIn>
           </div>
-          <div className="flex-1 relative min-h-[500px] w-full max-w-[600px]">
+          <FadeIn className="flex-1 relative min-h-[500px] w-full max-w-[600px]">
             <LiquidSphere />
-          </div>
+          </FadeIn>
         </div>
 
         {/* <div id="proyectos" className="mt-12 md:mt-24">
@@ -66,7 +95,7 @@ export default async function ProjectsPage({params}: {params: Promise<{
             </div>
           </div>
         </div> */}
-      </div>
+      </FadeInStaggerSection>
     </main>
   );
 }

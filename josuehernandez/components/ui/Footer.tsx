@@ -4,13 +4,24 @@ import { navigation } from "@/constants/navigation";
 import { Container } from "./Container";
 import { NavLink } from "./NavLink";
 import { useTranslationWithContext } from "@/contexts/LanguageContext";
+import DitheredWaves from "./Dither";
 
 export default function Footer() {
   const { t } = useTranslationWithContext("navbar");
 
-  
   return (
     <footer className="mt-32">
+      <div className="h-40 md:h-60">
+        <DitheredWaves
+          waveSpeed={0.03}
+          waveFrequency={1.7}
+          waveAmplitude={0.5}
+          colorNum={16}
+          pixelSize={3}
+          enableMouseInteraction={true}
+          mouseRadius={0.5}
+        />
+      </div>
       <Container.Outer>
         <div className="border-t border-zinc-100 pt-8 pb-16 dark:border-zinc-700/40">
           <Container.Inner>
