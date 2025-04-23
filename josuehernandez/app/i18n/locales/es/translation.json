@@ -38,6 +38,8 @@
     "description": "Ha ocurrido un error inesperado.",
     "retry": "Intentar de nuevo"
   },
+  "name": "Josue Hernandez",
+  "bio": "Fotógrafo apasionado 📸 y desarrollador móvil 💻 especializado en Flutter, GraphQL y AWS. Líder de proyectos con experiencia en arquitecturas robustas e integración de microservicios.",
   "carousel_title_1": "Desarrollador & Fotógrafo",
   "carousel_title_2": "Explorando la creatividad",
   "carousel_title_3": "Tecnología & Arte",

@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
-import Link from "next/link";
+// import Link from "next/link";
 import { FadeIn } from "./Fade";
 
 interface HeroCarouselProps {
@@ -18,8 +18,8 @@ export default function HeroCarousel({
   images,
   titles,
   descriptions,
-  buttonText,
-  buttonTexts,
+  // buttonText,
+  // buttonTexts,
   autoPlayInterval = 5000
 }: HeroCarouselProps) {
   // Referencias y estados
@@ -145,8 +145,8 @@ export default function HeroCarousel({
     marginRight: `${Math.max(0, 20 - (scrollProgress * 20))}px`,
     marginTop: `${Math.max(0, 64 - (scrollProgress * 64))}px`,
     width: `calc(100% - ${Math.max(0, 20 - (scrollProgress * 20)) * 2}px)`,
-    height: `calc(90vh + ${scrollProgress * 10}vh)`,
-    minHeight: '500px',
+    height: `calc(100vh)`,
+    minHeight: '600px',
     transition: 'all 0.1s ease-out',
     overflow: 'hidden',
     position: 'relative' as const,
@@ -194,48 +194,39 @@ export default function HeroCarousel({
         
         {/* Overlay con textos y botón - Rediseñado */}
         <div className={`absolute inset-0 z-10 p-6 md:p-8 lg:p-12 md:mt-[64px]
-          ${isMobile ? 'flex flex-col justify-start pt-24' : 
+          ${isMobile ? 'flex flex-col justify-start items-start' : 
           'flex flex-col lg:items-start lg:justify-start lg:pt-16'}`}>
           <div className={`
-            ${isMobile ? 'w-full pl-2 pr-8 md:pl-4 md:pr-20' : 
-            'max-w-2xl pl-4 pr-20 lg:max-w-3xl lg:pl-20 lg:pr-12 lg:text-left'}`}>
-            {/* Número de slide */}
-            {/* <FadeIn>
-              <div className="mb-2 md:mb-3 lg:mb-4">
-                <span className="text-white/90 text-sm md:text-base lg:text-lg font-medium px-3 py-1 rounded-full">
-                  {String(currentIndex + 1).padStart(2, '0')}. {titles[currentIndex].split(' ')[0]}
-                </span>
-              </div>
-            </FadeIn> */}
+            ${isMobile ? 'w-full pr-16 pt-8' : 
+            'max-w-2xl pr-20 lg:max-w-3xl lg:pl-20 lg:pr-12 lg:text-left'}`}>
             
             {/* Título principal */}
             <FadeIn>
               <h1 className={`font-medium leading-none tracking-tight font-geist text-white mb-3 md:mb-4 ${
-                isMobile ? 'text-4xl text-left' : 
-                'text-5xl lg:text-7xl xl:text-8xl lg:text-left'}`}>
+                'text-6xl lg:text-7xl xl:text-8xl lg:text-left'}`}>
                 {titles[currentIndex]}
               </h1>
             </FadeIn>
             
             {/* Descripción */}
             <FadeIn>
-              <p className={`text-white/90 font-inter ${
-                isMobile ? 'text-left mb-8 text-lg' : 
-                'mb-8 max-w-xl lg:max-w-2xl text-xl lg:text-2xl lg:text-left lg:ml-auto'}`}>
+              <p className={`text-white/90 font-inter text-xl lg:text-2xl text-left ${
+                isMobile ? ' mb-8 text-lg' : 
+                'mb-8 max-w-xl lg:max-w-2xl lg:ml-auto'}`}>
                 {descriptions[currentIndex]}
               </p>
             </FadeIn>
             
             {/* Botón */}
-            <FadeIn>
-              <div className={`${!isMobile && 'lg:text-left'}`}>
+            {/* <FadeIn>
+              <div className="text-left">
                 <Link href='/booking' className={`bg-secundary-dark hover:bg-secundary-dark/90 rounded-full shadow-lg ${
                   isMobile ? 'text-white px-6 py-3 text-base font-medium' : 
                   'text-gray-100 px-6 py-3 lg:px-8 lg:py-4 text-lg lg:text-xl font-medium'}`}>
                   {buttonTexts && buttonTexts[currentIndex] ? buttonTexts[currentIndex] : buttonText}
                 </Link>
               </div>
-            </FadeIn>
+            </FadeIn> */}
           </div>
         </div>
         

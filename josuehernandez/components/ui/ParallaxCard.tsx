@@ -139,7 +139,7 @@ export function ParallaxCard({
   return (
     <article
       ref={cardRef}
-      className="w-full md:w-[600px] aspect-[4/3] max-h-[calc(100svh-1rem)] relative overflow-hidden max-w-[calc(100%)] portrait:min-h-[330px] rounded-2xl mx-auto md:mx-0"
+      className="w-full aspect-[4/3] max-h-[calc(100svh-1rem)] relative overflow-hidden max-w-[calc(100%)] portrait:min-h-[330px] rounded-2xl mx-auto md:mx-0"
       style={{
         "--x": "0",
         "--y": "0",
