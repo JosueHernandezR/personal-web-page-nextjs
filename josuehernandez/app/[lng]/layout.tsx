@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { ThemeProvider } from "next-themes";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Inter, Bebas_Neue } from "next/font/google";
 
 import "@/styles/globals.css";
 import { LanguageProvider } from "@/contexts/LanguageContext";
@@ -10,6 +10,18 @@ import Footer from "@/components/ui/Footer";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+});
+
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+});
+
+const bebasNeue = Bebas_Neue({
+  variable: "--font-bebas-neue",
+  subsets: ["latin"],
+  weight: ["400"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
@@ -41,7 +53,7 @@ export default async function RootLayout({
   return (
     <html lang={lng} suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${bebasNeue.variable} antialiased`}
         suppressHydrationWarning
       >
         <LanguageProvider initialLng={lng}>

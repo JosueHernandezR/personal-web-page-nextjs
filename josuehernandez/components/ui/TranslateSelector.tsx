@@ -46,7 +46,7 @@ export default function TranslateSelector() {
                     collapsed: { opacity: 0, height: 0 },
                   }}
                   anchor="bottom"
-                  className="flex origin-top flex-col bg-white dark:bg-black z-30 mt-2 rounded-2xl shadow-lg  backdrop-blur px-2 py-2"
+                  className="flex origin-top flex-col bg-white dark:bg-black z-30 mt-3 rounded-2xl shadow-lg  backdrop-blur px-2 py-2"
                 >
                   {languages.map((item, i) => (
                     <div

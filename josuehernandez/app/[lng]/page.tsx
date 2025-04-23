@@ -7,6 +7,7 @@ import PersonalWebPhoto3 from "@/public/photos/horizontal/personal_web_page-03.j
 import PersonalWebPhoto4 from "@/public/photos/horizontal/personal_web_page-07.jpg";
 import { useTranslation } from "../i18n/client";
 import { useEffect, useState } from "react";
+import Experience from "./Experience";
 
 
 export default function Home() {
@@ -59,6 +60,8 @@ export default function Home() {
           autoPlayInterval={6000}
         />
       </section>
+      
+      <Experience />
     </main>
   );
 }

@@ -219,7 +219,7 @@ export default function HeroCarousel({
             
             {/* Descripción */}
             <FadeIn>
-              <p className={`text-white/90 font-geist ${
+              <p className={`text-white/90 font-inter ${
                 isMobile ? 'text-left mb-8 text-lg' : 
                 'mb-8 max-w-xl lg:max-w-2xl text-xl lg:text-2xl lg:text-left lg:ml-auto'}`}>
                 {descriptions[currentIndex]}

@@ -89,7 +89,8 @@ const shaders = {
         f -= 0.5 * effect;
       }
       vec3 col = mix(vec3(0.0), waveColor, f);
-      gl_FragColor = vec4(col, 1.0);
+      float alpha = f * 0.7; // Hacer el fondo transparente y las ondas semitransparentes
+      gl_FragColor = vec4(col, alpha);
     }`,
   ditherVertex: `
     varying vec2 vUv;
@@ -190,7 +191,7 @@ const DitheredWaves: React.FC<Props> = ({
     if (resolvedTheme === "dark") {
       return new THREE.Color(0x4a9eff); // Azul brillante para tema oscuro
     } else {
-      return new THREE.Color(0xaed6f1); // Azul muy suave para tema claro que se ve bien con fondo blanco
+      return new THREE.Color(0xFFFFFF); // Azul muy suave para tema claro que se ve bien con fondo blanco
     }
   };
   
@@ -281,8 +282,10 @@ const DitheredWaves: React.FC<Props> = ({
         // Create renderer
         const renderer = new THREE.WebGLRenderer({ 
           antialias: true,
-          alpha: true // Usar alpha para mejor integración con el fondo
+          alpha: true, // Usar alpha para mejor integración con el fondo
+          premultipliedAlpha: false // Importante para transparencia correcta
         });
+        renderer.setClearColor(0x000000, 0); // Color de fondo transparente
         renderer.setSize(width, height);
         renderer.setPixelRatio(dpr);
         container.appendChild(renderer.domElement);
