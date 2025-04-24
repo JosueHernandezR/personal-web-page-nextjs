@@ -1,8 +1,10 @@
 import LiquidSphere from "@/components/ui/LiquidSphere";
+import Image from "next/image";
 import { Metadata, Viewport } from "next";
 import { getServerTranslation } from "../../i18n";
 import { FadeIn, FadeInStaggerSection } from "@/components/ui/Fade";
-
+import CameraBlueprint from "@/components/3d/Camera";
+import ArtPhoto from "@/public/photos/horizontal/personal_web_page-10.jpg";
 export const metadata: Metadata = {
   title: "Proyectos | Josue Hernandez",
   description:
@@ -10,9 +12,9 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  width: 'device-width',
+  width: "device-width",
   initialScale: 1,
-  themeColor: '#ffffff',
+  themeColor: "#ffffff",
 };
 
 export default async function ProjectsPage({
@@ -28,9 +30,9 @@ export default async function ProjectsPage({
   return (
     <main className="min-h-screen">
       {/* Hero Section */}
-      <FadeInStaggerSection className="flex flex-col justify-center w-full px-4 md:px-8 max-w-7xl mx-auto mt-[64px] min-h-screen">
+      <FadeInStaggerSection className="flex flex-col justify-center w-full  max-w-7xl mx-auto mt-[64px] min-h-screen">
         <div className="flex flex-col lg:flex-row gap-12 pb-24 justify-center items-center">
-          <div className="flex-1 flex flex-col justify-center">
+          <div className="flex-1 flex flex-col justify-center px-4 md:px-8">
             <FadeIn className="text-sm uppercase text-violet-600 dark:text-violet-400 mb-4 tracking-wider font-medium">
               Propósito de mis proyectos
             </FadeIn>
@@ -69,32 +71,54 @@ export default async function ProjectsPage({
               </div>
             </FadeIn>
           </div>
-          <FadeIn className="flex-1 relative min-h-[500px] w-full max-w-[600px]">
+          <FadeIn className="flex-1 relative min-h-[500px] w-full">
             <LiquidSphere />
           </FadeIn>
         </div>
+      </FadeInStaggerSection>
+      <FadeInStaggerSection className="flex flex-col justify-center w-full px-4 md:px-8 max-w-7xl mx-auto min-h-screen">
+        <div className="w-full py-16 rounded-3xl">
+          <FadeIn>
+            <h2 className="font-geist text-6xl md:text-9xl font-medium mb-12 text-center md:text-left text-black dark:text-white">
+              Proyectos
+            </h2>
+          </FadeIn>
 
-        {/* <div id="proyectos" className="mt-12 md:mt-24">
-          <div className="flex flex-col md:flex-row items-start gap-8">
-            <div className="text-7xl font-bold text-violet-600 dark:text-violet-400 opacity-90">01</div>
-            <div className="flex-1">
-              <div className="text-gray-500 dark:text-gray-400 text-sm mb-1">2023-08-30</div>
-              <h2 className="text-3xl font-bold text-black dark:text-white mb-4">
-                Primer laboratorio central en investigación clínica
-              </h2>
-              <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-6 max-w-3xl">
-                JOSUEDEV es un laboratorio global de investigación dedicado a proyectos de desarrollo con acreditaciones y reconocimientos por la calidad de su trabajo desde 2020 hasta la actualidad.
-              </p>
-              <a href="#" className="text-violet-600 hover:text-violet-800 dark:text-violet-400 dark:hover:text-violet-300 inline-flex items-center group">
-                <span className="mr-2">Ver detalles</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transform group-hover:translate-x-1 transition-transform">
-                  <path d="M5 12h14"/>
-                  <path d="m12 5 7 7-7 7"/>
-                </svg>
-              </a>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Tarjeta de Proyectos de Software */}
+            <FadeIn>
+              <div className=" rounded-2xl overflow-hidden flex flex-col h-full transition-all hover:transform hover:scale-[1.02] border border-zinc-800">
+                <CameraBlueprint />
+                <div className="flex flex-col p-4 xl:p-8">
+                  <h3 className="text-3xl font-medium text-white mb-4">
+                    Ingeniería
+                  </h3>
+                  <div className="flex-grow mb-8">
+                    <p className="text-zinc-300 mb-6">
+                      Proyectos de ingeniería y desarrollo de software en los
+                      que he participado y desarrollado.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </FadeIn>
+            {/* Tarjeta de Proyectos de Arte */}
+            <FadeIn>
+              <div className="rounded-2xl overflow-hidden flex flex-col h-full transition-all hover:transform hover:scale-[1.02] border border-zinc-800">
+                <Image src={ArtPhoto} alt="Art Photo" className="h-[500px] object-cover"/>
+                <div className="flex flex-col p-4 xl:p-8">
+                  <h3 className="text-3xl font-medium text-white mb-4">Arte</h3>
+                  <div className="flex-grow mb-8">
+                    <p className="text-zinc-300 mb-6">
+                      Colección de fotografías y grabados artísticos de la
+                      cultura popular.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </FadeIn>
           </div>
-        </div> */}
+        </div>
       </FadeInStaggerSection>
     </main>
   );

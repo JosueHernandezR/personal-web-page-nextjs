@@ -29,7 +29,7 @@ export default function Experience(): JSX.Element {
             </h3>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 justify-center items-center gap-x-12 gap-y-16 w-full">
-            <h2 className="font-geist text-center md:text-left text-5xl xl:text-7xl font-medium text-gray-900 dark:text-white leading-none">
+            <h2 className="font-geist text-center md:text-left text-5xl xl:text-7xl 2xl:text-8xl font-medium text-gray-900 dark:text-white leading-none">
               {t("snapshot_title")}
             </h2>
             <ParallaxCard

@@ -501,8 +501,8 @@ const LiquidSphere = () => {
   return (
     <div 
       ref={containerRef} 
+      className='w-full h-full'
       style={{ 
-        width: '100%', 
         height: '500px', 
         overflow: 'hidden',
         borderRadius: '8px',

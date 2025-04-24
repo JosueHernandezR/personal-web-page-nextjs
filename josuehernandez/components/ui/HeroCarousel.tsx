@@ -188,7 +188,7 @@ export default function HeroCarousel({
               sizes="100vw"
             />
             {/* Overlay oscuro uniforme para toda la imagen */}
-            <div className="absolute inset-0 bg-black/50"></div>
+            <div className="absolute inset-0 bg-black/20"></div>
           </div>
         ))}
         
