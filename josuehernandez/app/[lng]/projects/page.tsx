@@ -3,8 +3,8 @@ import Image from "next/image";
 import { Metadata, Viewport } from "next";
 import { getServerTranslation } from "../../i18n";
 import { FadeIn, FadeInStaggerSection } from "@/components/ui/Fade";
-import CameraBlueprint from "@/components/3d/Camera";
 import ArtPhoto from "@/public/photos/horizontal/personal_web_page-10.jpg";
+import DetailedDSLRCamera from "@/components/3d/Camera";
 export const metadata: Metadata = {
   title: "Proyectos | Josue Hernandez",
   description:
@@ -88,7 +88,7 @@ export default async function ProjectsPage({
             {/* Tarjeta de Proyectos de Software */}
             <FadeIn>
               <div className=" rounded-2xl overflow-hidden flex flex-col h-full transition-all hover:transform hover:scale-[1.02] border border-zinc-800">
-                <CameraBlueprint />
+                <DetailedDSLRCamera />
                 <div className="flex flex-col p-4 xl:p-8">
                   <h3 className="text-3xl font-medium text-white mb-4">
                     Ingeniería
