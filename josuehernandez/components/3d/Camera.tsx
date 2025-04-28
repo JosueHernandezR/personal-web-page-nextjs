@@ -684,13 +684,28 @@ const CameraWireframe = () => {
           const sections = [
             { position: 0, frontRadius: 0.96, backRadius: 0.98, length: 0.6 },
             { position: -0.7, frontRadius: 1.0, backRadius: 0.98, length: 0.7 },
-            { position: -1.5, frontRadius: 0.98, backRadius: 0.96, length: 0.9 },
-            { position: -2.5, frontRadius: 0.97, backRadius: 0.98, length: 1.0 },
-            { position: -3.6, frontRadius: 0.95, backRadius: 0.90, length: 0.8 },
+            {
+              position: -1.5,
+              frontRadius: 0.98,
+              backRadius: 0.96,
+              length: 0.9,
+            },
+            {
+              position: -2.5,
+              frontRadius: 0.97,
+              backRadius: 0.98,
+              length: 1.0,
+            },
+            { position: -3.6, frontRadius: 0.95, backRadius: 0.9, length: 0.8 },
             // Sección de transición
-            { position: -4.2, frontRadius: 0.90, backRadius: 0.87, length: 0.2 },
+            { position: -4.2, frontRadius: 0.9, backRadius: 0.87, length: 0.2 },
             // Sección final que conecta directamente con los anillos verdes
-            { position: -4.35, frontRadius: 0.87, backRadius: 0.85, length: 0.05 }
+            {
+              position: -4.35,
+              frontRadius: 0.87,
+              backRadius: 0.85,
+              length: 0.05,
+            },
           ];
 
           sections.forEach((section, index) => {
@@ -874,9 +889,9 @@ const CameraWireframe = () => {
           const greenRings = [
             // Posición ajustada para estar más cerca del lente, pero manteniendo misma orientación
             { radius: maxRadius * 0.85, thickness: 0.04, position: -4.25 },
-  { radius: maxRadius * 0.8, thickness: 0.03, position: -4.28 },
-  { radius: maxRadius * 0.75, thickness: 0.03, position: -4.31 }
-];
+            { radius: maxRadius * 0.8, thickness: 0.03, position: -4.28 },
+            { radius: maxRadius * 0.75, thickness: 0.03, position: -4.31 },
+          ];
 
           greenRings.forEach((ring) => {
             const ringGeometry = new THREE.TorusGeometry(
@@ -1147,7 +1162,19 @@ const CameraWireframe = () => {
     };
   }, []); // fin del useEffect
 
-  return <div className="w-full h-[500px]" ref={mountRef}></div>;
+  return (
+    <div
+      className="w-full h-full relative bg-[#050508] overflow-hidden"
+      style={{ minHeight: "500px", display: "block" }}
+    >
+      <div
+        className="w-full h-full"
+        ref={mountRef}
+        style={{ width: "100%", height: "100%", display: "block" }}
+      ></div>
+    </div>
+  );
 };
 
 export default CameraWireframe;
+

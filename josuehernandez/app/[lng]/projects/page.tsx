@@ -1,10 +1,10 @@
 import LiquidSphere from "@/components/ui/LiquidSphere";
-import Image from "next/image";
 import { Metadata, Viewport } from "next";
 import { getServerTranslation } from "../../i18n";
 import { FadeIn, FadeInStaggerSection } from "@/components/ui/Fade";
-import ArtPhoto from "@/public/photos/horizontal/personal_web_page-10.jpg";
 import DetailedDSLRCamera from "@/components/3d/Camera";
+import SuperformulaWireframe from "@/components/3d/Morphing";
+
 export const metadata: Metadata = {
   title: "Proyectos | Josue Hernandez",
   description:
@@ -76,44 +76,41 @@ export default async function ProjectsPage({
           </FadeIn>
         </div>
       </FadeInStaggerSection>
-      <FadeInStaggerSection className="flex flex-col justify-center w-full px-4 md:px-8 max-w-7xl mx-auto min-h-screen">
-        <div className="w-full py-16 rounded-3xl">
+      <FadeInStaggerSection className="flex flex-col justify-center w-full px-4 md:px-8 max-w-7xl mx-auto min-h-screen h-full">
+        <div className="w-full h-full rounded-3xl">
           <FadeIn>
             <h2 className="font-geist text-6xl md:text-9xl font-medium mb-12 text-center md:text-left text-black dark:text-white">
               Proyectos
             </h2>
           </FadeIn>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Tarjeta de Proyectos de Software */}
-            <FadeIn>
-              <div className=" rounded-2xl overflow-hidden flex flex-col h-full transition-all hover:transform hover:scale-[1.02] border border-zinc-800">
-                <DetailedDSLRCamera />
-                <div className="flex flex-col p-4 xl:p-8">
-                  <h3 className="text-3xl font-medium text-white mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 h-full w-full">
+            {/* Tarjeta de Proyectos de Ingeniería */}
+            <FadeIn className="relative overflow-hidden rounded-3xl">
+              <DetailedDSLRCamera />
+              {/* Texto y contenido con glassmorphism */}
+              <div className="absolute left-0 right-0 bottom-0 h-2/5 flex items-end pointer-events-none backdrop-blur-md custom-mask">
+                <div className="relative p-6 z-10 text-white">
+                  <h3 className="text-white text-4xl font-medium mb-3">
                     Ingeniería
                   </h3>
-                  <div className="flex-grow mb-8">
-                    <p className="text-zinc-300 mb-6">
-                      Proyectos de ingeniería y desarrollo de software en los
-                      que he participado y desarrollado.
-                    </p>
-                  </div>
+                  <p className="text-zinc-300 text-xl">
+                    Proyectos de ingeniería y desarrollo de software
+                  </p>
                 </div>
               </div>
             </FadeIn>
+
             {/* Tarjeta de Proyectos de Arte */}
-            <FadeIn>
-              <div className="rounded-2xl overflow-hidden flex flex-col h-full transition-all hover:transform hover:scale-[1.02] border border-zinc-800">
-                <Image src={ArtPhoto} alt="Art Photo" className="h-[500px] object-cover"/>
-                <div className="flex flex-col p-4 xl:p-8">
-                  <h3 className="text-3xl font-medium text-white mb-4">Arte</h3>
-                  <div className="flex-grow mb-8">
-                    <p className="text-zinc-300 mb-6">
-                      Colección de fotografías y grabados artísticos de la
-                      cultura popular.
-                    </p>
-                  </div>
+            <FadeIn className="relative overflow-hidden rounded-3xl">
+              <SuperformulaWireframe />
+
+              <div className="absolute left-0 right-0 bottom-0 h-2/5 flex items-end pointer-events-none backdrop-blur-md custom-mask">
+                <div className="relative p-6 z-10 text-white">
+                  <h3 className="text-4xl font-medium mb-3">Arte</h3>
+                  <p className="text-xl text-zinc-300">
+                    Colección de fotografías y grabados artísticos
+                  </p>
                 </div>
               </div>
             </FadeIn>

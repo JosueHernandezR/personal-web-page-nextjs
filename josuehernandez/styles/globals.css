@@ -128,4 +128,10 @@ article[style*="--x"] {
   pointer-events: none;
 }
 
-
+@layer utilities {
+  .custom-mask {
+    background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,0) 100%);
+    mask-image: linear-gradient(to top, black 0%, black 40%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to top, black 0%, black 40%, transparent 100%);
+  }
+}
