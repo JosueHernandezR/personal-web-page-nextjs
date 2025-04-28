@@ -76,45 +76,50 @@ export default async function ProjectsPage({
           </FadeIn>
         </div>
       </FadeInStaggerSection>
-      <FadeInStaggerSection className="flex flex-col justify-center w-full px-4 md:px-8 max-w-7xl mx-auto min-h-screen h-full">
-        <div className="w-full h-full rounded-3xl">
-          <FadeIn>
-            <h2 className="font-geist text-6xl md:text-9xl font-medium mb-12 text-center md:text-left text-black dark:text-white">
-              Proyectos
-            </h2>
+      <FadeInStaggerSection className="flex flex-col justify-center w-full px-4 md:px-8 max-w-7xl mx-auto">
+        <FadeIn>
+          <h2 className="font-geist text-6xl md:text-9xl font-medium mb-12 text-center md:text-left text-black dark:text-white">
+            Proyectos
+          </h2>
+        </FadeIn>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 w-full">
+          {/* Tarjeta de Proyectos de Ingeniería */}
+          <FadeIn className="relative overflow-hidden rounded-3xl min-h-[400px]">
+            <div className="absolute inset-0">
+              <DetailedDSLRCamera />
+            </div>
+            {/* Contenedor para el efecto glassmorphism */}
+            <div className="absolute left-0 right-0 bottom-0 h-2/5 pointer-events-none backdrop-blur-md custom-mask" />
+            {/* Contenedor del texto separado del blur */}
+            <div className="absolute left-0 right-0 bottom-0 h-2/5 flex items-end z-20">
+              <div className="p-6 text-white">
+                <h3 className="text-white text-4xl font-medium mb-3">
+                  Ingeniería
+                </h3>
+                <p className="text-zinc-300 text-xl">
+                  Proyectos de ingeniería y desarrollo de software
+                </p>
+              </div>
+            </div>
           </FadeIn>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 h-full w-full">
-            {/* Tarjeta de Proyectos de Ingeniería */}
-            <FadeIn className="relative overflow-hidden rounded-3xl">
-              <DetailedDSLRCamera />
-              {/* Texto y contenido con glassmorphism */}
-              <div className="absolute left-0 right-0 bottom-0 h-2/5 flex items-end pointer-events-none backdrop-blur-md custom-mask">
-                <div className="relative p-6 z-10 text-white">
-                  <h3 className="text-white text-4xl font-medium mb-3">
-                    Ingeniería
-                  </h3>
-                  <p className="text-zinc-300 text-xl">
-                    Proyectos de ingeniería y desarrollo de software
-                  </p>
-                </div>
-              </div>
-            </FadeIn>
-
-            {/* Tarjeta de Proyectos de Arte */}
-            <FadeIn className="relative overflow-hidden rounded-3xl">
+          {/* Tarjeta de Proyectos de Arte */}
+          <FadeIn className="relative overflow-hidden rounded-3xl min-h-[400px]">
+            <div className="absolute inset-0">
               <SuperformulaWireframe />
-
-              <div className="absolute left-0 right-0 bottom-0 h-2/5 flex items-end pointer-events-none backdrop-blur-md custom-mask">
-                <div className="relative p-6 z-10 text-white">
-                  <h3 className="text-4xl font-medium mb-3">Arte</h3>
-                  <p className="text-xl text-zinc-300">
-                    Colección de fotografías y grabados artísticos
-                  </p>
-                </div>
+            </div>
+            {/* Contenedor para el efecto glassmorphism */}
+            <div className="absolute left-0 right-0 bottom-0 h-2/5 pointer-events-none backdrop-blur-md custom-mask" />
+            {/* Contenedor del texto separado del blur */}
+            <div className="absolute left-0 right-0 bottom-0 h-2/5 flex items-end z-20">
+              <div className="p-6 text-white">
+                <h3 className="text-4xl font-medium mb-3">Arte</h3>
+                <p className="text-xl text-zinc-300">
+                  Colección de fotografías y grabados artísticos
+                </p>
               </div>
-            </FadeIn>
-          </div>
+            </div>
+          </FadeIn>
         </div>
       </FadeInStaggerSection>
     </main>
