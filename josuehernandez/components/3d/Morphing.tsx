@@ -552,58 +552,32 @@ const SuperformulaWireframe: React.FC = () => {
     animationFrameRef.current = requestAnimationFrame(animate);
   };
 
-  // Inicialización
+  // Efecto principal de inicialización
   useEffect(() => {
-    if (!containerRef.current || isInitializedRef.current) return;
+    if (!containerRef.current) return;
     
-    console.log("Inicializando Three.js en el contenedor", containerRef.current);
+    const container = containerRef.current; // Guardamos la referencia en una variable
+    isInitializedRef.current = true;
     
-    // Escena Three.js
-    sceneRef.current = new THREE.Scene();
-    // Fondo negro
-    sceneRef.current.background = new THREE.Color("#050508");
+    const scene = new THREE.Scene();
+    sceneRef.current = scene;
     
-    const width = containerRef.current.clientWidth;
-    const height = containerRef.current.clientHeight;
-    console.log("Dimensiones del contenedor:", width, "x", height);
+    const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+    camera.position.z = 5;
+    cameraRef.current = camera;
     
-    cameraRef.current = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-    cameraRef.current.position.set(0, 0, 3.5);
-    cameraRef.current.lookAt(0, 0, 0);
-
-    rendererRef.current = new THREE.WebGLRenderer({ 
-      antialias: true,
-      alpha: true
-    });
-    rendererRef.current.setSize(width, height);
-    rendererRef.current.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setClearColor(0x000000, 0);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    rendererRef.current = renderer;
     
-    // Configuración básica del renderer
-    rendererRef.current.setClearColor(0x050508, 1);
+    container.appendChild(renderer.domElement);
     
-    // Asegurarse de limpiar el contenedor antes de añadir el canvas
-    while (containerRef.current.firstChild) {
-      containerRef.current.removeChild(containerRef.current.firstChild);
-    }
+    const clock = new THREE.Clock();
+    clockRef.current = clock;
     
-    containerRef.current.appendChild(rendererRef.current.domElement);
-    console.log("Canvas Three.js añadido al DOM");
-
-    // Añadir iluminación
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-    sceneRef.current.add(ambientLight);
-    
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-    directionalLight.position.set(5, 5, 5);
-    sceneRef.current.add(directionalLight);
-
-    clockRef.current = new THREE.Clock();
-    
-    createWireframe();
-    
-    window.addEventListener("resize", onResize);
-    
-    // Manejadores de eventos para controles de mouse
+    // Definir manejadores de eventos
     const handleMouseDown = (event: MouseEvent) => {
       isDraggingRef.current = true;
       previousMousePositionRef.current = {
@@ -683,19 +657,20 @@ const SuperformulaWireframe: React.FC = () => {
       cameraRef.current.lookAt(0, 0, 0);
     };
     
-    // Añadir event listeners
-    containerRef.current.addEventListener("mousedown", handleMouseDown);
+    // Inicializar eventos de mouse
+    container.addEventListener("mousedown", handleMouseDown);
+    container.addEventListener("click", handleClick);
+    container.addEventListener("contextmenu", handleContextMenu);
+    container.addEventListener("wheel", handleWheel);
+    
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseup", handleMouseUp);
-    containerRef.current.addEventListener("click", handleClick);
-    containerRef.current.addEventListener("contextmenu", handleContextMenu);
-    containerRef.current.addEventListener("wheel", handleWheel);
     
-    // Importante: primero establecer la inicialización, luego iniciar el bucle de animación
-    isInitializedRef.current = true;
-    console.log("Inicialización completada, isInitializedRef =", isInitializedRef.current);
+    window.addEventListener("resize", onResize);
     
-    animationFrameRef.current = requestAnimationFrame(animate);
+    // Crear la geometría y comenzar la animación
+    createWireframe();
+    animate();
     
     // Limpieza
     return () => {
@@ -706,20 +681,20 @@ const SuperformulaWireframe: React.FC = () => {
       window.removeEventListener("resize", onResize);
       
       // Eliminar event listeners de controles de mouse
-      if (containerRef.current) {
-        containerRef.current.removeEventListener("mousedown", handleMouseDown);
-        containerRef.current.removeEventListener("click", handleClick);
-        containerRef.current.removeEventListener("contextmenu", handleContextMenu);
-        containerRef.current.removeEventListener("wheel", handleWheel);
+      if (container) {
+        container.removeEventListener("mousedown", handleMouseDown);
+        container.removeEventListener("click", handleClick);
+        container.removeEventListener("contextmenu", handleContextMenu);
+        container.removeEventListener("wheel", handleWheel);
       }
       
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
       
-      if (containerRef.current) {
-        const canvas = containerRef.current.querySelector('canvas');
+      if (container) {
+        const canvas = container.querySelector('canvas');
         if (canvas) {
-          containerRef.current.removeChild(canvas);
+          container.removeChild(canvas);
         }
       }
       
@@ -737,13 +712,15 @@ const SuperformulaWireframe: React.FC = () => {
   useEffect(() => {
     if (!isInitializedRef.current) return;
     
+    const updateWireframeGeometryLocal = updateWireframeGeometry;
+    
     const themeInterval = setInterval(() => {
       const state = stateRef.current;
       const currentThemeIndex = state.themeNames.indexOf(state.params.colorTheme);
       const nextThemeIndex = (currentThemeIndex + 1) % state.themeNames.length;
       state.params.colorTheme = state.themeNames[nextThemeIndex];
       
-      updateWireframeGeometry();
+      updateWireframeGeometryLocal();
       
       if (wireframeMeshRef.current && wireframeMeshRef.current.material instanceof THREE.ShaderMaterial) {
         const themeColor = state.themes[state.params.colorTheme].burstColor || "#ffffff";

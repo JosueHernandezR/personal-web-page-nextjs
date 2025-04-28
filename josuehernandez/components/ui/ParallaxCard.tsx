@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
 import { Bebas_Neue } from "next/font/google";
+import Image from "next/image";
 const beba = Bebas_Neue({ weight: "400", subsets: ["latin"] });
 
 interface DeviceOrientationEventiOS extends DeviceOrientationEvent {
@@ -27,6 +28,9 @@ export function ParallaxCard({
   const [coords, setCoords] = useState({ x: 0, y: 0 });
   const requestRef = useRef<number | null>(null);
   const cardRef = useRef<HTMLDivElement>(null);
+  const bgImageRef = useRef<HTMLDivElement>(null);
+  const middleImageRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
 
   // Usar una función memoizada para evitar recreaciones innecesarias
   const updateMousePosition = React.useCallback((e: MouseEvent) => {
@@ -82,6 +86,22 @@ export function ParallaxCard({
         cardRef.current.style.setProperty("--x", coords.x.toString());
         cardRef.current.style.setProperty("--y", coords.y.toString());
       }
+
+      // Aplicar transformaciones directamente a las imágenes para efecto parallax
+      if (bgImageRef.current) {
+        // Movimiento menor para el fondo
+        bgImageRef.current.style.transform = `translate(${coords.x * -10}px, ${coords.y * -10}px)`;
+      }
+      
+      if (middleImageRef.current) {
+        // Movimiento mayor para el castillo
+        middleImageRef.current.style.transform = `translate(${coords.x * -15}px, ${coords.y * -15}px)`;
+      }
+      
+      if (titleRef.current) {
+        titleRef.current.style.transform = `translate(${coords.x * 20}px, ${coords.y * 20}px)`;
+      }
+      
       requestRef.current = requestAnimationFrame(updateStyles);
     };
 
@@ -147,25 +167,36 @@ export function ParallaxCard({
     >
       <div className="assets absolute inset-0 overflow-hidden">
         {/* Sky Background Image */}
-        <img
-          className="absolute top-0 left-0 w-full h-full object-cover select-none pointer-events-none saturate-[1.5] brightness-[0.9] scale-[1.1]"
-          src={backgroundImage}
-          alt=""
-        />
+        <div ref={bgImageRef} className="absolute top-0 left-0 w-full h-full will-change-transform transition-transform duration-[50ms] scale-[1.05]">
+          <Image
+            className="object-cover select-none pointer-events-none saturate-[1.5] brightness-[0.9] scale-[1.2]"
+            src={backgroundImage}
+            alt=""
+            fill
+            sizes="(max-width: 768px) 100vw, 50vw"
+            priority
+          />
+        </div>
         
         {/* Title - Responsive size and positioning */}
         <h3
-          className={`${beba.className} absolute left-1/2 top-[6%] m-0 text-[8rem] uppercase text-white z-10`}
+          ref={titleRef}
+          className={`${beba.className} absolute top-[6%] left-[50%] -translate-x-[50%] m-0 text-[5rem] md:text-[8rem] uppercase text-white z-10 w-full text-center`}
         >
           {title}
         </h3>
         
         {/* Castle/Temple Image */}
-        <img
-          className="absolute top-0 left-0 w-full h-full object-cover select-none pointer-events-none scale-[1.1]"
-          src={middleImage}
-          alt=""
-        />
+        <div ref={middleImageRef} className="absolute top-0 left-0 w-full h-full will-change-transform transition-transform duration-[50ms] scale-[1.05]">
+          <Image
+            className="object-cover object-[center_75%] select-none pointer-events-none scale-[1.2]"
+            src={middleImage}
+            alt=""
+            fill
+            sizes="(max-width: 768px) 100vw, 50vw"
+            priority
+          />
+        </div>
       </div>
 
       {/* Implementación del blur exactamente como en el ejemplo proporcionado */}
@@ -180,7 +211,11 @@ export function ParallaxCard({
       </div>
 
       {/* Content Section - Using the CSS classes from the provided code */}
-      <div className="content z-20">
+      <div className="content z-20"
+        style={{
+          transform: `translate(calc(var(--x) * -5px), calc(var(--y) * -5px))`,
+        }}
+      >
         <p className="flex items-center gap-1 sm:gap-2 text-[1rem] sm:text-[1.2rem] relative">
           {icon || (
             <svg
