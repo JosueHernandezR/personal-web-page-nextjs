@@ -6,9 +6,8 @@ import { cookies } from "next/headers";
 import { dir } from "i18next";
 import Providers from "./[lng]/providers";
 import { fallbackLng, cookieName, languages } from "./i18n/settings";
-
-import "@/styles/globals.css";
 import DynamicWavesWrapper from "./[lng]/components/ui/DynamicWavesWrapper";
+import "@/styles/globals.css";
 
 // Optimizar la fuente
 const inter = Inter({ 

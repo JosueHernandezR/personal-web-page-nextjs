@@ -1,7 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { ThemeProvider } from "next-themes";
 import { Geist, Geist_Mono, Inter, Bebas_Neue } from "next/font/google";
-
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "@/styles/globals.css";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import Navbar from "@/components/ui/Navbar";
@@ -63,6 +64,8 @@ export default async function RootLayout({
             <Footer />
           </ThemeProvider>
         </LanguageProvider>
+        <SpeedInsights />
+          <Analytics />
       </body>
     </html>
   );
