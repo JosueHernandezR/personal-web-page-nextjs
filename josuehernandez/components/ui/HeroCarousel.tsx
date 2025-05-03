@@ -1,9 +1,23 @@
-'use client';
+"use client";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 // import Link from "next/link";
 import { FadeIn } from "./Fade";
+import SocialLink from "./SocialLinks";
+import { socialLinks } from "@/constants/social_links";
+import {
+  GitHubIcon,
+  GoogleScholarIcon,
+  LinkedInIcon,
+  TwitterIcon,
+} from "../icons/SocialIcons";
+import { DownloadFileIcon } from "../icons/Icons";
+
+interface SocialLink {
+  name: string;
+  url: string;
+}
 
 interface HeroCarouselProps {
   images: string[];
@@ -20,7 +34,7 @@ export default function HeroCarousel({
   descriptions,
   // buttonText,
   // buttonTexts,
-  autoPlayInterval = 5000
+  autoPlayInterval = 5000,
 }: HeroCarouselProps) {
   // Referencias y estados
   const heroRef = useRef<HTMLDivElement>(null);
@@ -33,26 +47,26 @@ export default function HeroCarousel({
   const [isMobile, setIsMobile] = useState(true);
   const isScrollingRef = useRef(false);
   const scrollTimeoutRef = useRef<number | null>(null);
-  
+
   // Detectar si estamos en móvil o desktop
   useEffect(() => {
     setIsMounted(true);
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     handleResize();
-    window.addEventListener('resize', handleResize);
-    
+    window.addEventListener("resize", handleResize);
+
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
-  
+
   // Lógica de scroll para efecto en móvil
   const handleScroll = useCallback(() => {
     if (!heroRef.current || !isMobile || isScrollingRef.current) return;
-    
+
     // Limpiar el timeout anterior si existe
     if (scrollTimeoutRef.current) {
       window.cancelAnimationFrame(scrollTimeoutRef.current);
@@ -63,11 +77,11 @@ export default function HeroCarousel({
     // Usar RAF para la animación
     scrollTimeoutRef.current = window.requestAnimationFrame(() => {
       if (!heroRef.current) return;
-      
+
       const rect = heroRef.current.getBoundingClientRect();
       const scrollRange = rect.height * 0.25;
       const progress = Math.min(1, Math.max(0, -rect.top / scrollRange));
-      
+
       setScrollProgress(progress);
 
       // Establecer un timeout para permitir más actualizaciones después de un breve retraso
@@ -79,23 +93,23 @@ export default function HeroCarousel({
 
   useEffect(() => {
     if (!isMounted || !isMobile) return;
-    
-    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
-    
+
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
       if (scrollTimeoutRef.current) {
         window.cancelAnimationFrame(scrollTimeoutRef.current);
       }
     };
   }, [isMounted, isMobile, handleScroll]);
-  
+
   // Lógica del carrusel
   const nextSlide = useCallback(() => {
     if (isTransitioning) return;
     setIsTransitioning(true);
-    setCurrentIndex(prevIndex => 
+    setCurrentIndex((prevIndex) =>
       prevIndex === images.length - 1 ? 0 : prevIndex + 1
     );
     setTimeout(() => setIsTransitioning(false), 500);
@@ -104,20 +118,20 @@ export default function HeroCarousel({
   const prevSlide = useCallback(() => {
     if (isTransitioning) return;
     setIsTransitioning(true);
-    setCurrentIndex(prevIndex => 
+    setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? images.length - 1 : prevIndex - 1
     );
     setTimeout(() => setIsTransitioning(false), 500);
   }, [isTransitioning, images.length]);
-  
+
   // Autoplay
   useEffect(() => {
     if (autoPlayInterval <= 0 || !isMounted) return;
-    
+
     const interval = setInterval(nextSlide, autoPlayInterval);
     return () => clearInterval(interval);
   }, [nextSlide, autoPlayInterval, isMounted]);
-  
+
   // Manejo táctil (swipe)
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     setTouchStart(e.targetTouches[0].clientX);
@@ -137,47 +151,58 @@ export default function HeroCarousel({
       }
     }
   }, [touchStart, touchEnd, nextSlide, prevSlide]);
-  
+
   // Cálculos para las transformaciones basadas en el scroll (solo móvil)
-  const containerStyle = useCallback(() => ({
-    borderRadius: `${Math.max(0, 32 - (scrollProgress * 32))}px`,
-    marginLeft: `${Math.max(0, 20 - (scrollProgress * 20))}px`,
-    marginRight: `${Math.max(0, 20 - (scrollProgress * 20))}px`,
-    marginTop: `${Math.max(0, 64 - (scrollProgress * 64))}px`,
-    width: `calc(100% - ${Math.max(0, 20 - (scrollProgress * 20)) * 2}px)`,
-    height: `calc(100vh)`,
-    minHeight: '600px',
-    transition: 'all 0.1s ease-out',
-    overflow: 'hidden',
-    position: 'relative' as const,
-  }), [scrollProgress]) as () => React.CSSProperties;
+  const containerStyle = useCallback(
+    () => ({
+      borderRadius: `${Math.max(0, 32 - scrollProgress * 32)}px`,
+      marginLeft: `${Math.max(0, 20 - scrollProgress * 20)}px`,
+      marginRight: `${Math.max(0, 20 - scrollProgress * 20)}px`,
+      marginTop: `${Math.max(0, 64 - scrollProgress * 64)}px`,
+      width: `calc(100% - ${Math.max(0, 20 - scrollProgress * 20) * 2}px)`,
+      height: `calc(100vh)`,
+      minHeight: "600px",
+      transition: "all 0.1s ease-out",
+      overflow: "hidden",
+      position: "relative" as const,
+    }),
+    [scrollProgress]
+  ) as () => React.CSSProperties;
 
   if (!isMounted) return null;
 
   return (
     <div className="w-full relative overflow-hidden">
-      <div 
+      <div
         ref={heroRef}
         className="relative w-full overflow-hidden"
-        style={isMobile ? containerStyle() : {
-          height: '100vh',
-          minHeight: '600px',
-          position: 'relative'
-        }}
+        style={
+          isMobile
+            ? containerStyle()
+            : {
+                height: "100vh",
+                minHeight: "600px",
+                position: "relative",
+              }
+        }
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
         {/* Imágenes del carrusel */}
         {images.map((src, index) => (
-          <div 
+          <div
             key={index}
             className={`absolute inset-0 w-full h-full transition-all duration-500 ease-in-out
-              ${index === currentIndex ? 'opacity-100 z-0 translate-x-0' : 'opacity-0 -z-10'}
-              ${!isMobile && index < currentIndex ? '-translate-x-full' : ''}
-              ${!isMobile && index > currentIndex ? 'translate-x-full' : ''}
+              ${
+                index === currentIndex
+                  ? "opacity-100 z-0 translate-x-0"
+                  : "opacity-0 -z-10"
+              }
+              ${!isMobile && index < currentIndex ? "-translate-x-full" : ""}
+              ${!isMobile && index > currentIndex ? "translate-x-full" : ""}
             `}
-            style={{ height: '100%', position: 'absolute', overflow: 'hidden' }}
+            style={{ height: "100%", position: "absolute", overflow: "hidden" }}
           >
             <Image
               src={src}
@@ -191,32 +216,75 @@ export default function HeroCarousel({
             <div className="absolute inset-0 bg-black/20"></div>
           </div>
         ))}
-        
+
         {/* Overlay con textos y botón - Rediseñado */}
-        <div className={`absolute inset-0 z-10 p-6 md:p-8 lg:p-12 md:mt-[64px]
-          ${isMobile ? 'flex flex-col justify-start items-start' : 
-          'flex flex-col lg:items-start lg:justify-start lg:pt-16'}`}>
-          <div className={`
-            ${isMobile ? 'w-full pr-16 pt-8' : 
-            'max-w-2xl pr-20 lg:max-w-3xl lg:pl-20 lg:pr-12 lg:text-left'}`}>
-            
+        <div
+          className={`absolute inset-0 z-10 p-6 md:p-8 lg:p-12 md:mt-[64px]
+          ${
+            isMobile
+              ? "flex flex-col justify-start items-start"
+              : "flex flex-col lg:items-start lg:justify-start lg:pt-16"
+          }`}
+        >
+          <div
+            className={`
+            ${
+              isMobile
+                ? "w-full pr-16 pt-8"
+                : "max-w-2xl pr-20 lg:max-w-3xl lg:pl-20 lg:pr-12 lg:text-left"
+            }`}
+          >
             {/* Título principal */}
             <FadeIn>
-              <h1 className={`font-medium leading-none tracking-tight font-geist text-white mb-3 md:mb-4 ${
-                'text-6xl lg:text-7xl xl:text-8xl lg:text-left'}`}>
+              <h1
+                className={`font-medium leading-none tracking-tight font-geist text-white mb-3 md:mb-4 ${"text-6xl lg:text-7xl xl:text-8xl lg:text-left"}`}
+              >
                 {titles[currentIndex]}
               </h1>
             </FadeIn>
-            
+
             {/* Descripción */}
             <FadeIn>
-              <p className={`text-white/90 font-inter text-xl lg:text-2xl text-left ${
-                isMobile ? ' mb-8 text-lg' : 
-                'mb-8 max-w-xl lg:max-w-2xl lg:ml-auto'}`}>
+              <p
+                className={`text-white/90 font-inter text-xl lg:text-2xl text-left ${
+                  isMobile
+                    ? " mb-8 text-lg"
+                    : "mb-8 max-w-xl lg:max-w-2xl lg:ml-auto"
+                }`}
+              >
                 {descriptions[currentIndex]}
               </p>
             </FadeIn>
-            
+            <div className="mt-6 flex flex-row gap-x-6">
+              {socialLinks.map((socialLink: SocialLink, index: number) => (
+                <SocialLink
+                  key={index}
+                  href={socialLink.url}
+                  icon={
+                    socialLink.name === "github"
+                      ? GitHubIcon
+                      : socialLink.name === "linkedin"
+                      ? LinkedInIcon
+                      : socialLink.name === "twitter"
+                      ? TwitterIcon
+                      : socialLink.name === "google-scholar"
+                      ? GoogleScholarIcon
+                      : DownloadFileIcon
+                  }
+                />
+              ))}
+              {/* <FadeIn>
+                <a
+                  href={t("resume")}
+                  download
+                  className="flex items-center gap-2 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                >
+                  <DownloadFileIcon className="h-8 w-8 fill-white transition group-hover:fill-zinc-100" />
+                  <span className="sr-only">Descargar CV</span>
+                </a>
+              </FadeIn> */}
+            </div>
+
             {/* Botón */}
             {/* <FadeIn>
               <div className="text-left">
@@ -229,7 +297,7 @@ export default function HeroCarousel({
             </FadeIn> */}
           </div>
         </div>
-        
+
         {/* Controles de navegación - Solo en desktop */}
         {!isMobile && (
           <>
@@ -253,7 +321,7 @@ export default function HeroCarousel({
             </div>
           </>
         )}
-        
+
         {/* Indicador de slide en la parte inferior izquierda */}
         {/* <div className="absolute bottom-8 left-6 md:left-12 z-20">
           <div className="flex items-center space-x-2">
@@ -267,7 +335,7 @@ export default function HeroCarousel({
             </span>
           </div>
         </div> */}
-        
+
         {/* Indicadores de slides (puntos) */}
         <div className="absolute bottom-8 right-6 md:right-12 z-20 px-6 md:px-12 xl:px-16">
           <div className="flex space-x-2">
@@ -280,7 +348,7 @@ export default function HeroCarousel({
                   setTimeout(() => setIsTransitioning(false), 500);
                 }}
                 className={`w-2 h-2 rounded-full transition-all ${
-                  index === currentIndex ? 'bg-white scale-125' : 'bg-white/50'
+                  index === currentIndex ? "bg-white scale-125" : "bg-white/50"
                 }`}
                 aria-label={`Ir a slide ${index + 1}`}
               />

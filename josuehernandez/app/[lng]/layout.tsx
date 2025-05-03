@@ -36,9 +36,9 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  width: 'device-width',
+  width: "device-width",
   initialScale: 1,
-  themeColor: '#ffffff',
+  themeColor: "#ffffff",
 };
 
 export default async function RootLayout({
@@ -65,7 +65,7 @@ export default async function RootLayout({
           </ThemeProvider>
         </LanguageProvider>
         <SpeedInsights />
-          <Analytics />
+        <Analytics />
       </body>
     </html>
   );
