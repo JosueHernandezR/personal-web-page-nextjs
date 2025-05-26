@@ -2,6 +2,12 @@ import nodemailer from 'nodemailer';
 
 // Configuración del transporter para iCloud+
 const createTransporter = () => {
+  console.log('Configurando transporter con:');
+  console.log('Host:', process.env.SMTP_HOST || 'smtp.mail.me.com');
+  console.log('Port:', parseInt(process.env.SMTP_PORT || '587'));
+  console.log('User:', process.env.SMTP_USER ? 'Configurado' : 'NO configurado');
+  console.log('Password:', process.env.SMTP_PASSWORD ? 'Configurado' : 'NO configurado');
+  
   return nodemailer.createTransport({
     host: process.env.SMTP_HOST || 'smtp.mail.me.com',
     port: parseInt(process.env.SMTP_PORT || '587'),
@@ -25,8 +31,11 @@ export interface EmailData {
 }
 
 export const sendContactEmail = async (emailData: EmailData) => {
+  console.log('=== MAILER: Iniciando envío de email ===');
   try {
+    console.log('Creando transporter...');
     const transporter = createTransporter();
+    console.log('Transporter creado exitosamente');
 
     // Configuración del email
     const mailOptions = {
@@ -76,6 +85,13 @@ export const sendContactEmail = async (emailData: EmailData) => {
     };
 
     // Enviar el email
+    console.log('Configuración de email preparada, enviando...');
+    console.log('Mail options:', {
+      from: mailOptions.from,
+      to: mailOptions.to,
+      subject: mailOptions.subject
+    });
+    
     const result = await transporter.sendMail(mailOptions);
     console.log('Email enviado exitosamente:', result.messageId);
     

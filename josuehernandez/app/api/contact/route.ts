@@ -196,7 +196,16 @@ export async function POST(request: NextRequest) {
     }
 
     // Enviar email
+    console.log('Intentando enviar email...');
+    console.log('Email data:', { 
+      name: emailData.name, 
+      email: emailData.email, 
+      subject: emailData.subject,
+      messageLength: emailData.message.length 
+    });
+    
     const result = await sendContactEmail(emailData);
+    console.log('Email enviado exitosamente:', result.messageId);
 
     return NextResponse.json(
       {
