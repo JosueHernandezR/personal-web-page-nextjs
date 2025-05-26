@@ -75,7 +75,7 @@ export default async function Page({
           </FadeIn>
         </div>
       </FadeInStaggerSection>
-      <FadeInStaggerSection className="flex flex-col justify-center w-full px-4 md:px-8 max-w-7xl mx-auto">
+      <FadeInStaggerSection className="flex flex-col justify-center w-full px-4 md:px-8 max-w-7xl mx-auto my-16 md:my-20 lg:my-28 xl:my-36">
         <FadeIn>
           <h2 className="font-geist text-6xl md:text-9xl font-medium mb-12 text-center md:text-left text-black dark:text-white">
             Proyectos
