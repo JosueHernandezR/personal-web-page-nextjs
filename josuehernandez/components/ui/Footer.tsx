@@ -10,8 +10,8 @@ export default function Footer() {
   const { t } = useTranslationWithContext("navbar");
 
   return (
-    <footer className="mt-32">
-      <div className="h-40 md:h-60">
+    <footer>
+      <div className="h-60 md:h-80">
         <DitheredWaves
           waveSpeed={0.03}
           waveFrequency={1.7}

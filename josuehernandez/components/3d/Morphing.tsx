@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import * as THREE from 'three';
 
 interface PresetParams {
@@ -152,7 +152,7 @@ const SuperformulaWireframe: React.FC = () => {
   };
 
   // Crear la geometría wireframe
-  const createWireframe = (): void => {
+  const createWireframe = useCallback((): void => {
     if (!sceneRef.current) return;
     
     const state = stateRef.current;
@@ -344,7 +344,7 @@ const SuperformulaWireframe: React.FC = () => {
     setInterval(() => {
       triggerBurst();
     }, 8000);
-  };
+  }, []);
 
   // Función para mapear valores linealmente
   const mapLinear = (x: number, a1: number, a2: number, b1: number, b2: number): number => {
@@ -360,7 +360,7 @@ const SuperformulaWireframe: React.FC = () => {
   };
   
   // Actualizar la geometría wireframe
-  const updateWireframeGeometry = (): void => {
+  const updateWireframeGeometry = useCallback((): void => {
     if (!wireframeMeshRef.current) return;
     
     const state = stateRef.current;
@@ -413,7 +413,7 @@ const SuperformulaWireframe: React.FC = () => {
     geometry.attributes.position.needsUpdate = true;
     geometry.attributes.color.needsUpdate = true;
     geometry.computeBoundingSphere();
-  };
+  }, []);
 
   // Interpolación lineal personalizada
   const lerp = (x: number, y: number, t: number): number => {
@@ -481,7 +481,7 @@ const SuperformulaWireframe: React.FC = () => {
   };
 
   // Bucle de animación
-  const animate = (): void => {
+  const animate = useCallback((): void => {
     if (!isInitializedRef.current || !clockRef.current || !wireframeMeshRef.current || !rendererRef.current || 
         !sceneRef.current || !cameraRef.current) {
       console.log("Animación detenida - faltan referencias", {
@@ -550,7 +550,7 @@ const SuperformulaWireframe: React.FC = () => {
     }
     
     animationFrameRef.current = requestAnimationFrame(animate);
-  };
+  }, [updateWireframeGeometry]);
 
   // Efecto principal de inicialización
   useEffect(() => {

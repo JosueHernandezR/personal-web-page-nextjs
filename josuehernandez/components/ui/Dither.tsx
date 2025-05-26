@@ -232,6 +232,8 @@ const DitheredWaves: React.FC<Props> = ({
   useEffect(() => {
     if (!containerRef.current) return;
     
+    const container = containerRef.current;
+    
     // Handle mouse movement
     const handleMouseMove = (event: MouseEvent) => {
       if (!enableMouseInteraction || !rendererRef.current) return;
@@ -272,7 +274,6 @@ const DitheredWaves: React.FC<Props> = ({
     const timeoutId = setTimeout(() => {
       // Initialize
       const init = () => {
-        const container = containerRef.current;
         if (!container) return;
         
         const width = Math.max(container.clientWidth, 1);
@@ -438,7 +439,6 @@ const DitheredWaves: React.FC<Props> = ({
         cancelAnimationFrame(animationFrameRef.current);
       }
       
-      const container = containerRef.current;
       if (rendererRef.current) {
         rendererRef.current.domElement.removeEventListener('mousemove', handleMouseMove);
         rendererRef.current.dispose();

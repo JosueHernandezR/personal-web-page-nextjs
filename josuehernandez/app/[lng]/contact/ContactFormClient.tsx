@@ -208,13 +208,13 @@ const ContactForm = () => {
 
   return (
     <div className="relative">
-      <div className="lg:absolute lg:inset-0 lg:left-1/2">
+      <div className="hidden lg:block lg:absolute lg:inset-0 lg:left-1/2">
         <Image
           alt="Imagen de contacto"
           src="/photos/horizontal/personal_web_page-06.jpg"
           fill
           className="bg-gray-50 object-cover"
-          sizes="(max-width: 1024px) 100vw, 50vw"
+          sizes="50vw"
           priority
         />
       </div>

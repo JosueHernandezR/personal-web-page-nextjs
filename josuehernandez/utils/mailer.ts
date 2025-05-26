@@ -2,7 +2,7 @@ import nodemailer from 'nodemailer';
 
 // Configuración del transporter para iCloud+
 const createTransporter = () => {
-  return nodemailer.createTransporter({
+  return nodemailer.createTransport({
     host: process.env.SMTP_HOST || 'smtp.mail.me.com',
     port: parseInt(process.env.SMTP_PORT || '587'),
     secure: false, // true para 465, false para otros puertos

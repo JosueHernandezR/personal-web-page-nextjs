@@ -21,6 +21,7 @@
     "@vercel/speed-insights": "^1.2.0",
     "accept-language": "^3.0.20",
     "clsx": "^2.1.1",
+    "critters": "^0.0.23",
     "framer-motion": "^12.7.4",
     "i18next": "^25.0.0",
     "i18next-resources-to-backend": "^1.2.1",
