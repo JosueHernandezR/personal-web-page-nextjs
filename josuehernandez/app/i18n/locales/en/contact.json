@@ -1,0 +1,58 @@
+{
+  "title": "Let's work together",
+  "description": "Do you have a project in mind? I specialize in fullstack development and mobile development, creating innovative digital solutions.",
+  "form": {
+    "firstName": {
+      "label": "First name",
+      "error": {
+        "required": "First name is required",
+        "maxLength": "First name cannot exceed 50 characters"
+      }
+    },
+    "lastName": {
+      "label": "Last name",
+      "error": {
+        "required": "Last name is required",
+        "maxLength": "Last name cannot exceed 50 characters"
+      }
+    },
+    "email": {
+      "label": "Email",
+      "error": {
+        "required": "Email is required",
+        "invalid": "Invalid email format"
+      }
+    },
+    "company": {
+      "label": "Company"
+    },
+    "phone": {
+      "label": "Phone",
+      "optional": "Optional"
+    },
+    "message": {
+      "label": "How can we help you?",
+      "maxCharacters": "Max 500 characters",
+      "error": {
+        "required": "Message is required",
+        "maxLength": "Message cannot exceed 500 characters"
+      }
+    },
+    "submit": {
+      "button": "Send message",
+      "sending": "Sending...",
+      "loading": "Loading verification..."
+    }
+  },
+  "success": {
+    "title": "Message sent successfully!",
+    "description": "Thank you for contacting me. I will respond as soon as possible.",
+    "button": "Send another message"
+  },
+  "errors": {
+    "recaptchaNotReady": "reCAPTCHA is not ready. Please try again.",
+    "securityVerification": "Security verification error. Please try again.",
+    "connectionError": "Connection error. Please try again later.",
+    "general": "Error sending message"
+  }
+} 

@@ -1,0 +1,58 @@
+{
+  "title": "Trabajemos juntos",
+  "description": "¿Tienes un proyecto en mente? Me especializo en desarrollo fullstack y desarrollo móvil, creando soluciones digitales innovadoras.",
+  "form": {
+    "firstName": {
+      "label": "Nombre",
+      "error": {
+        "required": "El nombre es requerido",
+        "maxLength": "El nombre no puede exceder 50 caracteres"
+      }
+    },
+    "lastName": {
+      "label": "Apellido",
+      "error": {
+        "required": "El apellido es requerido",
+        "maxLength": "El apellido no puede exceder 50 caracteres"
+      }
+    },
+    "email": {
+      "label": "Email",
+      "error": {
+        "required": "El email es requerido",
+        "invalid": "Formato de email inválido"
+      }
+    },
+    "company": {
+      "label": "Empresa"
+    },
+    "phone": {
+      "label": "Teléfono",
+      "optional": "Opcional"
+    },
+    "message": {
+      "label": "¿Cómo puedo ayudarte?",
+      "maxCharacters": "Máx 500 caracteres",
+      "error": {
+        "required": "El mensaje es requerido",
+        "maxLength": "El mensaje no puede exceder 500 caracteres"
+      }
+    },
+    "submit": {
+      "button": "Enviar mensaje",
+      "sending": "Enviando...",
+      "loading": "Cargando verificación..."
+    }
+  },
+  "success": {
+    "title": "¡Mensaje enviado exitosamente!",
+    "description": "Gracias por contactarme. Te responderé lo más pronto posible.",
+    "button": "Enviar otro mensaje"
+  },
+  "errors": {
+    "recaptchaNotReady": "reCAPTCHA no está listo. Por favor, inténtalo de nuevo.",
+    "securityVerification": "Error de verificación de seguridad. Por favor, inténtalo de nuevo.",
+    "connectionError": "Error de conexión. Por favor, inténtalo más tarde.",
+    "general": "Error al enviar el mensaje"
+  }
+} 

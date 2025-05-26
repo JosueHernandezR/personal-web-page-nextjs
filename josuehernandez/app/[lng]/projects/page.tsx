@@ -14,10 +14,9 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#ffffff",
 };
 
-export default async function ProjectsPage({
+export default async function Page({
   params,
 }: {
   params: Promise<{
@@ -85,40 +84,44 @@ export default async function ProjectsPage({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 w-full">
           {/* Tarjeta de Proyectos de Ingeniería */}
           <FadeIn className="relative overflow-hidden rounded-3xl min-h-[400px]">
-            <div className="absolute inset-0">
-              <DetailedDSLRCamera />
-            </div>
-            {/* Contenedor para el efecto glassmorphism */}
-            <div className="absolute left-0 right-0 bottom-0 h-2/5 pointer-events-none backdrop-blur-md custom-mask" />
-            {/* Contenedor del texto separado del blur */}
-            <div className="absolute left-0 right-0 bottom-0 h-2/5 flex items-end z-20">
-              <div className="p-6 text-white">
-                <h3 className="text-white text-4xl font-medium mb-3">
-                  Ingeniería
-                </h3>
-                <p className="text-zinc-300 text-xl">
-                  Proyectos de ingeniería y desarrollo de software
-                </p>
+            <a href={`/${lng}/projects/engineering`} className="block absolute inset-0">
+              <div className="absolute inset-0">
+                <DetailedDSLRCamera />
               </div>
-            </div>
+              {/* Contenedor para el efecto glassmorphism */}
+              <div className="absolute left-0 right-0 bottom-0 h-2/5 pointer-events-none backdrop-blur-md custom-mask" />
+              {/* Contenedor del texto separado del blur */}
+              <div className="absolute left-0 right-0 bottom-0 h-2/5 flex items-end z-20">
+                <div className="p-6 text-white">
+                  <h3 className="text-white text-4xl font-medium mb-3">
+                    Ingeniería
+                  </h3>
+                  <p className="text-zinc-300 text-xl">
+                    Proyectos de ingeniería y desarrollo de software
+                  </p>
+                </div>
+              </div>
+            </a>
           </FadeIn>
 
           {/* Tarjeta de Proyectos de Arte */}
           <FadeIn className="relative overflow-hidden rounded-3xl min-h-[400px]">
-            <div className="absolute inset-0">
-              <SuperformulaWireframe />
-            </div>
-            {/* Contenedor para el efecto glassmorphism */}
-            <div className="absolute left-0 right-0 bottom-0 h-2/5 pointer-events-none backdrop-blur-md custom-mask" />
-            {/* Contenedor del texto separado del blur */}
-            <div className="absolute left-0 right-0 bottom-0 h-2/5 flex items-end z-20">
-              <div className="p-6 text-white">
-                <h3 className="text-4xl font-medium mb-3">Arte</h3>
-                <p className="text-xl text-zinc-300">
-                  Colección de fotografías y grabados artísticos
-                </p>
+            <a href={`/${lng}/projects/art`} className="block absolute inset-0">
+              <div className="absolute inset-0">
+                <SuperformulaWireframe />
               </div>
-            </div>
+              {/* Contenedor para el efecto glassmorphism */}
+              <div className="absolute left-0 right-0 bottom-0 h-2/5 pointer-events-none backdrop-blur-md custom-mask" />
+              {/* Contenedor del texto separado del blur */}
+              <div className="absolute left-0 right-0 bottom-0 h-2/5 flex items-end z-20">
+                <div className="p-6 text-white">
+                  <h3 className="text-4xl font-medium mb-3">Arte</h3>
+                  <p className="text-xl text-zinc-300">
+                    Colección de fotografías y grabados artísticos
+                  </p>
+                </div>
+              </div>
+            </a>
           </FadeIn>
         </div>
       </FadeInStaggerSection>

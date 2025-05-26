@@ -1,4 +1,6 @@
 {
+    "title": "Navigation menu",
     "nav_start_label": "Start",
-    "nav_projects_label": "Projects"
+    "nav_projects_label": "Projects",
+    "nav_contact_label": "Contact"
 }

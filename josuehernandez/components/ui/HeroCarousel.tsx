@@ -2,7 +2,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
-// import Link from "next/link";
 import { FadeIn } from "./Fade";
 import SocialLink from "./SocialLinks";
 import { socialLinks } from "@/constants/social_links";
@@ -13,6 +12,7 @@ import {
   TwitterIcon,
 } from "../icons/SocialIcons";
 import { DownloadFileIcon } from "../icons/Icons";
+import LoadingSkeleton from "./LoadingSkeleton";
 
 interface SocialLink {
   name: string;
@@ -20,7 +20,7 @@ interface SocialLink {
 }
 
 interface HeroCarouselProps {
-  images: string[];
+  images: { src: string; blurDataURL?: string }[];
   titles: string[];
   descriptions: string[];
   buttonText: string;
@@ -36,6 +36,9 @@ export default function HeroCarousel({
   // buttonTexts,
   autoPlayInterval = 5000,
 }: HeroCarouselProps) {
+  // Simplificado para evitar loop infinito
+  const [isLoading, setIsLoading] = useState(true);
+
   // Referencias y estados
   const heroRef = useRef<HTMLDivElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -51,6 +54,7 @@ export default function HeroCarousel({
   // Detectar si estamos en móvil o desktop
   useEffect(() => {
     setIsMounted(true);
+    setIsLoading(false); // Simplificado
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
     };
@@ -169,28 +173,39 @@ export default function HeroCarousel({
     [scrollProgress]
   ) as () => React.CSSProperties;
 
-  if (!isMounted) return null;
+  // Mostrar skeleton mientras las imágenes cargan
+  if (!isMounted || isLoading) {
+    return <LoadingSkeleton variant="carousel" />;
+  }
 
   return (
-    <div className="w-full relative overflow-hidden">
+    <div className="w-full relative overflow-hidden" style={{ height: "100vh", minHeight: "600px" }}>
       <div
         ref={heroRef}
         className="relative w-full overflow-hidden"
-        style={
-          isMobile
-            ? containerStyle()
-            : {
-                height: "100vh",
-                minHeight: "600px",
-                position: "relative",
-              }
-        }
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          height: "100%",
+          width: "100%",
+          ...(isMobile ? containerStyle() : {})
+        }}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        {/* Imágenes del carrusel */}
-        {images.map((src, index) => (
+        {/* Preconnect para recursos externos */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        
+        {/* Placeholder para reservar espacio */}
+        <div className="absolute inset-0 bg-gray-900" style={{ height: "100%", width: "100%" }} />
+        
+        {/* Imágenes del carrusel con optimizaciones */}
+        {images.map(({ src, blurDataURL }, index) => (
           <div
             key={index}
             className={`absolute inset-0 w-full h-full transition-all duration-500 ease-in-out
@@ -209,8 +224,19 @@ export default function HeroCarousel({
               alt={`Imagen ${index + 1}`}
               fill
               className="object-cover"
-              priority={index === 0}
+              priority={index === 0} // Solo la primera imagen con priority
+              loading={index === 0 ? "eager" : "lazy"} // Lazy loading para el resto
               sizes="100vw"
+              placeholder={blurDataURL ? "blur" : "empty"}
+              blurDataURL={blurDataURL}
+              quality={index === 0 ? 85 : 75} // Mayor calidad solo para la primera imagen
+              onLoad={() => {
+                // Precargar la siguiente imagen
+                if (index === currentIndex && index < images.length - 1) {
+                  const nextImage = new window.Image();
+                  nextImage.src = images[index + 1].src;
+                }
+              }}
             />
             {/* Overlay oscuro uniforme para toda la imagen */}
             <div className="absolute inset-0 bg-black/20"></div>
@@ -267,9 +293,7 @@ export default function HeroCarousel({
                       ? LinkedInIcon
                       : socialLink.name === "twitter"
                       ? TwitterIcon
-                      : socialLink.name === "google-scholar"
-                      ? GoogleScholarIcon
-                      : DownloadFileIcon
+                      : GoogleScholarIcon
                   }
                 />
               ))}
@@ -304,53 +328,51 @@ export default function HeroCarousel({
             <div className="absolute inset-y-0 left-4 flex items-center z-20">
               <button
                 onClick={prevSlide}
-                className="p-2 rounded-full bg-black/30 hover:bg-black/50 text-white transition-colors"
-                aria-label="Anterior"
+                className="p-3 rounded-full bg-black/50 hover:bg-black/70 text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black/50"
+                aria-label="Ir a la imagen anterior del carrusel"
+                type="button"
               >
-                <ChevronLeftIcon className="w-6 h-6" />
+                <ChevronLeftIcon className="w-6 h-6" aria-hidden="true" />
               </button>
             </div>
             <div className="absolute inset-y-0 right-4 flex items-center z-20">
               <button
                 onClick={nextSlide}
-                className="p-2 rounded-full bg-black/30 hover:bg-black/50 text-white transition-colors"
-                aria-label="Siguiente"
+                className="p-3 rounded-full bg-black/50 hover:bg-black/70 text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black/50"
+                aria-label="Ir a la siguiente imagen del carrusel"
+                type="button"
               >
-                <ChevronRightIcon className="w-6 h-6" />
+                <ChevronRightIcon className="w-6 h-6" aria-hidden="true" />
               </button>
             </div>
           </>
         )}
 
-        {/* Indicador de slide en la parte inferior izquierda */}
-        {/* <div className="absolute bottom-8 left-6 md:left-12 z-20">
-          <div className="flex items-center space-x-2">
-            <div className="bg-black/30 rounded-full p-1 backdrop-blur-sm">
-              <span className="text-white/90 text-sm font-medium">
-                {String(currentIndex + 1)}
-              </span>
-            </div>
-            <span className="text-white/90 text-sm">
-              {titles[currentIndex].split(' ')[0]} {titles[currentIndex].split(' ')[1] || ''}
-            </span>
-          </div>
-        </div> */}
-
-        {/* Indicadores de slides (puntos) */}
-        <div className="absolute bottom-8 right-6 md:right-12 z-20 px-6 md:px-12 xl:px-16">
-          <div className="flex space-x-2">
+        {/* Indicadores de slides (puntos) con mejor accesibilidad */}
+        <div 
+          className="absolute bottom-8 right-6 md:right-12 z-20 px-6 md:px-12 xl:px-16"
+          role="tablist"
+          aria-label="Navegación del carrusel"
+        >
+          <div className="flex space-x-3">
             {images.map((_, index) => (
               <button
                 key={index}
+                role="tab"
+                type="button"
                 onClick={() => {
                   setIsTransitioning(true);
                   setCurrentIndex(index);
                   setTimeout(() => setIsTransitioning(false), 500);
                 }}
-                className={`w-2 h-2 rounded-full transition-all ${
-                  index === currentIndex ? "bg-white scale-125" : "bg-white/50"
+                className={`w-3 h-3 rounded-full transition-all focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black/50 ${
+                  index === currentIndex 
+                    ? 'bg-white scale-125 shadow-lg' 
+                    : 'bg-white/60 hover:bg-white/80'
                 }`}
-                aria-label={`Ir a slide ${index + 1}`}
+                aria-label={`Ir a la imagen ${index + 1} de ${images.length}`}
+                aria-selected={index === currentIndex}
+                tabIndex={index === currentIndex ? 0 : -1}
               />
             ))}
           </div>

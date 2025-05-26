@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://josuehernandez.dev/sitemap.xml
+
+# Disallow specific paths if needed
+Disallow: /admin/
+Disallow: /_next/static/
+Disallow: /api/
+
+# Allow important static assets
+Allow: /photos/
+Allow: /images/
+Allow: /icons/
+
+# Crawl delay (optional)
+Crawl-delay: 1 
