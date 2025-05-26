@@ -6,6 +6,7 @@ import { FadeIn, FadeInStagger } from '@/components/ui/Fade';
 import { ReCaptchaWrapper, useReCaptcha } from '@/components/ui/ReCaptchaWrapper';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useTranslation } from '../../i18n/client';
+import Notification, { NotificationType } from '@/components/ui/Notification';
 
 interface FormData {
   firstName: string;
@@ -45,6 +46,16 @@ const ContactForm = () => {
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [notification, setNotification] = useState<{
+    show: boolean;
+    type: NotificationType;
+    title: string;
+    message?: string;
+  }>({
+    show: false,
+    type: 'success',
+    title: '',
+  });
 
   const { executeRecaptcha, isLoaded } = useReCaptcha();
 
@@ -151,22 +162,73 @@ const ContactForm = () => {
       const data = await response.json();
 
       if (response.ok) {
-        setIsSuccess(true);
-        setFormData({
-          firstName: '',
-          lastName: '',
-          email: '',
-          company: '',
-          phone: '',
-          message: '',
-          budget: '',
+        // Mostrar notificación de éxito
+        setNotification({
+          show: true,
+          type: 'success',
+          title: t('notifications.emailSent'),
+          message: t('success.description'),
         });
+        
+        // Después de 3 segundos, mostrar la página de éxito completa
+        setTimeout(() => {
+          setNotification(prev => ({ ...prev, show: false }));
+          setIsSuccess(true);
+          setFormData({
+            firstName: '',
+            lastName: '',
+            email: '',
+            company: '',
+            phone: '',
+            message: '',
+            budget: '',
+          });
+        }, 3000);
       } else {
+        // Manejar diferentes tipos de errores basados en el código de error
+        let errorMessage = t('errors.general');
+        let notificationType: NotificationType = 'error';
+        
+        switch (data.error) {
+          case 'RATE_LIMIT_EXCEEDED':
+            errorMessage = t('errors.rateLimitExceeded');
+            notificationType = 'warning';
+            break;
+          case 'EMAIL_SERVICE_ERROR':
+            errorMessage = t('errors.emailServiceError');
+            break;
+          case 'INVALID_DATA':
+            errorMessage = t('errors.invalidData');
+            break;
+          case 'SERVER_ERROR':
+            errorMessage = t('errors.serverError');
+            break;
+          default:
+            // Si hay un mensaje específico del servidor, usarlo
+            errorMessage = data.message || t('errors.general');
+        }
+        
+        // Mostrar notificación de error
+        setNotification({
+          show: true,
+          type: notificationType,
+          title: errorMessage,
+          message: t('notifications.tryAgainLater'),
+        });
+        
         setErrors({
-          general: data.error || t('errors.general'),
+          general: errorMessage,
         });
       }
     } catch {
+      // Mostrar notificación de error de conexión
+      setNotification({
+        show: true,
+        type: 'error',
+        title: t('errors.connectionError'),
+        message: t('notifications.tryAgainLater'),
+      });
+      
       setErrors({
         general: t('errors.connectionError'),
       });
@@ -194,7 +256,10 @@ const ContactForm = () => {
                 {t('success.description')}
               </p>
               <button
-                onClick={() => setIsSuccess(false)}
+                onClick={() => {
+                  setIsSuccess(false);
+                  setNotification({ show: false, type: 'success', title: '' });
+                }}
                 className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-2xl transition-colors font-semibold"
               >
                 {t('success.button')}
@@ -208,6 +273,17 @@ const ContactForm = () => {
 
   return (
     <div className="relative">
+      {/* Componente de notificación */}
+      <Notification
+        show={notification.show}
+        onClose={() => setNotification(prev => ({ ...prev, show: false }))}
+        type={notification.type}
+        title={notification.title}
+        message={notification.message}
+        autoClose={true}
+        autoCloseDelay={5000}
+      />
+      
       <div className="hidden lg:block lg:absolute lg:inset-0 lg:left-1/2">
         <Image
           alt="Imagen de contacto"

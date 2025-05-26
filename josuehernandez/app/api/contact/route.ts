@@ -1,6 +1,31 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sendContactEmail, validateSMTPConfig, EmailData } from '@/utils/mailer';
 
+// Simple rate limiting usando Map (en producción usar Redis)
+const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
+const RATE_LIMIT_MAX = 5; // Máximo 5 emails por día por IP
+const RATE_LIMIT_WINDOW = 24 * 60 * 60 * 1000; // 24 horas en milisegundos
+
+function checkRateLimit(ip: string): { allowed: boolean; resetTime?: number } {
+  const now = Date.now();
+  const userLimit = rateLimitMap.get(ip);
+  
+  if (!userLimit || now > userLimit.resetTime) {
+    // Primer intento o ventana expirada
+    rateLimitMap.set(ip, { count: 1, resetTime: now + RATE_LIMIT_WINDOW });
+    return { allowed: true };
+  }
+  
+  if (userLimit.count >= RATE_LIMIT_MAX) {
+    return { allowed: false, resetTime: userLimit.resetTime };
+  }
+  
+  // Incrementar contador
+  userLimit.count++;
+  rateLimitMap.set(ip, userLimit);
+  return { allowed: true };
+}
+
 // Función para verificar el token de reCAPTCHA
 async function verifyRecaptcha(token: string): Promise<{ success: boolean; score?: number; error?: string }> {
   const secretKey = process.env.RECAPTCHA_SECRET_KEY;
@@ -47,6 +72,26 @@ async function verifyRecaptcha(token: string): Promise<{ success: boolean; score
 
 export async function POST(request: NextRequest) {
   try {
+    // Obtener IP del cliente
+    const forwarded = request.headers.get('x-forwarded-for');
+    const realIp = request.headers.get('x-real-ip');
+    const ip = forwarded?.split(',')[0] || realIp || 'unknown';
+    
+    // Verificar rate limiting
+    const rateLimitResult = checkRateLimit(ip);
+    if (!rateLimitResult.allowed) {
+      const resetDate = new Date(rateLimitResult.resetTime!);
+      return NextResponse.json(
+        { 
+          error: 'RATE_LIMIT_EXCEEDED',
+          message: 'Has alcanzado el límite diario de mensajes',
+          resetTime: resetDate.toISOString(),
+          details: 'Puedes enviar hasta 5 mensajes por día'
+        },
+        { status: 429 }
+      );
+    }
+
     // Validar configuración SMTP
     validateSMTPConfig();
 
@@ -145,31 +190,73 @@ export async function POST(request: NextRequest) {
     
     // Manejar diferentes tipos de errores
     if (error instanceof Error) {
+      // Error de configuración SMTP
       if (error.message.includes('Variables de entorno faltantes')) {
         return NextResponse.json(
           { 
-            error: 'Error de configuración del servidor',
+            error: 'EMAIL_SERVICE_ERROR',
+            message: 'Servicio de email temporalmente no disponible',
             details: 'Configuración SMTP incompleta'
           },
           { status: 500 }
         );
       }
       
-      if (error.message.includes('Invalid login')) {
+      // Error de autenticación SMTP
+      if (error.message.includes('Invalid login') || error.message.includes('Authentication failed')) {
         return NextResponse.json(
           { 
-            error: 'Error de autenticación del servidor de email',
-            details: 'Credenciales SMTP inválidas'
+            error: 'EMAIL_SERVICE_ERROR',
+            message: 'Servicio de email temporalmente no disponible',
+            details: 'Error de autenticación del servidor de email'
           },
           { status: 500 }
         );
       }
+      
+      // Error de conexión de red
+      if (error.message.includes('ECONNREFUSED') || error.message.includes('ETIMEDOUT')) {
+        return NextResponse.json(
+          { 
+            error: 'EMAIL_SERVICE_ERROR',
+            message: 'Servicio de email temporalmente no disponible',
+            details: 'Error de conexión con el servidor de email'
+          },
+          { status: 503 }
+        );
+      }
+      
+      // Error de límite de envío del proveedor
+      if (error.message.includes('rate limit') || error.message.includes('quota exceeded')) {
+        return NextResponse.json(
+          { 
+            error: 'RATE_LIMIT_EXCEEDED',
+            message: 'Límite de envío alcanzado',
+            details: 'El servicio ha alcanzado su límite de envío. Inténtalo mañana.'
+          },
+          { status: 429 }
+        );
+      }
+      
+      // Error de datos inválidos
+      if (error.message.includes('Invalid') || error.message.includes('validation')) {
+        return NextResponse.json(
+          { 
+            error: 'INVALID_DATA',
+            message: 'Los datos enviados no son válidos',
+            details: error.message
+          },
+          { status: 400 }
+        );
+      }
     }
 
+    // Error genérico del servidor
     return NextResponse.json(
       { 
-        error: 'Error interno del servidor',
-        details: 'No se pudo enviar el email. Inténtalo más tarde.'
+        error: 'SERVER_ERROR',
+        message: 'Error interno del servidor',
+        details: 'No se pudo procesar la solicitud. Inténtalo más tarde.'
       },
       { status: 500 }
     );

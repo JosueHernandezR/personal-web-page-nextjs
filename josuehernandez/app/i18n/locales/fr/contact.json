@@ -53,6 +53,15 @@
     "recaptchaNotReady": "reCAPTCHA n'est pas prêt. Veuillez réessayer.",
     "securityVerification": "Erreur de vérification de sécurité. Veuillez réessayer.",
     "connectionError": "Erreur de connexion. Veuillez réessayer plus tard.",
-    "general": "Erreur lors de l'envoi du message"
+    "general": "Erreur lors de l'envoi du message",
+    "rateLimitExceeded": "Vous avez atteint la limite quotidienne de messages. Veuillez réessayer demain ou me contacter directement par email.",
+    "emailServiceError": "Service d'email temporairement indisponible. Veuillez réessayer plus tard.",
+    "invalidData": "Les données soumises ne sont pas valides. Veuillez vérifier vos informations.",
+    "serverError": "Erreur interne du serveur. Veuillez réessayer plus tard."
+  },
+  "notifications": {
+    "emailSent": "Votre message a été envoyé avec succès. Je vous répondrai bientôt.",
+    "emailQueued": "Votre message est en file d'attente d'envoi. Je vous répondrai bientôt.",
+    "tryAgainLater": "Veuillez réessayer dans quelques minutes."
   }
 } 

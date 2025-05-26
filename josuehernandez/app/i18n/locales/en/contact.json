@@ -53,6 +53,15 @@
     "recaptchaNotReady": "reCAPTCHA is not ready. Please try again.",
     "securityVerification": "Security verification error. Please try again.",
     "connectionError": "Connection error. Please try again later.",
-    "general": "Error sending message"
+    "general": "Error sending message",
+    "rateLimitExceeded": "You've reached the daily message limit. Please try again tomorrow or contact me directly via email.",
+    "emailServiceError": "Email service temporarily unavailable. Please try again later.",
+    "invalidData": "The submitted data is not valid. Please check your information.",
+    "serverError": "Internal server error. Please try again later."
+  },
+  "notifications": {
+    "emailSent": "Your message has been sent successfully. I'll respond soon.",
+    "emailQueued": "Your message is queued for sending. I'll respond soon.",
+    "tryAgainLater": "Please try again in a few minutes."
   }
 } 
