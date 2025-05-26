@@ -438,11 +438,12 @@ const DitheredWaves: React.FC<Props> = ({
         cancelAnimationFrame(animationFrameRef.current);
       }
       
+      const container = containerRef.current;
       if (rendererRef.current) {
         rendererRef.current.domElement.removeEventListener('mousemove', handleMouseMove);
         rendererRef.current.dispose();
-        if (containerRef.current && containerRef.current.contains(rendererRef.current.domElement)) {
-          containerRef.current.removeChild(rendererRef.current.domElement);
+        if (container && container.contains(rendererRef.current.domElement)) {
+          container.removeChild(rendererRef.current.domElement);
         }
       }
       

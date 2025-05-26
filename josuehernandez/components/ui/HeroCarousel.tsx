@@ -11,7 +11,6 @@ import {
   LinkedInIcon,
   TwitterIcon,
 } from "../icons/SocialIcons";
-import { DownloadFileIcon } from "../icons/Icons";
 import LoadingSkeleton from "./LoadingSkeleton";
 
 interface SocialLink {

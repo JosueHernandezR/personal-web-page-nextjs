@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { FadeIn, FadeInStagger } from '@/components/ui/Fade';
 import { ReCaptchaWrapper, useReCaptcha } from '@/components/ui/ReCaptchaWrapper';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -208,10 +209,13 @@ const ContactForm = () => {
   return (
     <div className="relative">
       <div className="lg:absolute lg:inset-0 lg:left-1/2">
-        <img
-          alt=""
-          src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&crop=focalpoint&fp-x=.4&w=2560&h=3413&&q=80"
-          className="h-64 w-full bg-gray-50 object-cover sm:h-80 lg:absolute lg:h-full"
+        <Image
+          alt="Imagen de contacto"
+          src="/photos/horizontal/personal_web_page-06.jpg"
+          fill
+          className="bg-gray-50 object-cover"
+          sizes="(max-width: 1024px) 100vw, 50vw"
+          priority
         />
       </div>
       <div className="pt-16 pb-24 sm:pt-24 sm:pb-32 lg:mx-auto lg:grid lg:max-w-7xl lg:grid-cols-2 lg:pt-32">

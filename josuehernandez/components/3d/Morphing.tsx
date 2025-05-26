@@ -706,7 +706,7 @@ const SuperformulaWireframe: React.FC = () => {
         rendererRef.current.dispose();
       }
     };
-  }, []);
+  }, [animate, createWireframe]);
 
   // Efecto para cambiar tema cada 7 segundos
   useEffect(() => {
@@ -731,7 +731,7 @@ const SuperformulaWireframe: React.FC = () => {
     return () => {
       clearInterval(themeInterval);
     };
-  }, []);
+  }, [updateWireframeGeometry]);
 
   return (
     <div className="w-full h-full relative bg-[#050508] overflow-hidden">
