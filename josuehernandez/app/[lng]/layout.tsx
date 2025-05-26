@@ -117,8 +117,7 @@ export default async function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         
-        {/* Manifest para PWA */}
-        <link rel="manifest" href="/manifest.json" />
+
         
         {/* Favicon */}
         <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -148,24 +147,8 @@ export default async function RootLayout({
         <SpeedInsights />
         <Analytics />
         
-        {/* Registro del Service Worker */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              if ('serviceWorker' in navigator) {
-                window.addEventListener('load', function() {
-                  navigator.serviceWorker.register('/sw.js')
-                    .then(function(registration) {
-                      console.log('SW registered: ', registration);
-                    })
-                    .catch(function(registrationError) {
-                      console.log('SW registration failed: ', registrationError);
-                    });
-                });
-              }
-            `,
-          }}
-        />
+
+
       </body>
     </html>
   );

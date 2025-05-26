@@ -71,16 +71,7 @@ async function verifyRecaptcha(token: string): Promise<{ success: boolean; score
 }
 
 export async function POST(request: NextRequest) {
-  console.log('=== API CONTACT - INICIO ===');
-  console.log('Environment:', process.env.NODE_ENV);
-  
   try {
-    // Verificar variables de entorno críticas al inicio
-    console.log('Verificando variables de entorno...');
-    console.log('SMTP_USER:', process.env.SMTP_USER ? 'OK' : 'FALTANTE');
-    console.log('SMTP_PASSWORD:', process.env.SMTP_PASSWORD ? 'OK' : 'FALTANTE');
-    console.log('RECAPTCHA_SECRET_KEY:', process.env.RECAPTCHA_SECRET_KEY ? 'OK' : 'FALTANTE');
-    
     // Obtener IP del cliente
     const forwarded = request.headers.get('x-forwarded-for');
     const realIp = request.headers.get('x-real-ip');
@@ -102,21 +93,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Validar configuración SMTP
-    console.log('Validando configuración SMTP...');
-    try {
-      validateSMTPConfig();
-      console.log('Configuración SMTP válida');
-    } catch (smtpError) {
-      console.error('Error de configuración SMTP:', smtpError);
-      return NextResponse.json(
-        { 
-          error: 'EMAIL_SERVICE_ERROR',
-          message: 'Servicio de email no configurado correctamente',
-          details: smtpError instanceof Error ? smtpError.message : 'Error de configuración SMTP'
-        },
-        { status: 500 }
-      );
-    }
+    validateSMTPConfig();
 
     // Obtener los datos del formulario
     const body = await request.json();
@@ -196,16 +173,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Enviar email
-    console.log('Intentando enviar email...');
-    console.log('Email data:', { 
-      name: emailData.name, 
-      email: emailData.email, 
-      subject: emailData.subject,
-      messageLength: emailData.message.length 
-    });
-    
     const result = await sendContactEmail(emailData);
-    console.log('Email enviado exitosamente:', result.messageId);
 
     return NextResponse.json(
       {
