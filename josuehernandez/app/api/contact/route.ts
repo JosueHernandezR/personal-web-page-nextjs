@@ -97,7 +97,7 @@ export async function POST(request: NextRequest) {
 
     // Obtener los datos del formulario
     const body = await request.json();
-    const { name, email, subject, message, recaptchaToken } = body;
+    const { name, email, subject, message, company, recaptchaToken } = body;
 
     // Validar datos requeridos
     if (!name || !email || !subject || !message) {
@@ -148,6 +148,7 @@ export async function POST(request: NextRequest) {
       email: email.trim(),
       subject: subject.trim(),
       message: message.trim(),
+      company: company?.trim() || undefined,
     };
 
     // Validar longitud de campos

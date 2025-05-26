@@ -41,7 +41,7 @@ async function verifySMTPConfig() {
     console.log('📨 Enviando email de prueba...');
     const testEmail = {
       from: {
-        name: process.env.SMTP_FROM_NAME || 'Test',
+        name: 'Test',
         address: process.env.SMTP_FROM_EMAIL || process.env.SMTP_USER,
       },
       to: process.env.CONTACT_EMAIL || process.env.SMTP_USER,

@@ -22,6 +22,7 @@ export interface EmailData {
   email: string;
   subject: string;
   message: string;
+  company?: string;
 }
 
 export const sendContactEmail = async (emailData: EmailData) => {
@@ -31,7 +32,7 @@ export const sendContactEmail = async (emailData: EmailData) => {
     // Configuración del email
     const mailOptions = {
       from: {
-        name: process.env.SMTP_FROM_NAME || 'Formulario de Contacto',
+        name: emailData.company || 'Formulario de Contacto',
         address: process.env.SMTP_FROM_EMAIL || process.env.SMTP_USER || '',
       },
       to: process.env.CONTACT_EMAIL || process.env.SMTP_USER,
@@ -45,6 +46,7 @@ export const sendContactEmail = async (emailData: EmailData) => {
           <div style="background-color: #f9f9f9; padding: 20px; border-radius: 5px; margin: 20px 0;">
             <p><strong>Nombre:</strong> ${emailData.name}</p>
             <p><strong>Email:</strong> ${emailData.email}</p>
+            ${emailData.company ? `<p><strong>Empresa:</strong> ${emailData.company}</p>` : ''}
             <p><strong>Asunto:</strong> ${emailData.subject}</p>
           </div>
           
@@ -65,7 +67,8 @@ export const sendContactEmail = async (emailData: EmailData) => {
         Nuevo mensaje de contacto
         
         Nombre: ${emailData.name}
-        Email: ${emailData.email}
+        Email: ${emailData.email}${emailData.company ? `
+        Empresa: ${emailData.company}` : ''}
         Asunto: ${emailData.subject}
         
         Mensaje:

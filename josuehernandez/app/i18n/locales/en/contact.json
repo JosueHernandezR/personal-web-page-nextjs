@@ -24,7 +24,9 @@
       }
     },
     "company": {
-      "label": "Company"
+      "label": "Company",
+      "optional": "Optional",
+      "placeholder": "Your company or organization name"
     },
     "phone": {
       "label": "Phone",

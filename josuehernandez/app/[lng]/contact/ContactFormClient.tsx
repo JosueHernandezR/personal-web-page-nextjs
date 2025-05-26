@@ -147,7 +147,8 @@ const ContactForm = () => {
         name: `${formData.firstName} ${formData.lastName}`,
         email: formData.email,
         subject: `Nuevo mensaje${formData.company ? ` de ${formData.company}` : ''}`,
-        message: `${formData.message}${formData.phone ? `\n\nTeléfono de contacto: ${formData.phone}` : ''}${formData.company ? `\nEmpresa: ${formData.company}` : ''}`,
+        message: `${formData.message}${formData.phone ? `\n\nTeléfono de contacto: ${formData.phone}` : ''}`,
+        company: formData.company || undefined,
         recaptchaToken
       };
 
@@ -401,9 +402,12 @@ const ContactForm = () => {
                 {/* Empresa */}
                 <FadeIn>
                   <div>
-                    <label htmlFor="company" className="block text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">
-                      {t('form.company.label')}
-                    </label>
+                    <div className="flex justify-between items-center mb-4">
+                      <label htmlFor="company" className="block text-lg font-medium text-gray-900 dark:text-gray-100">
+                        {t('form.company.label')}
+                      </label>
+                      <span className="text-sm text-gray-400">{t('form.company.optional')}</span>
+                    </div>
                     <input
                       id="company"
                       name="company"
@@ -411,6 +415,7 @@ const ContactForm = () => {
                       value={formData.company}
                       onChange={handleInputChange}
                       autoComplete="organization"
+                      placeholder={t('form.company.placeholder')}
                       className="block w-full rounded-2xl bg-transparent border-2 border-gray-300 dark:border-gray-600 px-4 py-4 text-base text-gray-900 dark:text-gray-100 placeholder:text-gray-400 focus:outline-none focus:ring-0 focus:border-gray-500 dark:focus:border-gray-400 transition-colors"
                       disabled={isSubmitting}
                     />

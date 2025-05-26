@@ -24,7 +24,9 @@
       }
     },
     "company": {
-      "label": "Entreprise"
+      "label": "Entreprise",
+      "optional": "Optionnel",
+      "placeholder": "Nom de votre entreprise ou organisation"
     },
     "phone": {
       "label": "Téléphone",

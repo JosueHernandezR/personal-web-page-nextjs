@@ -28,7 +28,7 @@ SMTP_HOST=smtp.mail.me.com
 SMTP_PORT=587
 SMTP_USER=tu-email@icloud.com
 SMTP_PASSWORD=tu-contraseña-especifica-de-app
-SMTP_FROM_NAME=Tu Nombre o Empresa
+
 SMTP_FROM_EMAIL=tu-email@icloud.com
 
 # Email donde recibirás los mensajes del formulario
