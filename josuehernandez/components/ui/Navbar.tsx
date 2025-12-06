@@ -67,7 +67,7 @@ export default function Navbar() {
             </button>
           </div>
           <div className="flex flex-1 items-center justify-center sm:justify-start">
-            <div className="flex flex-shrink-0 items-center md:mr-2">
+            <div className="flex shrink-0 items-center md:mr-2">
               <Link href={"/"}>
                 <Image
                   src={Avatar}

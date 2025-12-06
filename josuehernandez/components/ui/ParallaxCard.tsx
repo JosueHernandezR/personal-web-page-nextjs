@@ -159,7 +159,7 @@ export function ParallaxCard({
   return (
     <article
       ref={cardRef}
-      className="w-full aspect-[4/3] max-h-[calc(100svh-1rem)] relative overflow-hidden max-w-[calc(100%)] portrait:min-h-[330px] rounded-2xl mx-auto md:mx-0"
+      className="w-full aspect-4/3 max-h-[calc(100svh-1rem)] relative overflow-hidden max-w-[calc(100%)] portrait:min-h-[330px] rounded-2xl mx-auto md:mx-0"
       style={{
         "--x": "0",
         "--y": "0",
@@ -167,7 +167,7 @@ export function ParallaxCard({
     >
       <div className="assets absolute inset-0 overflow-hidden">
         {/* Sky Background Image */}
-        <div ref={bgImageRef} className="absolute top-0 left-0 w-full h-full will-change-transform transition-transform duration-[50ms] scale-[1.05]">
+        <div ref={bgImageRef} className="absolute top-0 left-0 w-full h-full will-change-transform transition-transform duration-50 scale-[1.05]">
           <Image
             className="object-cover select-none pointer-events-none saturate-[1.5] brightness-[0.9] scale-[1.2]"
             src={backgroundImage}
@@ -187,7 +187,7 @@ export function ParallaxCard({
         </h3>
         
         {/* Castle/Temple Image */}
-        <div ref={middleImageRef} className="absolute top-0 left-0 w-full h-full will-change-transform transition-transform duration-[50ms] scale-[1.05]">
+        <div ref={middleImageRef} className="absolute top-0 left-0 w-full h-full will-change-transform transition-transform duration-50 scale-[1.05]">
           <Image
             className="object-cover object-[center_75%] select-none pointer-events-none scale-[1.2]"
             src={middleImage}
@@ -200,7 +200,7 @@ export function ParallaxCard({
       </div>
 
       {/* Implementación del blur exactamente como en el ejemplo proporcionado */}
-      <div className="blurs absolute inset-0 [--layers:5] z-[15]">
+      <div className="blurs absolute inset-0 [--layers:5] z-15">
         <div>
           <div className="layer absolute inset-0" style={{"--index": 1} as React.CSSProperties}/>
           <div className="layer absolute inset-0" style={{"--index": 2} as React.CSSProperties}/>

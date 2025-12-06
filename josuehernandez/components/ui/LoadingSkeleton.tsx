@@ -22,7 +22,7 @@ const LoadingSkeleton: React.FC<LoadingSkeletonProps> = ({
           role="status"
           aria-label="Cargando contenido del carrusel"
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900"></div>
+          <div className="absolute inset-0 bg-linear-to-r from-gray-900 via-gray-800 to-gray-900"></div>
           <div className="absolute inset-0 z-10 p-6 md:p-8 lg:p-12 md:mt-[64px] flex flex-col justify-start items-start">
             <div className="w-full pr-16 pt-8">
               {/* Título skeleton */}
