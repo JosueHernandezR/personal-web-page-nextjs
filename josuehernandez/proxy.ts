@@ -23,7 +23,7 @@ export const config = {
   matcher: ["/((?!api|_next/static|_next/image|assets|favicon.ico|sw.js).*)"]
 };
 
-export function middleware(req: NextRequest) {
+export default function proxy(req: NextRequest) {
   // Comprobar si la ruta debe ser excluida
   const pathname = req.nextUrl.pathname;
   
@@ -94,3 +94,4 @@ export function middleware(req: NextRequest) {
   });
   return response;
 }
+
