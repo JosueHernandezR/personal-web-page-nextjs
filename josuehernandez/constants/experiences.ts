@@ -2,6 +2,26 @@ import { Experience } from "@/types";
 
 export const experiences: Experience[] = [
     {
+        title: "title_3",
+        company: "company_3",
+        companyURL: "https://motivus.com/",
+        companyLogo: "/images/mexico_escudo.png",
+        location: "location_3",
+        type: "type_3",
+        date: "date_3",
+        description: "description_3",
+        skills: [
+            "Backend",
+            "Frontend",
+            "Docker",
+            "Python",
+            "FastAPI",
+            "TypeScript",
+            "NextJS",
+            "Testing"
+        ]
+    },
+    {
         title: "title_1",
         company: "company_1",
         companyURL: "https://grupoolmecamayamexica.com.mx/",

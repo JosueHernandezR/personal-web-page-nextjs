@@ -44,11 +44,20 @@ export default function HeroCarousel({
   const [isMounted, setIsMounted] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [loadedByIndex, setLoadedByIndex] = useState<Record<number, boolean>>(
+    {},
+  );
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
   const [isMobile, setIsMobile] = useState(true);
   const isScrollingRef = useRef(false);
   const scrollTimeoutRef = useRef<number | null>(null);
+
+  const markLoaded = useCallback((index: number) => {
+    setLoadedByIndex((prev) =>
+      prev[index] ? prev : { ...prev, [index]: true },
+    );
+  }, []);
 
   // Detectar si estamos en móvil o desktop
   useEffect(() => {
@@ -113,7 +122,7 @@ export default function HeroCarousel({
     if (isTransitioning) return;
     setIsTransitioning(true);
     setCurrentIndex((prevIndex) =>
-      prevIndex === images.length - 1 ? 0 : prevIndex + 1
+      prevIndex === images.length - 1 ? 0 : prevIndex + 1,
     );
     setTimeout(() => setIsTransitioning(false), 500);
   }, [isTransitioning, images.length]);
@@ -122,10 +131,27 @@ export default function HeroCarousel({
     if (isTransitioning) return;
     setIsTransitioning(true);
     setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? images.length - 1 : prevIndex - 1
+      prevIndex === 0 ? images.length - 1 : prevIndex - 1,
     );
     setTimeout(() => setIsTransitioning(false), 500);
   }, [isTransitioning, images.length]);
+
+  // Precargar siguiente/previa para minimizar flashes
+  useEffect(() => {
+    if (!isMounted || images.length <= 1) return;
+    const nextIndex = currentIndex === images.length - 1 ? 0 : currentIndex + 1;
+    const prevIndex = currentIndex === 0 ? images.length - 1 : currentIndex - 1;
+
+    const preload = (idx: number) => {
+      const src = images[idx]?.src;
+      if (!src) return;
+      const img = new window.Image();
+      img.src = src;
+    };
+
+    preload(nextIndex);
+    preload(prevIndex);
+  }, [currentIndex, images, isMounted]);
 
   // Autoplay
   useEffect(() => {
@@ -169,7 +195,7 @@ export default function HeroCarousel({
       overflow: "hidden",
       position: "relative" as const,
     }),
-    [scrollProgress]
+    [scrollProgress],
   ) as () => React.CSSProperties;
 
   // Mostrar skeleton mientras las imágenes cargan
@@ -178,64 +204,73 @@ export default function HeroCarousel({
   }
 
   return (
-    <div className="w-full relative overflow-hidden" style={{ height: "100vh", minHeight: "600px" }}>
+    <div
+      className={`w-full relative ${isMobile ? "overflow-visible" : "overflow-hidden"}`}
+      style={{ height: "100vh", minHeight: "600px" }}
+    >
       <div
         ref={heroRef}
         className="relative w-full overflow-hidden"
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          height: "100%",
-          width: "100%",
-          ...(isMobile ? containerStyle() : {})
-        }}
+        style={
+          isMobile
+            ? containerStyle()
+            : {
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                height: "100%",
+                width: "100%",
+                overflow: "hidden",
+              }
+        }
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
         {/* Preconnect para recursos externos */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+
         {/* Placeholder para reservar espacio */}
-        <div className="absolute inset-0 bg-gray-900" style={{ height: "100%", width: "100%" }} />
-        
+        <div
+          className="absolute inset-0 bg-gray-900"
+          style={{ height: "100%", width: "100%" }}
+        />
+
         {/* Imágenes del carrusel con optimizaciones */}
         {images.map(({ src, blurDataURL }, index) => (
           <div
             key={index}
-            className={`absolute inset-0 w-full h-full transition-all duration-500 ease-in-out
-              ${
-                index === currentIndex
-                  ? "opacity-100 z-0 translate-x-0"
-                  : "opacity-0 -z-10"
-              }
-              ${!isMobile && index < currentIndex ? "-translate-x-full" : ""}
-              ${!isMobile && index > currentIndex ? "translate-x-full" : ""}
+            className={`absolute inset-0 w-full h-full overflow-hidden transition-[opacity,transform] duration-500 ease-in-out will-change-transform will-change-opacity
+              ${index === currentIndex ? "opacity-100 z-10 translate-x-0" : "opacity-0 z-0"}
             `}
             style={{ height: "100%", position: "absolute", overflow: "hidden" }}
+            aria-hidden={index !== currentIndex}
           >
             <Image
               src={src}
               alt={`Imagen ${index + 1}`}
               fill
-              className="object-cover"
+              className={`object-cover transition-[filter,transform,opacity] duration-700 ease-out ${
+                loadedByIndex[index] ? "opacity-100" : "opacity-95"
+              }`}
               priority={index === 0} // Solo la primera imagen con priority
               loading={index === 0 ? "eager" : "lazy"} // Lazy loading para el resto
               sizes="100vw"
               placeholder={blurDataURL ? "blur" : "empty"}
               blurDataURL={blurDataURL}
               quality={index === 0 ? 85 : 75} // Mayor calidad solo para la primera imagen
-              onLoad={() => {
-                // Precargar la siguiente imagen
-                if (index === currentIndex && index < images.length - 1) {
-                  const nextImage = new window.Image();
-                  nextImage.src = images[index + 1].src;
-                }
+              style={{
+                filter: loadedByIndex[index] ? "blur(0px)" : "blur(18px)",
+                transform: loadedByIndex[index] ? "scale(1)" : "scale(1.03)",
               }}
+              onLoadingComplete={() => markLoaded(index)}
             />
             {/* Overlay oscuro uniforme para toda la imagen */}
             <div className="absolute inset-0 bg-black/20"></div>
@@ -289,10 +324,10 @@ export default function HeroCarousel({
                     socialLink.name === "github"
                       ? GitHubIcon
                       : socialLink.name === "linkedin"
-                      ? LinkedInIcon
-                      : socialLink.name === "twitter"
-                      ? TwitterIcon
-                      : GoogleScholarIcon
+                        ? LinkedInIcon
+                        : socialLink.name === "twitter"
+                          ? TwitterIcon
+                          : GoogleScholarIcon
                   }
                 />
               ))}
@@ -348,7 +383,7 @@ export default function HeroCarousel({
         )}
 
         {/* Indicadores de slides (puntos) con mejor accesibilidad */}
-        <div 
+        <div
           className="absolute bottom-8 right-6 md:right-12 z-20 px-6 md:px-12 xl:px-16"
           role="tablist"
           aria-label="Navegación del carrusel"
@@ -365,9 +400,9 @@ export default function HeroCarousel({
                   setTimeout(() => setIsTransitioning(false), 500);
                 }}
                 className={`w-3 h-3 rounded-full transition-all focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black/50 ${
-                  index === currentIndex 
-                    ? 'bg-white scale-125 shadow-lg' 
-                    : 'bg-white/60 hover:bg-white/80'
+                  index === currentIndex
+                    ? "bg-white scale-125 shadow-lg"
+                    : "bg-white/60 hover:bg-white/80"
                 }`}
                 aria-label={`Ir a la imagen ${index + 1} de ${images.length}`}
                 aria-selected={index === currentIndex}
@@ -380,3 +415,4 @@ export default function HeroCarousel({
     </div>
   );
 }
+

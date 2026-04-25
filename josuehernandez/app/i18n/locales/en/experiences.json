@@ -10,7 +10,7 @@
   "companyURL_1": "https://grupoolmecamayamexica.com.mx/",
   "location_1": "Santa Lucía, EDOMEX",
   "type_1": "Full-time",
-  "date_1": "2021 - Present",
+  "date_1": "Jan 2021 - Jul 2025",
   "description_1": "Led the design and development of the document management system for GAFSACOMM business meetings, overseeing the development process, and conducting comprehensive testing.",
   "title_2": "Mobile Developer Leader",
   "company_2": "GeekInc",
@@ -20,5 +20,12 @@
   "date_2": "Jan 2022 - Jan 2023",
   "description_2": "Led the development of a mobile application using Flutter, GraphQL, and AWS, ensuring scalable architecture and effective state management with BLoC.",
   "showMore": "Show more",
-  "showLess": "Show less"
+  "showLess": "Show less",
+  "title_3": "Intermediate Mobile Cross-Platform Developer",
+  "company_3": "MOTIVUS",
+  "companyURL_3": "https://motivus.com/",
+  "location_3": "Remote",
+  "type_3": "Full-time",
+  "date_3": "Jul 2025 - Present",
+  "description_3": "During the first few months, I led the development of a mobile app for a major national bank, initially built with AngularJS. Later, we migrated to Flutter, where I’ve contributed to the design and architecture of critical modules."
 }
