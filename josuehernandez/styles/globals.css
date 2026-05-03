@@ -4,6 +4,7 @@
 :root {
   --background: #ededed;
   --foreground: #171717;
+  --pgf-ring-w: 4px;
 }
 [data-theme="dark"] {
   --background: #171717;
@@ -89,7 +90,7 @@ article[style*="--x"] {
 }
 
 .content p:first-of-type::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: calc(100% + 1rem);
   left: 50%;
@@ -108,9 +109,7 @@ article[style*="--x"] {
   --blur: calc(
     sin(((var(--layers) - var(--index)) / var(--layers)) * 45deg) * 30
   );
-  --stop: calc(
-    sin(((var(--index)) / var(--layers)) * 45deg) * 35
-  );
+  --stop: calc(sin(((var(--index)) / var(--layers)) * 45deg) * 35);
   backdrop-filter: blur(calc(var(--blur) * 1px));
   mask: radial-gradient(
     140% 130% at 45% 90%,
@@ -128,10 +127,192 @@ article[style*="--x"] {
   pointer-events: none;
 }
 
-@layer utilities {
-  .custom-mask {
-    background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,0) 100%);
-    mask-image: linear-gradient(to top, black 0%, black 40%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to top, black 0%, black 40%, transparent 100%);
+/* ---------- Card proyectos: marco degradado + tilt 3D (sólo contenedor imagen .pgf-view--media) ---------- */
+/* Permite que la sombra exterior del shell no la recorten los padres inmediatos. */
+.pgf-view.pgf-view--media {
+  overflow: visible;
+}
+
+.pgf-view {
+  perspective: 1380px;
+  perspective-origin: 50% 50%;
+}
+
+.pgf-shell {
+  --pvx: 0;
+  --pvy: 0;
+  /* Posición normalizada para máscara tipo linterna (hereda al halo .ambient) */
+  --spot-x: 50%;
+  --spot-y: 50%;
+  transform-origin: center center;
+  will-change: transform;
+  transform: rotateY(calc(clamp(-1, var(--pvx, 0), 1) * 5deg))
+    rotateX(calc(clamp(-1, var(--pvy, 0), 1) * -9deg));
+  border-radius: 1rem;
+}
+
+.pgf-frame {
+  border-radius: inherit;
+}
+
+.pgf-inner {
+  min-width: 0;
+  overflow: hidden;
+}
+
+/*
+ * Sin segundo “border”: sin inset box-shadow ni trazo duro.
+ * El fundido exterior es sólo sombra muy difusa; el interior se funde por máscara en .plate.
+ */
+.pgf-inner--media {
+  padding: 0;
+  border-radius: inherit;
+  background: transparent;
+}
+
+[data-theme="dark"] .pgf-shell {
+  box-shadow: 0 40px 80px rgb(0 0 0 / 0.55), 0 16px 40px rgb(0 0 0 / 0.35);
+}
+
+html:not([data-theme="dark"]) .pgf-shell {
+  box-shadow: 0 32px 72px rgb(15 23 42 / 0.14), 0 12px 28px rgb(15 23 42 / 0.06);
+}
+
+@media (min-width: 640px) {
+  .pgf-inner--media {
+    padding: 0;
   }
 }
+
+/* Halo de color en la foto (hereda --pvx / --pvy del shell) */
+.project-glow-thumb {
+  container-type: size;
+  isolation: isolate;
+}
+
+.project-glow-thumb__plate {
+  transform: none;
+  /* Alfa suave hacia fuera (no es borde nuevo: es transparencia en el mismo recorte). */
+  -webkit-mask-image: radial-gradient(
+    ellipse 109% 105% at 50% 46%,
+    #000 0%,
+    #000 72%,
+    rgba(0, 0, 0, 0.52) 86%,
+    rgba(0, 0, 0, 0.1) 96%,
+    transparent 101%
+  );
+  mask-image: radial-gradient(
+    ellipse 109% 105% at 50% 46%,
+    #000 0%,
+    #000 72%,
+    rgba(0, 0, 0, 0.52) 86%,
+    rgba(0, 0, 0, 0.1) 96%,
+    transparent 101%
+  );
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.project-glow-thumb__ambient {
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  /* Halo legible sólo ~cerca del puntero (--spot-*); fuera se atenúa (CodePen spotlight). */
+  /*
+   * Alcance corto ~90–118px desde el centro (responde a --spot-* del padre por herencia CSS).
+   * El color perceptible sigue siendo el de la foto (blur de la misma src).
+   */
+  -webkit-mask-image: radial-gradient(
+    circle min(118px, 30cqi) at var(--spot-x, 50%) var(--spot-y, 50%),
+    rgb(255 255 255 / 1) 0%,
+    rgb(255 255 255 / 0.82) 40%,
+    rgb(255 255 255 / 0.12) 72%,
+    transparent 91%
+  );
+  mask-image: radial-gradient(
+    circle min(118px, 30cqi) at var(--spot-x, 50%) var(--spot-y, 50%),
+    rgb(255 255 255 / 1) 0%,
+    rgb(255 255 255 / 0.82) 40%,
+    rgb(255 255 255 / 0.12) 72%,
+    transparent 91%
+  );
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  mask-mode: alpha;
+  opacity: var(--pg-icon-opacity, 0.92);
+  transform-origin: center center;
+  will-change: transform, filter;
+  /*
+   * Fuente visual = la misma imagen (blur + saturate); sólo llega donde la máscara lo permite.
+   * Orden escala→drift igual que antes.
+   */
+  transform: scale(var(--pg-icon-scale, 4))
+    translate(
+      calc(clamp(-1, var(--pvx, 0), 1) * 42cqi / var(--pg-icon-scale, 4)),
+      calc(clamp(-1, var(--pvy, 0), 1) * 42cqh / var(--pg-icon-scale, 4))
+    );
+  filter: blur(calc(var(--pg-icon-blur, 32) * 1px))
+    saturate(var(--pg-icon-saturate, 6))
+    brightness(var(--pg-icon-brightness, 1.45))
+    contrast(var(--pg-icon-contrast, 1.55));
+}
+
+/* Imágenes centradas geométricamente (responsive); object-cover sólo después de centrar la caja. */
+.project-glow-thumb__layer-img,
+.project-glow-thumb__front {
+  box-sizing: border-box;
+  display: block;
+  margin: 0;
+  padding: 0;
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+
+/* Halo: sobredimensión centrada antes del blur+escala del padre (.ambient) */
+.project-glow-thumb__ambient .project-glow-thumb__layer-img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: auto;
+  height: auto;
+  min-width: 118%;
+  min-height: 118%;
+  transform: translate(-50%, -50%);
+}
+
+/* Fotografía nítida centrada dentro del hueco (--pg-front-inset por lado). */
+.project-glow-thumb__front {
+  inset: unset;
+  left: 50%;
+  top: 50%;
+  width: calc(
+    100% - var(--pg-front-inset, 4.5%) - var(--pg-front-inset, 4.5%)
+  );
+  height: calc(
+    100% - var(--pg-front-inset, 4.5%) - var(--pg-front-inset, 4.5%)
+  );
+  transform: translate(-50%, -50%);
+  border-radius: 0.75rem;
+  z-index: 4;
+  will-change: auto;
+}
+
+@layer utilities {
+  .custom-mask {
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.6) 0%,
+      rgba(0, 0, 0, 0.3) 40%,
+      rgba(0, 0, 0, 0) 100%
+    );
+    mask-image: linear-gradient(to top, black 0%, black 40%, transparent 100%);
+    -webkit-mask-image: linear-gradient(
+      to top,
+      black 0%,
+      black 40%,
+      transparent 100%
+    );
+  }
+}
+
