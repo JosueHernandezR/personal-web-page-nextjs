@@ -1,5 +1,5 @@
 /**
- * Parallax tipo ParallaxCard (viewport −1…1) y giro amplificado en táctiles
+ * Parallax tipo ParallaxCard (viewport −1…1) y giro en táctiles
  * mediante DeviceOrientationEvent (atenuado en móvil).
  */
 
@@ -25,13 +25,18 @@ export function updateViewportNorm(clientX: number, clientY: number) {
   notify();
 }
 
-/** Móvil: priorizar gyro; escritorio/trackpad fine: ratón viewport. */
+/** Táctil / sin hover fino ⇒ gyro; escritorio ⇒ ratón viewport. */
 export function preferOrientationMotion(): boolean {
   if (typeof window === "undefined") return false;
-  const narrow = window.matchMedia("(max-width: 767px)");
   const coarse = window.matchMedia("(pointer: coarse)");
   const noHover = window.matchMedia("(hover: none)");
-  return narrow.matches && (coarse.matches || noHover.matches);
+  const hasTouch =
+    typeof navigator !== "undefined" && navigator.maxTouchPoints > 0;
+  /*
+   * No usar sólo max-width: en landscape (~844 CSS px) el tilt caía en “viewport de ratón”
+   * y xy quedaba fijo en 0 sin moverse el teléfono.
+   */
+  return hasTouch && (coarse.matches || noHover.matches);
 }
 
 /** Parallax acumulado (orientación atenuada o ratón viewport). */
@@ -40,7 +45,7 @@ export function getParallaxDrive(): MotionVec {
   return { ...viewportSnap };
 }
 
-export const MOBILE_TILT_FACTOR = 0.38;
+export const MOBILE_TILT_FACTOR = 0.52;
 
 /* --- Singleton listeners --- */
 
@@ -49,8 +54,10 @@ interface DeviceOrientationEventiOS extends DeviceOrientationEvent {
 }
 
 let mouseBound = false;
-let orientationAttached = false;
-let gestureInitQueued = false;
+let orientationListening = false;
+/** iOS: varios handlers en window; primera interacción dispara permiso/listener una sola vez. */
+let iosGestureBusy = false;
+let iosGestureHandlersInstalled = false;
 
 function mapOrientation(ev: DeviceOrientationEvent): MotionVec | null {
   const { beta, gamma } = ev;
@@ -72,44 +79,68 @@ function mapOrientation(ev: DeviceOrientationEvent): MotionVec | null {
   };
 }
 
-function attachDeviceOrientationListening() {
-  if (orientationAttached || typeof window === "undefined") return;
-
-  function onOrient(ev: DeviceOrientationEvent) {
-    const mapped = mapOrientation(ev);
-    if (!mapped) return;
-    orientSnap.x = mapped.x;
-    orientSnap.y = mapped.y;
-    notify();
-  }
-
-  orientationAttached = true;
-  window.addEventListener("deviceorientation", onOrient, { passive: true });
+function onDeviceOrientation(ev: DeviceOrientationEvent) {
+  const mapped = mapOrientation(ev);
+  if (!mapped) return;
+  orientSnap.x = mapped.x;
+  orientSnap.y = mapped.y;
+  notify();
 }
 
-/** Primera pulsación igual que ParallaxCard (permiso iOS). */
-function queueOrientationGestureGate() {
-  if (gestureInitQueued || typeof window === "undefined") return;
-  gestureInitQueued = true;
+function attachDeviceOrientationListening() {
+  if (orientationListening || typeof window === "undefined") return;
+  orientationListening = true;
+  window.addEventListener("deviceorientation", onDeviceOrientation, {
+    passive: true,
+  });
+}
 
-  const initiate = () => {
+function iosRequiresPermissionGesture(): boolean {
+  return (
+    typeof DeviceOrientationEvent !== "undefined" &&
+    typeof (DeviceOrientationEvent as unknown as DeviceOrientationEventiOS)
+      .requestPermission === "function"
+  );
+}
+
+/** iOS 13+: requestPermission en el mismo gesto; evitar doble disparo pointerdown+touchend. */
+function installIOSOrientationGestureGate() {
+  if (
+    iosGestureHandlersInstalled ||
+    orientationListening ||
+    typeof window === "undefined"
+  )
+    return;
+  iosGestureHandlersInstalled = true;
+
+  const onUserGesture = () => {
+    if (orientationListening || iosGestureBusy) return;
+    iosGestureBusy = true;
+
     const requestPermission = (
       DeviceOrientationEvent as unknown as DeviceOrientationEventiOS
     ).requestPermission;
-    const ios = typeof requestPermission === "function";
 
-    if (ios) {
-      void requestPermission().then((r) => {
-        if (r === "granted") attachDeviceOrientationListening();
-      });
+    if (typeof requestPermission === "function") {
+      void requestPermission()
+        .then((r) => {
+          if (r === "granted") attachDeviceOrientationListening();
+        })
+        .finally(() => {
+          iosGestureBusy = false;
+        });
     } else {
       attachDeviceOrientationListening();
+      iosGestureBusy = false;
     }
   };
 
-  window.document.body?.addEventListener("click", initiate, { once: true });
-  window.document.body?.addEventListener("touchend", initiate, {
-    once: true,
+  window.addEventListener("pointerdown", onUserGesture, {
+    capture: true,
+    passive: true,
+  });
+  window.addEventListener("touchend", onUserGesture, {
+    capture: true,
     passive: true,
   });
 }
@@ -133,7 +164,14 @@ export function subscribeThumbnailParallax(listener: () => void): () => void {
   if (typeof window === "undefined") return () => {};
 
   ticks.add(listener);
-  queueOrientationGestureGate();
+
+  if (iosRequiresPermissionGesture()) {
+    installIOSOrientationGestureGate();
+  } else {
+    /* Android y demás Chromium: gyro sin esperar click ficticio en document.body */
+    attachDeviceOrientationListening();
+  }
+
   ensureMouseListening();
 
   return () => {
