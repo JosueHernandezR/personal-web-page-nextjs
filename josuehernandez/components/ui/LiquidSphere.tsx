@@ -420,7 +420,8 @@ const LiquidSphere = () => {
     
     // Animación
     const clock = new THREE.Clock();
-    
+    let rafId = 0;
+
     const animate = () => {
       const time = clock.getElapsedTime();
       
@@ -453,7 +454,7 @@ const LiquidSphere = () => {
       }
       
       renderer.render(scene, camera);
-      requestAnimationFrame(animate);
+      rafId = requestAnimationFrame(animate);
     };
     
     animate();
@@ -473,9 +474,12 @@ const LiquidSphere = () => {
     
     // Limpieza
     return () => {
+      cancelAnimationFrame(rafId);
       window.removeEventListener('resize', handleResize);
       container.removeEventListener('mousemove', handleMouseMove);
-      container.removeChild(renderer.domElement);
+      if (container.contains(renderer.domElement)) {
+        container.removeChild(renderer.domElement);
+      }
       
       // Liberar memoria
       scene.traverse((object: THREE.Object3D) => {

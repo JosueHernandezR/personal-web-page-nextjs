@@ -68,7 +68,7 @@ export default function Navbar() {
           </div>
           <div className="flex flex-1 items-center justify-center sm:justify-start">
             <div className="flex shrink-0 items-center md:mr-2">
-              <Link href={"/"}>
+              <Link href={`/${lng}`}>
                 <Image
                   src={Avatar}
                   alt="logo"
@@ -82,9 +82,10 @@ export default function Navbar() {
                 {navigation.map(
                   (item) =>
                     item.isVisibleDesktop === true && (
-                      <a
+                      <Link
                         key={item.name}
                         href={`/${lng}${item.href}`}
+                        prefetch
                         className={classNames(
                           " hover:bg-secundary/80 hover:text-white rounded-lg px-3 py-2 font-medium text-lg",
                           scrolled
@@ -96,7 +97,7 @@ export default function Navbar() {
                         aria-current={item.current ? "page" : undefined}
                       >
                         {t(item.name)}
-                      </a>
+                      </Link>
                     )
                 )}
               </div>
@@ -160,13 +161,14 @@ export default function Navbar() {
                                     ease: "easeInOut",
                                   }}
                                 >
-                                  <a
+                                  <Link
                                     href={`/${lng}${item.href}`}
+                                    prefetch
                                     className="block px-3 py-2 rounded-md text-base font-medium text-secundary-dark dark:text-white hover:bg-black/10 dark:hover:bg-gray-700/50 transition-colors"
                                     onClick={() => setIsSidebarOpen(false)}
                                   >
                                     {t(item.name)}
-                                  </a>
+                                  </Link>
                                 </motion.li>
                               )
                           )}

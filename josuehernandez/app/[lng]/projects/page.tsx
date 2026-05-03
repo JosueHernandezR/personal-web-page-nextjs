@@ -1,4 +1,5 @@
 import LiquidSphere from "@/components/ui/LiquidSphere";
+import Link from "next/link";
 import { Metadata, Viewport } from "next";
 import { getServerTranslation } from "../../i18n";
 import { FadeIn, FadeInStaggerSection } from "@/components/ui/Fade";
@@ -27,7 +28,7 @@ export default async function Page({
   const t = await getServerTranslation(lng, "projects");
 
   return (
-    <main className="min-h-screen">
+    <div className="min-h-screen">
       {/* Hero Section */}
       <FadeInStaggerSection className="flex flex-col justify-center w-full  max-w-7xl mx-auto mt-[64px] min-h-screen">
         <div className="flex flex-col lg:flex-row gap-12 pb-24 justify-center items-center">
@@ -84,7 +85,11 @@ export default async function Page({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 w-full">
           {/* Tarjeta de Proyectos de Ingeniería */}
           <FadeIn className="relative overflow-hidden rounded-3xl min-h-[400px]">
-            <a href={`/${lng}/projects/engineering`} className="block absolute inset-0">
+            <Link
+              href={`/${lng}/projects/engineering`}
+              prefetch
+              className="block absolute inset-0"
+            >
               <div className="absolute inset-0">
                 <DetailedDSLRCamera />
               </div>
@@ -101,12 +106,16 @@ export default async function Page({
                   </p>
                 </div>
               </div>
-            </a>
+            </Link>
           </FadeIn>
 
           {/* Tarjeta de Proyectos de Arte */}
           <FadeIn className="relative overflow-hidden rounded-3xl min-h-[400px]">
-            <a href={`/${lng}/projects/art`} className="block absolute inset-0">
+            <Link
+              href={`/${lng}/projects/art`}
+              prefetch
+              className="block absolute inset-0"
+            >
               <div className="absolute inset-0">
                 <SuperformulaWireframe />
               </div>
@@ -121,10 +130,10 @@ export default async function Page({
                   </p>
                 </div>
               </div>
-            </a>
+            </Link>
           </FadeIn>
         </div>
       </FadeInStaggerSection>
-    </main>
+    </div>
   );
 }

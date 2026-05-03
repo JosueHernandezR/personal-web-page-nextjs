@@ -1088,9 +1088,8 @@ const CameraWireframe = () => {
     currentMount.addEventListener("wheel", handleWheel);
 
     // ANIMATION AND RENDER LOOP
+    let rafId = 0;
     const animate = () => {
-      requestAnimationFrame(animate);
-
       if (autoRotate) {
         targetRotation.y += autoRotationSpeed;
       }
@@ -1108,6 +1107,7 @@ const CameraWireframe = () => {
       cameraModel.rotation.z = currentRotation.z;
 
       renderer.render(scene, camera);
+      rafId = requestAnimationFrame(animate);
     };
 
     animate();
@@ -1130,6 +1130,7 @@ const CameraWireframe = () => {
 
     // Cleanup on unmount
     return () => {
+      cancelAnimationFrame(rafId);
       window.removeEventListener("resize", handleResize);
       currentMount.removeEventListener("mousedown", handleMouseDown);
       window.removeEventListener("mousemove", handleMouseMove);
