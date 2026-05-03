@@ -14,7 +14,7 @@ export default function ProjectPostCard({
         <figure className="relative flex min-h-48 w-full min-w-0 shrink-0 flex-col sm:min-h-56 lg:max-w-[min(46%,26rem)]">
           {/* keys + frame propios por post: evita que el navegador reutilice texturas/filter entre halos */}
           <ProjectGlowImageFrame postId={post.id}>
-            <div className="relative max-h-[min(24rem,72vw)] w-full min-h-48 min-w-0 flex-1 overflow-hidden rounded-xl aspect-video sm:max-h-[min(26rem,58vw)] sm:min-h-56 sm:aspect-4/3 lg:aspect-auto lg:max-h-none lg:min-h-64">
+            <div className="relative max-h-[min(24rem,72vw)] w-full min-h-48 min-w-0 flex-1 overflow-hidden rounded-[inherit] aspect-video sm:max-h-[min(26rem,58vw)] sm:min-h-56 sm:aspect-4/3 lg:aspect-auto lg:max-h-none lg:min-h-64">
               <ProjectGlowThumbnail
                 src={post.imageUrl}
                 alt=""

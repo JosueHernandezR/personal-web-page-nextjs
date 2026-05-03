@@ -1,6 +1,7 @@
-import type { CSSProperties, JSX } from "react";
+import type { JSX } from "react";
 
-/** Halo difuminado de la foto; aislamiento de capa por `isolationId` (una instancia ≠ otra por compositor). */
+/** Halo difuminado de la foto; aislamiento de capa por `isolationId` (una instancia ≠ otra por compositor).
+ * Saturación/brillo/opacidad del halo siguen tema en globals.css (--pg-icon-* sobre .project-glow-thumb). */
 export default function ProjectGlowThumbnail({
   src,
   alt = "",
@@ -14,20 +15,7 @@ export default function ProjectGlowThumbnail({
   const k = `${isolationId}-${src.slice(-24)}`;
 
   return (
-    <div
-      className="project-glow-thumb absolute inset-0 size-full min-w-0 overflow-hidden rounded-2xl"
-      style={
-        {
-          "--pg-front-inset": "3.5%",
-          "--pg-icon-blur": 32,
-          "--pg-icon-saturate": 6.5,
-          "--pg-icon-brightness": 1.45,
-          "--pg-icon-contrast": 1.55,
-          "--pg-icon-scale": 4,
-          "--pg-icon-opacity": 0.72,
-        } as CSSProperties
-      }
-    >
+    <div className="project-glow-thumb absolute inset-0 size-full min-w-0 overflow-hidden rounded-[inherit]">
       <div className="project-glow-thumb__plate pointer-events-none absolute inset-0 min-w-0 overflow-hidden rounded-[inherit]">
         <div className="project-glow-thumb__ambient" aria-hidden>
           <img

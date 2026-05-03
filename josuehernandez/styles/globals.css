@@ -141,6 +141,10 @@ article[style*="--x"] {
 .pgf-shell {
   --pvx: 0;
   --pvy: 0;
+  /* Marco concéntrico: outer = inner + gap (mismo gap en px en los cuatro lados). */
+  --pg-inner-radius: 0.75rem;
+  --pg-frame-gap: clamp(10px, 2.25vw, 16px);
+  --pg-outer-radius: calc(var(--pg-inner-radius) + var(--pg-frame-gap));
   /* Posición normalizada para máscara tipo linterna (hereda al halo .ambient) */
   --spot-x: 50%;
   --spot-y: 50%;
@@ -148,7 +152,7 @@ article[style*="--x"] {
   will-change: transform;
   transform: rotateY(calc(clamp(-1, var(--pvx, 0), 1) * 5deg))
     rotateX(calc(clamp(-1, var(--pvy, 0), 1) * -9deg));
-  border-radius: 1rem;
+  border-radius: var(--pg-outer-radius);
 }
 
 .pgf-frame {
@@ -188,13 +192,39 @@ html:not([data-theme="dark"]) .pgf-shell {
 .project-glow-thumb {
   container-type: size;
   isolation: isolate;
+  --pg-icon-blur: 32;
+  --pg-icon-scale: 4;
+  /*
+   * Base: suficiente croma para que rojos/verdes se perciban tras el blur.
+   * brightness/contrast no deben repetir valores ~1.45/1.55 (clips a blanco en luces fuertes).
+   */
+  --pg-icon-saturate: 4.4;
+  --pg-icon-brightness: 1.1;
+  --pg-icon-contrast: 1.24;
+  --pg-icon-opacity: 0.84;
+}
+
+/* Tema claro: el fondo de página aclara todo el marco perceptivo — sube saturate + opacidad; baja algo el brillo para no quemar. */
+html:not([data-theme="dark"]) .project-glow-thumb {
+  --pg-icon-saturate: 5.4;
+  --pg-icon-brightness: 1.04;
+  --pg-icon-contrast: 1.28;
+  --pg-icon-opacity: 0.94;
+}
+
+/* Tema oscuro: halo legible contra negro sin elevar tanto la luminancia (evita halo “tubo metálico”). */
+[data-theme="dark"] .project-glow-thumb {
+  --pg-icon-saturate: 4.6;
+  --pg-icon-brightness: 1.12;
+  --pg-icon-contrast: 1.22;
+  --pg-icon-opacity: 0.82;
 }
 
 .project-glow-thumb__plate {
   transform: none;
   /* Alfa suave hacia fuera (no es borde nuevo: es transparencia en el mismo recorte). */
   -webkit-mask-image: radial-gradient(
-    ellipse 109% 105% at 50% 46%,
+    ellipse farthest-corner at 50% 50%,
     #000 0%,
     #000 72%,
     rgba(0, 0, 0, 0.52) 86%,
@@ -202,7 +232,7 @@ html:not([data-theme="dark"]) .pgf-shell {
     transparent 101%
   );
   mask-image: radial-gradient(
-    ellipse 109% 105% at 50% 46%,
+    ellipse farthest-corner at 50% 50%,
     #000 0%,
     #000 72%,
     rgba(0, 0, 0, 0.52) 86%,
@@ -218,29 +248,28 @@ html:not([data-theme="dark"]) .pgf-shell {
   inset: 0;
   box-sizing: border-box;
   overflow: hidden;
-  /* Halo legible sólo ~cerca del puntero (--spot-*); fuera se atenúa (CodePen spotlight). */
   /*
-   * Alcance corto ~90–118px desde el centro (responde a --spot-* del padre por herencia CSS).
-   * El color perceptible sigue siendo el de la foto (blur de la misma src).
+   * Máscara tipo spotlight (sólo alfa): blanco/opaco = zona visible — no pinta tinte neutro sobre la foto.
+   * Alcance corto (~118px máx desde --spot-*); el tinte perceptible viene del blur de la misma src.
    */
   -webkit-mask-image: radial-gradient(
     circle min(118px, 30cqi) at var(--spot-x, 50%) var(--spot-y, 50%),
     rgb(255 255 255 / 1) 0%,
-    rgb(255 255 255 / 0.82) 40%,
-    rgb(255 255 255 / 0.12) 72%,
-    transparent 91%
+    rgb(255 255 255 / 0.78) 42%,
+    rgb(255 255 255 / 0.1) 74%,
+    transparent 92%
   );
   mask-image: radial-gradient(
     circle min(118px, 30cqi) at var(--spot-x, 50%) var(--spot-y, 50%),
     rgb(255 255 255 / 1) 0%,
-    rgb(255 255 255 / 0.82) 40%,
-    rgb(255 255 255 / 0.12) 72%,
-    transparent 91%
+    rgb(255 255 255 / 0.78) 42%,
+    rgb(255 255 255 / 0.1) 74%,
+    transparent 92%
   );
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
   mask-mode: alpha;
-  opacity: var(--pg-icon-opacity, 0.92);
+  opacity: var(--pg-icon-opacity);
   transform-origin: center center;
   will-change: transform, filter;
   /*
@@ -253,9 +282,9 @@ html:not([data-theme="dark"]) .pgf-shell {
       calc(clamp(-1, var(--pvy, 0), 1) * 42cqh / var(--pg-icon-scale, 4))
     );
   filter: blur(calc(var(--pg-icon-blur, 32) * 1px))
-    saturate(var(--pg-icon-saturate, 6))
-    brightness(var(--pg-icon-brightness, 1.45))
-    contrast(var(--pg-icon-contrast, 1.55));
+    saturate(var(--pg-icon-saturate, 4.4))
+    brightness(var(--pg-icon-brightness, 1.1))
+    contrast(var(--pg-icon-contrast, 1.24));
 }
 
 /* Imágenes centradas geométricamente (responsive); object-cover sólo después de centrar la caja. */
@@ -281,19 +310,15 @@ html:not([data-theme="dark"]) .pgf-shell {
   transform: translate(-50%, -50%);
 }
 
-/* Fotografía nítida centrada dentro del hueco (--pg-front-inset por lado). */
+/* Fotografía nítida: mismo --pg-frame-gap por lado heredado de .pgf-shell (longitud, no %). */
 .project-glow-thumb__front {
   inset: unset;
   left: 50%;
   top: 50%;
-  width: calc(
-    100% - var(--pg-front-inset, 4.5%) - var(--pg-front-inset, 4.5%)
-  );
-  height: calc(
-    100% - var(--pg-front-inset, 4.5%) - var(--pg-front-inset, 4.5%)
-  );
+  width: calc(100% - 2 * var(--pg-frame-gap, 12px));
+  height: calc(100% - 2 * var(--pg-frame-gap, 12px));
   transform: translate(-50%, -50%);
-  border-radius: 0.75rem;
+  border-radius: var(--pg-inner-radius, 0.75rem);
   z-index: 4;
   will-change: auto;
 }
