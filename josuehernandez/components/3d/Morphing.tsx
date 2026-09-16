@@ -56,7 +56,7 @@ const SuperformulaWireframe: React.FC = () => {
   const sceneRef = useRef<THREE.Scene | null>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
-  const clockRef = useRef<THREE.Clock | null>(null);
+  const clockRef = useRef<THREE.Timer | null>(null);
   const wireframeMeshRef = useRef<THREE.LineSegments | null>(null);
   const animationFrameRef = useRef<number | null>(null);
   
@@ -132,7 +132,7 @@ const SuperformulaWireframe: React.FC = () => {
   const triggerBurst = (): void => {
     if (!clockRef.current) return;
     
-    const currentTime = clockRef.current.getElapsedTime();
+    const currentTime = clockRef.current.getElapsed();
     const state = stateRef.current;
     
     if (currentTime - state.lastBurstTime > 0.3) {
@@ -426,7 +426,7 @@ const SuperformulaWireframe: React.FC = () => {
     
     const state = stateRef.current;
     const duration = Math.max(0.001, state.params.morphDuration);
-    const elapsedTime = clockRef.current.getElapsedTime() - state.morphStartTime;
+    const elapsedTime = clockRef.current.getElapsed() - state.morphStartTime;
     const totalProgress = Math.min(1.0, elapsedTime / duration);
     
     if (wireframeMeshRef.current && wireframeMeshRef.current.material instanceof THREE.ShaderMaterial) {
@@ -466,7 +466,7 @@ const SuperformulaWireframe: React.FC = () => {
     state.targetPresetParams = { ...state.presets[targetPresetIndex] };
     
     state.isMorphing = true;
-    state.morphStartTime = clockRef.current.getElapsedTime();
+    state.morphStartTime = clockRef.current.getElapsed();
   };
 
   // Redimensionamiento
@@ -501,7 +501,8 @@ const SuperformulaWireframe: React.FC = () => {
     }
 
     const state = stateRef.current;
-    const elapsedTime = clockRef.current.getElapsedTime();
+    clockRef.current.update();
+    const elapsedTime = clockRef.current.getElapsed();
 
     if (state.isMorphing) {
         const morphProgress = (elapsedTime - state.morphStartTime) / Math.max(0.001, state.params.morphDuration);
@@ -574,7 +575,7 @@ const SuperformulaWireframe: React.FC = () => {
     
     container.appendChild(renderer.domElement);
     
-    const clock = new THREE.Clock();
+    const clock = new THREE.Timer();
     clockRef.current = clock;
     
     // Definir manejadores de eventos

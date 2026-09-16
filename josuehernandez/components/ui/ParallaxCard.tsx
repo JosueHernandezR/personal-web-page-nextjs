@@ -174,7 +174,7 @@ export function ParallaxCard({
             alt=""
             fill
             sizes="(max-width: 768px) 100vw, 50vw"
-            priority
+            preload
           />
         </div>
         
@@ -194,7 +194,7 @@ export function ParallaxCard({
             alt=""
             fill
             sizes="(max-width: 768px) 100vw, 50vw"
-            priority
+            preload
           />
         </div>
       </div>

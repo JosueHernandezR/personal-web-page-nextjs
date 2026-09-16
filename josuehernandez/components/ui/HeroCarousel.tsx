@@ -260,7 +260,7 @@ export default function HeroCarousel({
               className={`object-cover transition-[filter,transform,opacity] duration-700 ease-out ${
                 loadedByIndex[index] ? "opacity-100" : "opacity-95"
               }`}
-              priority={index === 0} // Solo la primera imagen con priority
+              preload={index === 0} // Solo la primera imagen con preload
               loading={index === 0 ? "eager" : "lazy"} // Lazy loading para el resto
               sizes="100vw"
               placeholder={blurDataURL ? "blur" : "empty"}
@@ -270,7 +270,7 @@ export default function HeroCarousel({
                 filter: loadedByIndex[index] ? "blur(0px)" : "blur(18px)",
                 transform: loadedByIndex[index] ? "scale(1)" : "scale(1.03)",
               }}
-              onLoadingComplete={() => markLoaded(index)}
+              onLoad={() => markLoaded(index)}
             />
             {/* Overlay oscuro uniforme para toda la imagen */}
             <div className="absolute inset-0 bg-black/20"></div>

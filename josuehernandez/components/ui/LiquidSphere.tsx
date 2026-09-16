@@ -419,11 +419,12 @@ const LiquidSphere = () => {
     container.addEventListener('mousemove', handleMouseMove);
     
     // Animación
-    const clock = new THREE.Clock();
+    const timer = new THREE.Timer();
     let rafId = 0;
 
     const animate = () => {
-      const time = clock.getElapsedTime();
+      timer.update();
+      const time = timer.getElapsed();
       
       if (liquidMaterial && liquidMaterial.uniforms) {
         liquidMaterial.uniforms.time.value = time;

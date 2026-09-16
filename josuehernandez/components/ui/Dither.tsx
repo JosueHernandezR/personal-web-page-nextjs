@@ -218,7 +218,7 @@ const DitheredWaves: React.FC<Props> = ({
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
   const cameraRef = useRef<THREE.OrthographicCamera | null>(null);
-  const clockRef = useRef(new THREE.Clock());
+  const clockRef = useRef(new THREE.Timer());
   const mousePosRef = useRef({ x: 0, y: 0 });
   const animationFrameRef = useRef<number | null>(null);
   
@@ -368,9 +368,11 @@ const DitheredWaves: React.FC<Props> = ({
       const animate = () => {
         if (!rendererRef.current || !sceneRef.current || !cameraRef.current) return;
         
+        clockRef.current.update();
+        
         // Update uniforms
         if (waveUniformsRef.current) {
-          waveUniformsRef.current.time.value = clockRef.current.getElapsedTime();
+          waveUniformsRef.current.time.value = clockRef.current.getElapsed();
           waveUniformsRef.current.waveSpeed.value = waveSpeed;
           waveUniformsRef.current.waveFrequency.value = waveFrequency;
           waveUniformsRef.current.waveAmplitude.value = waveAmplitude;

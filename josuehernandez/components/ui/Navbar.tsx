@@ -73,6 +73,7 @@ export default function Navbar() {
                   src={Avatar}
                   alt="logo"
                   className="rounded-full h-12 w-12"
+                  loading="eager"
                 />
               </Link>
             </div>

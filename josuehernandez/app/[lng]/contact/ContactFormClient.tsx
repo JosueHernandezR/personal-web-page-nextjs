@@ -292,7 +292,7 @@ const ContactForm = () => {
           fill
           className="bg-gray-50 object-cover"
           sizes="50vw"
-          priority
+          preload
         />
       </div>
       <div className="pt-16 pb-24 sm:pt-24 sm:pb-32 lg:mx-auto lg:grid lg:max-w-7xl lg:grid-cols-2 lg:pt-32">
