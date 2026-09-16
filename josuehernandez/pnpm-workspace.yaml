@@ -1,0 +1,33 @@
+# Configuración de pnpm (v12+)
+# Los settings viven aquí, no en el campo "pnpm" del package.json
+
+# --- Seguridad de supply chain ---
+# Rechaza versiones cuyas señales de confianza hayan regresado (p. ej. un paquete
+# publicado por un mantenedor distinto al de versiones anteriores). Detecta el
+# patrón del ataque de unrs-resolver@1.11.1 (dic 2025) y de la campaña Shai-Hulud.
+trustPolicy: no-downgrade
+
+# Falsos positivos verificados: la política marca el cambio de publicación por
+# CI (GitHub Actions) a manual, pero los mantenedores son los mismos y legítimos.
+trustPolicyExclude:
+  # jounqin (mismo mantenedor del proyecto import-js) — publicación manual
+  - "eslint-import-resolver-typescript@3.10.1"
+  # lukekarrys (miembro del equipo npm) — publicación manual
+  - "semver@6.3.1"
+
+# Rechaza dependencias que vienen de URLs de git (fuente de ataques de typosquatting)
+blockExoticSubdeps: true
+
+# Falla la instalación si una dependencia quiere ejecutar un script de build
+# que no está en allowBuilds (por defecto es true, aquí queda explícito)
+strictDepBuilds: true
+
+allowBuilds:
+  # Bindings nativos de napi-rs usados por eslint-import-resolver-typescript.
+  # Verificado: versión 1.12.2 (mayo 2026, publicada por GitHub Actions con
+  # provenance SLSA) + napi-postinstall 0.3.4 (fuera del rango comprometido 0.3.0-0.3.1).
+  unrs-resolver: true
+
+# Opcional: bloquea paquetes publicados hace menos de 30 días (43200 min).
+# Lo dejo comentado porque choca con querer "últimas versiones" a diario.
+# minimumReleaseAge: 43200

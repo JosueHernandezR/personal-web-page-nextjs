@@ -1,0 +1,16 @@
+{
+  "mcp_servers": {
+    "next-devtools": {
+      "command": "npx",
+      "args": ["-y", "next-devtools-mcp@latest"]
+    },
+    "threejs-devtools": {
+      "command": "npx",
+      "args": ["-y", "threejs-devtools-mcp"]
+    },
+    "tailwindcss": {
+      "command": "npx",
+      "args": ["-y", "mcp-tailwindcss"]
+    }
+  }
+}
