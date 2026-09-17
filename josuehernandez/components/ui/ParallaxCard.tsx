@@ -31,6 +31,20 @@ export function ParallaxCard({
   const bgImageRef = useRef<HTMLDivElement>(null);
   const middleImageRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
+  // Giroscopio: gravedad de calibración (g0) y signo del frame del sensor.
+  // El mapeo es absoluto (g0 -> g actual): se autocorrige, no se queda estático
+  // tras movimientos bruscos ni tras bloquear/desbloquear la pantalla.
+  const calibrationGravityRef = useRef<{
+    x: number;
+    y: number;
+    z: number;
+  } | null>(null);
+  const prevGravityRef = useRef<{ x: number; y: number; z: number } | null>(
+    null,
+  );
+  // Compensa la inversión del frame del sensor al cruzar la singularidad de Euler.
+  const frameSignRef = useRef(1);
+  const lastEventTimeRef = useRef(0);
 
   // Usar una función memoizada para evitar recreaciones innecesarias
   const updatePointerPosition = React.useCallback((e: PointerEvent) => {
@@ -55,27 +69,86 @@ export function ParallaxCard({
     });
   }, []);
 
+  // Gravedad en el frame del dispositivo (matriz de rotación del W3C sobre el vector "abajo" del mundo).
+  // Es un vector suave: a diferencia de los ángulos de Euler (alpha/beta/gamma), no salta en la
+  // singularidad cuando la pantalla apunta al cielo (beta=0) o al suelo (beta=180).
+  const gravityInDeviceFrame = React.useCallback(
+    (alphaDeg: number, betaDeg: number, gammaDeg: number) => {
+      const d2r = Math.PI / 180;
+      const a = alphaDeg * d2r;
+      const b = betaDeg * d2r;
+      const g = gammaDeg * d2r;
+      return {
+        x: Math.cos(a) * Math.sin(g) - Math.sin(a) * Math.cos(g) * Math.sin(b),
+        y: -Math.sin(a) * Math.sin(g) - Math.cos(a) * Math.cos(g) * Math.sin(b),
+        z: -Math.cos(g) * Math.cos(b),
+      };
+    },
+    [],
+  );
+
   // Función para manejar la orientación del dispositivo (móviles)
   const handleOrientation = React.useCallback(
     (event: DeviceOrientationEvent) => {
-      const { beta, gamma } = event;
-      const isLandscape = window.matchMedia("(orientation: landscape)").matches;
+      const { alpha, beta, gamma } = event;
+      if (alpha === null || beta === null || gamma === null) return;
 
-      if (beta !== null && gamma !== null) {
-        // Limitar la tasa de actualizaciones
-        setCoords({
-          x: isLandscape
-            ? Math.max(-1, Math.min(1, beta / 45))
-            : Math.max(-1, Math.min(1, gamma / 45)),
-          y: isLandscape
-            ? Math.max(-1, Math.min(1, ((Math.abs(gamma) - 45) / 25) * -1))
-            : Math.max(-1, Math.min(1, ((beta - 90) / 30) * -1)),
-        });
+      const now = Date.now();
+      const g = gravityInDeviceFrame(alpha, beta, gamma);
+
+      // Interrupción (bloqueo de pantalla, suspensión del navegador): recalibrar
+      // para que el contenido vuelva a responder en lugar de quedarse estático.
+      if (now - lastEventTimeRef.current > 1000) {
+        calibrationGravityRef.current = g;
+        frameSignRef.current = 1;
+        lastEventTimeRef.current = now;
+        return;
       }
-    },
-    []
-  );
+      lastEventTimeRef.current = now;
 
+      const g0 = calibrationGravityRef.current;
+      if (!g0) {
+        calibrationGravityRef.current = g;
+        return;
+      }
+
+      // Detectar inversión del frame del sensor (singularidad de Euler: g -> -g).
+      const prev = prevGravityRef.current;
+      if (prev) {
+        const dotPrev = prev.x * g.x + prev.y * g.y + prev.z * g.z;
+        if (dotPrev < -0.5) {
+          frameSignRef.current *= -1;
+        }
+      }
+      prevGravityRef.current = g;
+
+      // Mapeo absoluto calibrado: rotación (eje-ángulo) de g0 a g en el frame del dispositivo.
+      const dot = g0.x * g.x + g0.y * g.y + g0.z * g.z;
+      const cross = {
+        x: g0.y * g.z - g0.z * g.y,
+        y: g0.z * g.x - g0.x * g.z,
+        z: g0.x * g.y - g0.y * g.x,
+      };
+      const len = Math.hypot(cross.x, cross.y, cross.z);
+      if (len < 1e-6) return;
+
+      const deg = (Math.acos(Math.max(-1, Math.min(1, dot))) * 180) / Math.PI;
+      const sign = frameSignRef.current;
+      const ax = cross.x / len;
+      const az = cross.z / len;
+
+      const SENS = 35; // sensibilidad: 35 grados de inclinación = recorrido completo
+      const targetX = Math.max(-1, Math.min(1, (deg * az * sign) / SENS));
+      const targetY = Math.max(-1, Math.min(1, (deg * ax * sign) / SENS));
+
+      // Suavizado exponencial: movimiento fluido sin tirones (0.45 por frame a ~60 Hz)
+      setCoords((prevCoords) => ({
+        x: prevCoords.x + (targetX - prevCoords.x) * 0.45,
+        y: prevCoords.y + (targetY - prevCoords.y) * 0.45,
+      }));
+    },
+    [gravityInDeviceFrame],
+  );
   // Aplicar los valores de transformación directamente en el DOM mediante CSS variables
   useEffect(() => {
     if (!cardRef.current) return;
@@ -92,16 +165,16 @@ export function ParallaxCard({
         // Movimiento menor para el fondo
         bgImageRef.current.style.transform = `translate(${coords.x * -10}px, ${coords.y * -10}px)`;
       }
-      
+
       if (middleImageRef.current) {
         // Movimiento mayor para el castillo
         middleImageRef.current.style.transform = `translate(${coords.x * -15}px, ${coords.y * -15}px)`;
       }
-      
+
       if (titleRef.current) {
         titleRef.current.style.transform = `translate(${coords.x * 20}px, ${coords.y * 20}px)`;
       }
-      
+
       requestRef.current = requestAnimationFrame(updateStyles);
     };
 
@@ -149,7 +222,7 @@ export function ParallaxCard({
           warnedInsecure = true;
           console.warn(
             "[ParallaxCard] El giroscopio requiere HTTPS (contexto seguro). " +
-              "Prueba con `pnpm dev:https` o un túnel HTTPS (ngrok) en iOS."
+              "Prueba con `pnpm dev:https` o un túnel HTTPS (ngrok) en iOS.",
           );
         }
         return;
@@ -205,14 +278,19 @@ export function ParallaxCard({
     <article
       ref={cardRef}
       className="w-full aspect-4/3 max-h-[calc(100svh-1rem)] relative overflow-hidden max-w-[calc(100%)] portrait:min-h-[330px] rounded-2xl mx-auto md:mx-0"
-      style={{
-        "--x": "0",
-        "--y": "0",
-      } as React.CSSProperties}
+      style={
+        {
+          "--x": "0",
+          "--y": "0",
+        } as React.CSSProperties
+      }
     >
       <div className="assets absolute inset-0 overflow-hidden">
         {/* Sky Background Image */}
-        <div ref={bgImageRef} className="absolute top-0 left-0 w-full h-full will-change-transform transition-transform duration-50 scale-[1.05]">
+        <div
+          ref={bgImageRef}
+          className="absolute top-0 left-0 w-full h-full will-change-transform transition-transform duration-50 scale-[1.05]"
+        >
           <Image
             className="object-cover select-none pointer-events-none saturate-[1.5] brightness-[0.9] scale-[1.2]"
             src={backgroundImage}
@@ -222,7 +300,7 @@ export function ParallaxCard({
             preload
           />
         </div>
-        
+
         {/* Title - Responsive size and positioning */}
         <h3
           ref={titleRef}
@@ -230,9 +308,12 @@ export function ParallaxCard({
         >
           {title}
         </h3>
-        
+
         {/* Castle/Temple Image */}
-        <div ref={middleImageRef} className="absolute top-0 left-0 w-full h-full will-change-transform transition-transform duration-50 scale-[1.05]">
+        <div
+          ref={middleImageRef}
+          className="absolute top-0 left-0 w-full h-full will-change-transform transition-transform duration-50 scale-[1.05]"
+        >
           <Image
             className="object-cover object-[center_75%] select-none pointer-events-none scale-[1.2]"
             src={middleImage}
@@ -247,16 +328,32 @@ export function ParallaxCard({
       {/* Implementación del blur exactamente como en el ejemplo proporcionado */}
       <div className="blurs absolute inset-0 [--layers:5] z-15">
         <div>
-          <div className="layer absolute inset-0" style={{"--index": 1} as React.CSSProperties}/>
-          <div className="layer absolute inset-0" style={{"--index": 2} as React.CSSProperties}/>
-          <div className="layer absolute inset-0" style={{"--index": 3} as React.CSSProperties}/>
-          <div className="layer absolute inset-0" style={{"--index": 4} as React.CSSProperties}/>
-          <div className="layer absolute inset-0" style={{"--index": 5} as React.CSSProperties}/>
+          <div
+            className="layer absolute inset-0"
+            style={{ "--index": 1 } as React.CSSProperties}
+          />
+          <div
+            className="layer absolute inset-0"
+            style={{ "--index": 2 } as React.CSSProperties}
+          />
+          <div
+            className="layer absolute inset-0"
+            style={{ "--index": 3 } as React.CSSProperties}
+          />
+          <div
+            className="layer absolute inset-0"
+            style={{ "--index": 4 } as React.CSSProperties}
+          />
+          <div
+            className="layer absolute inset-0"
+            style={{ "--index": 5 } as React.CSSProperties}
+          />
         </div>
       </div>
 
       {/* Content Section - Using the CSS classes from the provided code */}
-      <div className="content z-20"
+      <div
+        className="content z-20"
         style={{
           transform: `translate(calc(var(--x) * -5px), calc(var(--y) * -5px))`,
         }}
