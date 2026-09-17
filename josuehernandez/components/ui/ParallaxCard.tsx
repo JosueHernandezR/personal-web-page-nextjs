@@ -33,8 +33,8 @@ export function ParallaxCard({
   const titleRef = useRef<HTMLHeadingElement>(null);
 
   // Usar una función memoizada para evitar recreaciones innecesarias
-  const updateMousePosition = React.useCallback((e: MouseEvent) => {
-    // Calcular posición relativa al viewport
+  const updatePointerPosition = React.useCallback((e: PointerEvent) => {
+    // Calcular posición relativa al viewport (ratón en escritorio, dedo en táctiles)
     const x = e.clientX;
     const y = e.clientY;
 
@@ -69,7 +69,7 @@ export function ParallaxCard({
             : Math.max(-1, Math.min(1, gamma / 45)),
           y: isLandscape
             ? Math.max(-1, Math.min(1, ((Math.abs(gamma) - 45) / 25) * -1))
-            : Math.max(-1, Math.min(1, ((beta - 45) / 25) * -1)),
+            : Math.max(-1, Math.min(1, ((beta - 90) / 30) * -1)),
         });
       }
     },
@@ -114,44 +114,89 @@ export function ParallaxCard({
     };
   }, [coords]);
 
-  // Configurar los listeners de eventos
+  // Configurar los listeners de eventos (ratón en escritorio, dedo en táctiles)
   useEffect(() => {
     const options = { passive: true }; // Optimización para eventos táctiles/mouse
 
-    window.addEventListener("mousemove", updateMousePosition, options);
+    window.addEventListener("pointermove", updatePointerPosition, options);
 
     return () => {
-      window.removeEventListener("mousemove", updateMousePosition);
+      window.removeEventListener("pointermove", updatePointerPosition);
     };
-  }, [updateMousePosition]);
+  }, [updatePointerPosition]);
 
-  // Configurar el listener de orientación del dispositivo
+  // Configurar el listener de orientación del dispositivo (giroscopio en móviles)
   useEffect(() => {
+    let orientationListening = false;
+    let gestureBusy = false;
+    let warnedInsecure = false;
+
+    const attachOrientationListening = () => {
+      if (orientationListening) return;
+      orientationListening = true;
+      window.addEventListener("deviceorientation", handleOrientation, {
+        passive: true,
+      });
+    };
+
     const initiate = () => {
+      // Algunos navegadores (p. ej. escritorio) no exponen DeviceOrientationEvent
+      if (typeof DeviceOrientationEvent === "undefined") return;
+
+      // La API de orientación solo existe en contextos seguros (HTTPS o localhost)
+      if (!window.isSecureContext) {
+        if (process.env.NODE_ENV === "development" && !warnedInsecure) {
+          warnedInsecure = true;
+          console.warn(
+            "[ParallaxCard] El giroscopio requiere HTTPS (contexto seguro). " +
+              "Prueba con `pnpm dev:https` o un túnel HTTPS (ngrok) en iOS."
+          );
+        }
+        return;
+      }
+
+      if (orientationListening || gestureBusy) return;
+      gestureBusy = true;
+
       const requestPermission = (
         DeviceOrientationEvent as unknown as DeviceOrientationEventiOS
       ).requestPermission;
-      const iOS = typeof requestPermission === "function";
 
-      if (iOS) {
-        Promise.all([requestPermission()]).then((results) => {
-          if (results.every((result: string) => result === "granted")) {
-            window.addEventListener("deviceorientation", handleOrientation, {
-              passive: true,
-            });
-          }
-        });
+      if (typeof requestPermission === "function") {
+        // iOS 13+: el permiso debe solicitarse dentro del gesto del usuario
+        void requestPermission()
+          .then((result) => {
+            if (result === "granted") attachOrientationListening();
+          })
+          .finally(() => {
+            gestureBusy = false;
+          });
       } else {
-        window.addEventListener("deviceorientation", handleOrientation, {
-          passive: true,
-        });
+        // Android y demás navegadores: sin permiso previo
+        attachOrientationListening();
+        gestureBusy = false;
       }
     };
 
-    document.body.addEventListener("click", initiate, { once: true });
+    // iOS: el permiso debe pedirse en un gesto real del usuario.
+    // click/touchend son los gestos fiables en iOS; pointerdown cubre el primer toque.
+    document.addEventListener("click", initiate, {
+      capture: true,
+      passive: true,
+    });
+    window.addEventListener("touchend", initiate, {
+      capture: true,
+      passive: true,
+    });
+    window.addEventListener("pointerdown", initiate, {
+      capture: true,
+      passive: true,
+    });
 
     return () => {
-      document.body.removeEventListener("click", initiate);
+      document.removeEventListener("click", initiate, true);
+      window.removeEventListener("touchend", initiate, true);
+      window.removeEventListener("pointerdown", initiate, true);
       window.removeEventListener("deviceorientation", handleOrientation);
     };
   }, [handleOrientation]);

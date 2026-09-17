@@ -1,5 +1,6 @@
 import { ProjectPost } from "@/types";
 import type { JSX } from "react";
+import Image from "next/image";
 import ProjectGlowThumbnail from "./ProjectGlowThumbnail";
 import ProjectGlowImageFrame from "./ProjectGlowImageFrame";
 
@@ -51,9 +52,11 @@ export default function ProjectPostCard({
           </div>
           <div className="mt-6 flex border-t border-gray-900/5 pt-6 dark:border-white/10">
             <div className="relative flex items-center gap-x-4">
-              <img
+              <Image
                 alt=""
                 src={post.author.imageUrl}
+                width={40}
+                height={40}
                 className="size-10 rounded-full bg-gray-50 object-cover ring-2 ring-gray-900/10 dark:bg-zinc-800 dark:ring-white/15"
               />
               <div className="text-sm/6">

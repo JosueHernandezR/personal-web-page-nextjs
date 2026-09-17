@@ -8,6 +8,7 @@
   "packageManager": "pnpm@12.4.2",
   "scripts": {
     "dev": "next dev --turbopack",
+    "dev:https": "node scripts/dev-https.mjs",
     "build": "next build",
     "build:analyze": "ANALYZE=true next build",
     "start": "next start",
