@@ -1,5 +1,6 @@
 "use client";
 import { ParallaxCard } from "@/components/ui/ParallaxCard";
+import { TextReveal } from "@/components/ui/TextReveal";
 import { useTranslation } from "../i18n/client";
 import { experiences } from "@/constants/experiences";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -29,22 +30,30 @@ export default function Experience(): JSX.Element {
             </h3>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 justify-center items-center gap-x-12 gap-y-16 w-full">
-            <h2 className="font-geist text-center md:text-left text-5xl xl:text-7xl 2xl:text-8xl font-medium text-gray-900 dark:text-white leading-none">
-              {t("snapshot_title")}
-            </h2>
+            <TextReveal
+              text={t("snapshot_title")}
+              className="font-geist text-center md:text-left text-5xl xl:text-7xl 2xl:text-8xl font-medium text-gray-900 dark:text-white leading-none"
+            />
             <ParallaxCard
               title={t("parallax_title")}
               subtitle={t("parallax_subtitle")}
               location={t("parallax_location")}
-              backgroundImage={'/card/jaguar_background.png'}
-              middleImage={'/card/jaguar_object.png'}
+              backgroundImage={"/card/jaguar_background.png"}
+              middleImage={"/card/jaguar_object.png"}
             />
           </div>
         </div>
-        
+
         {/* Lista de experiencias */}
         {translatedExperiences.map((experience, index) => (
-          <div key={index} className={index < translatedExperiences.length - 1 ? "mb-10 pb-10 border-b border-gray-200 dark:border-zinc-800" : ""}>
+          <div
+            key={index}
+            className={
+              index < translatedExperiences.length - 1
+                ? "mb-10 pb-10 border-b border-gray-200 dark:border-zinc-800"
+                : ""
+            }
+          >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">
               <div>
                 <h3 className="font-geist text-2xl font-medium text-gray-900 dark:text-white mb-2">
@@ -65,4 +74,4 @@ export default function Experience(): JSX.Element {
       </div>
     </section>
   );
-} 
+}

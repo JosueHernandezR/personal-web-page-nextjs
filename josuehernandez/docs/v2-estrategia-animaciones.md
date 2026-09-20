@@ -280,6 +280,18 @@ Estas son las que separan un sitio "bonito" de uno **premiado** (referente: Bohd
 
 ---
 
+## ✅ Fase 1 — Progreso
+
+- **Preloader** (`components/ui/Preloader.tsx`, integrado en el layout): contador 00→100 (1.5s) + reveal de cortina que sube (0.8s, `power3.inOut`). Solo en la primera carga por sesión (flag de módulo `hasShownPreloader`), respeta `prefers-reduced-motion`, usa `bg-background`/`text-foreground` (tema dinámico).
+- **TextReveal** (`components/ui/TextReveal.tsx`): split de líneas con `SplitText` + máscara (`mask: "lines"`), las líneas entran desde `yPercent: 110` con stagger cuando el elemento cruza `top 85%` (una vez). Aplicado al título de la sección Experience.
+- **TextReveal extendido:** ahora acepta `as` (`h1`/`h2`/`h3`). Aplicado al título principal de **Projects** (h1) y al título de **Contacto** (h2, en `ContactFormClient`).
+- **Marquee** (`components/ui/Marquee.tsx`): creado pero **sin uso por ahora** (el usuario lo pidió quitar de la página; se mantiene el componente para después). Loop perfecto con `xPercent: -50` + `ease: "none"` y `mr-8` por item.
+- **Pendiente en Fase 1:** Hero v2 (timeline de entrada con SplitText) y migración de `Fade.tsx` a GSAP — se difieren por la sensibilidad del carrusel (restaurado a su implementación original aprobada).
+
+- **Fix preloader pegado en 00:** React StrictMode (doble mount en dev) revertía el timeline GSAP del primer mount, y el flag `hasShownPreloader` (que se ponía antes de crear el timeline) impedía que el segundo mount creara uno nuevo. Fix: el flag ahora se marca **solo en `onComplete`** + timeout de seguridad de 5s que fuerza el cierre si algo falla.
+
+**Ver el preloader en DevTools:** se muestra en cada _recarga completa_ (Cmd/Ctrl+Shift+R reinicia el flag de sesión). Para verlo lento: Chrome/Edge DevTools → pestaña **Performance** → engranaje ⚙️ → **CPU: 6x/20x** de throttling, o pestaña **Network** → throttling **Slow 3G**. Alternativa: subir temporalmente `duration: 1.5`/`0.8` en `Preloader.tsx`.
+
 ## Resumen ejecutivo
 
 El proyecto tiene **bases sólidas** (performance, i18n, 3D, accesibilidad) pero la animación actual es **funcional, no memorable**. Los sitios premiados con Motion comparten un patrón claro: _smooth scroll + tipografía cinética + micro-interacciones con intención + reveals coreografiados_. Con **GSAP + ScrollTrigger + SplitText + Lenis** y el roadmap de 4 fases (~2 semanas), la v2 puede alcanzar ese nivel sin cambiar el stack base. Los skills de GSAP están **verificados y listos**; solo falta instalar la librería y empezar.

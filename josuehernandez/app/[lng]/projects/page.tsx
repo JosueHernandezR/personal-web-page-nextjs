@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Metadata, Viewport } from "next";
 import { getServerTranslation } from "../../i18n";
 import { FadeIn, FadeInStaggerSection } from "@/components/ui/Fade";
+import { TextReveal } from "@/components/ui/TextReveal";
 import DetailedDSLRCamera from "@/components/3d/Camera";
 import SuperformulaWireframe from "@/components/3d/Morphing";
 
@@ -30,17 +31,17 @@ export default async function Page({
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <FadeInStaggerSection className="flex flex-col justify-center w-full  max-w-7xl mx-auto mt-[64px] min-h-screen">
+      <FadeInStaggerSection className="flex flex-col justify-center w-full  max-w-7xl mx-auto mt-16 min-h-screen">
         <div className="flex flex-col lg:flex-row gap-12 pb-24 justify-center items-center">
           <div className="flex-1 flex flex-col justify-center px-4 md:px-8">
             <FadeIn className="text-sm uppercase text-violet-600 dark:text-violet-400 mb-4 tracking-wider font-medium">
               Propósito de mis proyectos
             </FadeIn>
-            <FadeIn>
-              <h1 className="font-medium leading-none tracking-tight font-geist text-5xl lg:text-7xl xl:text-8xl text-black dark:text-white mb-6">
-                {t("title_page")}
-              </h1>
-            </FadeIn>
+            <TextReveal
+              as="h1"
+              text={t("title_page")}
+              className="font-medium leading-none tracking-tight font-geist text-5xl lg:text-7xl xl:text-8xl text-black dark:text-white mb-6"
+            />
             <FadeIn>
               <p className="text-gray-600 dark:text-gray-400 mb-8 text-lg max-w-2xl">
                 {t("introduction_page")}
@@ -71,7 +72,7 @@ export default async function Page({
               </div>
             </FadeIn>
           </div>
-          <FadeIn className="flex-1 relative min-h-[500px] w-full">
+          <FadeIn className="flex-1 relative min-h-125 w-full">
             <LiquidSphere />
           </FadeIn>
         </div>
@@ -84,7 +85,7 @@ export default async function Page({
         </FadeIn>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 w-full">
           {/* Tarjeta de Proyectos de Ingeniería */}
-          <FadeIn className="relative overflow-hidden rounded-3xl min-h-[400px]">
+          <FadeIn className="relative overflow-hidden rounded-3xl min-h-100">
             <Link
               href={`/${lng}/projects/engineering`}
               prefetch
@@ -110,7 +111,7 @@ export default async function Page({
           </FadeIn>
 
           {/* Tarjeta de Proyectos de Arte */}
-          <FadeIn className="relative overflow-hidden rounded-3xl min-h-[400px]">
+          <FadeIn className="relative overflow-hidden rounded-3xl min-h-100">
             <Link
               href={`/${lng}/projects/art`}
               prefetch
@@ -137,4 +138,3 @@ export default async function Page({
     </div>
   );
 }
-
