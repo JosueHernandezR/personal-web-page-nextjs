@@ -1,7 +1,6 @@
 "use client";
 import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
-import { flushSync } from "react-dom";
 import { MorphIcon } from "morphicons/react";
 import { Moon, Sun } from "lucide";
 
@@ -21,23 +20,33 @@ export default function ThemeSelector() {
     }, 0);
   }
 
+  /**
+   * Cambio de tema con "iris wipe" manual (sin View Transitions API):
+   * la VT API crea un stacking context en el snapshot y los elementos con
+   * backdrop-filter (navbar, ParallaxCard) pierden su blur durante la
+   * transición (bug de especificación). Con un overlay de círculo + WAAPI,
+   * el DOM queda vivo y el blur nunca se pierde.
+   */
   function toggleTheme(): void {
     disableTransitionsTemporarily();
 
     const nextTheme = currentTheme === "dark" ? "light" : "dark";
     const button = buttonRef.current;
 
-    // Fallback: sin View Transitions API o reduced motion → cambio directo
+    // Fallback: reduced motion → cambio directo
     if (
       !button ||
-      typeof document.startViewTransition !== "function" ||
       window.matchMedia("(prefers-reduced-motion: reduce)").matches
     ) {
       setTheme(nextTheme);
       return;
     }
 
-    // Círculo que crece desde el botón del tema (View Transitions API)
+    // Color de fondo del tema ACTUAL (para el overlay del círculo)
+    const styles = getComputedStyle(document.documentElement);
+    const oldBg = styles.getPropertyValue("--background").trim() || "#ffffff";
+
+    // Centro del botón + radio máximo hasta la esquina más lejana
     const { top, left, width, height } = button.getBoundingClientRect();
     const cx = left + width / 2;
     const cy = top + height / 2;
@@ -46,28 +55,30 @@ export default function ThemeSelector() {
       Math.max(cy, window.innerHeight - cy),
     );
 
-    const transition = document.startViewTransition(() => {
-      flushSync(() => setTheme(nextTheme));
-    });
+    // Overlay del círculo con el color del tema anterior
+    const overlay = document.createElement("div");
+    overlay.style.cssText = `position:fixed;inset:0;z-index:9999;background:${oldBg};clip-path:circle(${maxRadius}px at ${cx}px ${cy}px);pointer-events:none;`;
+    document.body.appendChild(overlay);
 
-    transition.ready
-      .then(() => {
-        document.documentElement.animate(
-          {
-            clipPath: [
-              `circle(0px at ${cx}px ${cy}px)`,
-              `circle(${maxRadius}px at ${cx}px ${cy}px)`,
-            ],
-          },
-          {
-            duration: 600,
-            easing: "cubic-bezier(0.16, 1, 0.3, 1)",
-            fill: "forwards",
-            pseudoElement: "::view-transition-new(root)",
-          },
-        );
-      })
-      .catch(() => {});
+    // Cambiar el tema DEBAJO del overlay (queda oculto)
+    setTheme(nextTheme);
+
+    // El círculo se cierra: revela el nuevo tema (backdrop-filter intactos)
+    overlay
+      .animate(
+        {
+          clipPath: [
+            `circle(${maxRadius}px at ${cx}px ${cy}px)`,
+            `circle(0px at ${cx}px ${cy}px)`,
+          ],
+        },
+        {
+          duration: 600,
+          easing: "cubic-bezier(0.16, 1, 0.3, 1)",
+          fill: "forwards",
+        },
+      )
+      .finished.then(() => overlay.remove());
   }
 
   if (!mounted) {
