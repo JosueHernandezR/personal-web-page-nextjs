@@ -1,12 +1,16 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Image from 'next/image';
-import { FadeIn, FadeInStagger } from '@/components/ui/Fade';
-import { ReCaptchaWrapper, useReCaptcha } from '@/components/ui/ReCaptchaWrapper';
-import { useLanguage } from '@/contexts/LanguageContext';
-import { useTranslation } from '../../i18n/client';
-import Notification, { NotificationType } from '@/components/ui/Notification';
+import { useState } from "react";
+import Image from "next/image";
+import { FadeIn, FadeInStagger } from "@/components/ui/Fade";
+import { TextReveal } from "@/components/ui/TextReveal";
+import {
+  ReCaptchaWrapper,
+  useReCaptcha,
+} from "@/components/ui/ReCaptchaWrapper";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useTranslation } from "../../i18n/client";
+import Notification, { NotificationType } from "@/components/ui/Notification";
 
 interface FormData {
   firstName: string;
@@ -31,16 +35,16 @@ interface FormErrors {
 
 const ContactForm = () => {
   const { lng } = useLanguage();
-  const { t } = useTranslation(lng, 'contact');
+  const { t } = useTranslation(lng, "contact");
 
   const [formData, setFormData] = useState<FormData>({
-    firstName: '',
-    lastName: '',
-    email: '',
-    company: '',
-    phone: '',
-    message: '',
-    budget: '',
+    firstName: "",
+    lastName: "",
+    email: "",
+    company: "",
+    phone: "",
+    message: "",
+    budget: "",
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
@@ -53,8 +57,8 @@ const ContactForm = () => {
     message?: string;
   }>({
     show: false,
-    type: 'success',
-    title: '',
+    type: "success",
+    title: "",
   });
 
   const { executeRecaptcha, isLoaded } = useReCaptcha();
@@ -65,31 +69,31 @@ const ContactForm = () => {
 
     // Validar nombre
     if (!formData.firstName.trim()) {
-      newErrors.firstName = t('form.firstName.error.required');
+      newErrors.firstName = t("form.firstName.error.required");
     } else if (formData.firstName.length > 50) {
-      newErrors.firstName = t('form.firstName.error.maxLength');
+      newErrors.firstName = t("form.firstName.error.maxLength");
     }
 
     // Validar apellido
     if (!formData.lastName.trim()) {
-      newErrors.lastName = t('form.lastName.error.required');
+      newErrors.lastName = t("form.lastName.error.required");
     } else if (formData.lastName.length > 50) {
-      newErrors.lastName = t('form.lastName.error.maxLength');
+      newErrors.lastName = t("form.lastName.error.maxLength");
     }
 
     // Validar email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.email.trim()) {
-      newErrors.email = t('form.email.error.required');
+      newErrors.email = t("form.email.error.required");
     } else if (!emailRegex.test(formData.email)) {
-      newErrors.email = t('form.email.error.invalid');
+      newErrors.email = t("form.email.error.invalid");
     }
 
     // Validar mensaje
     if (!formData.message.trim()) {
-      newErrors.message = t('form.message.error.required');
+      newErrors.message = t("form.message.error.required");
     } else if (formData.message.length > 500) {
-      newErrors.message = t('form.message.error.maxLength');
+      newErrors.message = t("form.message.error.maxLength");
     }
 
     setErrors(newErrors);
@@ -97,16 +101,18 @@ const ContactForm = () => {
   };
 
   // Manejar cambios en los inputs
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
 
     // Limpiar error específico cuando el usuario empieza a escribir
     if (errors[name as keyof FormErrors]) {
-      setErrors(prev => ({
+      setErrors((prev) => ({
         ...prev,
         [name]: undefined,
       }));
@@ -116,14 +122,14 @@ const ContactForm = () => {
   // Enviar formulario
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
 
     if (!isLoaded) {
       setErrors({
-        general: t('errors.recaptchaNotReady'),
+        general: t("errors.recaptchaNotReady"),
       });
       return;
     }
@@ -133,11 +139,11 @@ const ContactForm = () => {
 
     try {
       // Ejecutar reCAPTCHA
-      const recaptchaToken = await executeRecaptcha('contact_form');
-      
+      const recaptchaToken = await executeRecaptcha("contact_form");
+
       if (!recaptchaToken) {
         setErrors({
-          general: t('errors.securityVerification'),
+          general: t("errors.securityVerification"),
         });
         return;
       }
@@ -146,16 +152,16 @@ const ContactForm = () => {
       const apiData = {
         name: `${formData.firstName} ${formData.lastName}`,
         email: formData.email,
-        subject: `Nuevo mensaje${formData.company ? ` de ${formData.company}` : ''}`,
-        message: `${formData.message}${formData.phone ? `\n\nTeléfono de contacto: ${formData.phone}` : ''}`,
+        subject: `Nuevo mensaje${formData.company ? ` de ${formData.company}` : ""}`,
+        message: `${formData.message}${formData.phone ? `\n\nTeléfono de contacto: ${formData.phone}` : ""}`,
         company: formData.company || undefined,
-        recaptchaToken
+        recaptchaToken,
       };
 
-      const response = await fetch('/api/contact', {
-        method: 'POST',
+      const response = await fetch("/api/contact", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(apiData),
       });
@@ -166,57 +172,57 @@ const ContactForm = () => {
         // Mostrar notificación de éxito
         setNotification({
           show: true,
-          type: 'success',
-          title: t('notifications.emailSent'),
-          message: t('success.description'),
+          type: "success",
+          title: t("notifications.emailSent"),
+          message: t("success.description"),
         });
-        
+
         // Después de 3 segundos, mostrar la página de éxito completa
         setTimeout(() => {
-          setNotification(prev => ({ ...prev, show: false }));
+          setNotification((prev) => ({ ...prev, show: false }));
           setIsSuccess(true);
           setFormData({
-            firstName: '',
-            lastName: '',
-            email: '',
-            company: '',
-            phone: '',
-            message: '',
-            budget: '',
+            firstName: "",
+            lastName: "",
+            email: "",
+            company: "",
+            phone: "",
+            message: "",
+            budget: "",
           });
         }, 3000);
       } else {
         // Manejar diferentes tipos de errores basados en el código de error
-        let errorMessage = t('errors.general');
-        let notificationType: NotificationType = 'error';
-        
+        let errorMessage = t("errors.general");
+        let notificationType: NotificationType = "error";
+
         switch (data.error) {
-          case 'RATE_LIMIT_EXCEEDED':
-            errorMessage = t('errors.rateLimitExceeded');
-            notificationType = 'warning';
+          case "RATE_LIMIT_EXCEEDED":
+            errorMessage = t("errors.rateLimitExceeded");
+            notificationType = "warning";
             break;
-          case 'EMAIL_SERVICE_ERROR':
-            errorMessage = t('errors.emailServiceError');
+          case "EMAIL_SERVICE_ERROR":
+            errorMessage = t("errors.emailServiceError");
             break;
-          case 'INVALID_DATA':
-            errorMessage = t('errors.invalidData');
+          case "INVALID_DATA":
+            errorMessage = t("errors.invalidData");
             break;
-          case 'SERVER_ERROR':
-            errorMessage = t('errors.serverError');
+          case "SERVER_ERROR":
+            errorMessage = t("errors.serverError");
             break;
           default:
             // Si hay un mensaje específico del servidor, usarlo
-            errorMessage = data.message || t('errors.general');
+            errorMessage = data.message || t("errors.general");
         }
-        
+
         // Mostrar notificación de error
         setNotification({
           show: true,
           type: notificationType,
           title: errorMessage,
-          message: t('notifications.tryAgainLater'),
+          message: t("notifications.tryAgainLater"),
         });
-        
+
         setErrors({
           general: errorMessage,
         });
@@ -225,13 +231,13 @@ const ContactForm = () => {
       // Mostrar notificación de error de conexión
       setNotification({
         show: true,
-        type: 'error',
-        title: t('errors.connectionError'),
-        message: t('notifications.tryAgainLater'),
+        type: "error",
+        title: t("errors.connectionError"),
+        message: t("notifications.tryAgainLater"),
       });
-      
+
       setErrors({
-        general: t('errors.connectionError'),
+        general: t("errors.connectionError"),
       });
     } finally {
       setIsSubmitting(false);
@@ -246,24 +252,34 @@ const ContactForm = () => {
           <FadeIn>
             <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-2xl p-8 text-center">
               <div className="w-16 h-16 mx-auto mb-4 bg-green-100 dark:bg-green-900/40 rounded-full flex items-center justify-center">
-                <svg className="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                <svg
+                  className="w-8 h-8 text-green-600 dark:text-green-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  />
                 </svg>
               </div>
               <h3 className="text-xl font-semibold text-green-800 dark:text-green-200 mb-3">
-                {t('success.title')}
+                {t("success.title")}
               </h3>
               <p className="text-green-600 dark:text-green-300 mb-6">
-                {t('success.description')}
+                {t("success.description")}
               </p>
               <button
                 onClick={() => {
                   setIsSuccess(false);
-                  setNotification({ show: false, type: 'success', title: '' });
+                  setNotification({ show: false, type: "success", title: "" });
                 }}
                 className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-2xl transition-colors font-semibold"
               >
-                {t('success.button')}
+                {t("success.button")}
               </button>
             </div>
           </FadeIn>
@@ -277,14 +293,14 @@ const ContactForm = () => {
       {/* Componente de notificación */}
       <Notification
         show={notification.show}
-        onClose={() => setNotification(prev => ({ ...prev, show: false }))}
+        onClose={() => setNotification((prev) => ({ ...prev, show: false }))}
         type={notification.type}
         title={notification.title}
         message={notification.message}
         autoClose={true}
         autoCloseDelay={5000}
       />
-      
+
       <div className="hidden lg:block lg:absolute lg:inset-0 lg:left-1/2">
         <Image
           alt="Imagen de contacto"
@@ -299,14 +315,14 @@ const ContactForm = () => {
         <div className="px-6 lg:px-8">
           <div className="mx-auto max-w-xl lg:mx-0 lg:max-w-lg">
             <FadeInStagger>
-              <FadeIn>
-                <h2 className="text-4xl font-semibold tracking-tight text-pretty text-gray-900 dark:text-white sm:text-5xl">
-                  {t('title')}
-                </h2>
-              </FadeIn>
+              <TextReveal
+                as="h2"
+                text={t("title")}
+                className="text-4xl font-semibold tracking-tight text-pretty text-gray-900 dark:text-white sm:text-5xl"
+              />
               <FadeIn>
                 <p className="mt-2 text-lg/8 text-gray-600 dark:text-gray-300">
-                  {t('description')}
+                  {t("description")}
                 </p>
               </FadeIn>
 
@@ -314,7 +330,9 @@ const ContactForm = () => {
               {errors.general && (
                 <FadeIn>
                   <div className="mt-6 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-2xl p-4">
-                    <p className="text-red-600 dark:text-red-400 text-sm">{errors.general}</p>
+                    <p className="text-red-600 dark:text-red-400 text-sm">
+                      {errors.general}
+                    </p>
                   </div>
                 </FadeIn>
               )}
@@ -324,8 +342,11 @@ const ContactForm = () => {
                 <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2">
                   <FadeIn>
                     <div>
-                      <label htmlFor="firstName" className="block text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">
-                        {t('form.firstName.label')}
+                      <label
+                        htmlFor="firstName"
+                        className="block text-lg font-medium text-gray-900 dark:text-gray-100 mb-4"
+                      >
+                        {t("form.firstName.label")}
                       </label>
                       <input
                         id="firstName"
@@ -335,22 +356,27 @@ const ContactForm = () => {
                         onChange={handleInputChange}
                         autoComplete="given-name"
                         className={`block w-full rounded-2xl bg-transparent border-2 px-4 py-4 text-base text-gray-900 dark:text-gray-100 placeholder:text-gray-400 focus:outline-none focus:ring-0 transition-colors ${
-                          errors.firstName 
-                            ? 'border-red-500 focus:border-red-500' 
-                            : 'border-gray-300 dark:border-gray-600 focus:border-gray-500 dark:focus:border-gray-400'
+                          errors.firstName
+                            ? "border-red-500 focus:border-red-500"
+                            : "border-gray-300 dark:border-gray-600 focus:border-gray-500 dark:focus:border-gray-400"
                         }`}
                         disabled={isSubmitting}
                       />
                       {errors.firstName && (
-                        <p className="mt-2 text-sm text-red-600 dark:text-red-400">{errors.firstName}</p>
+                        <p className="mt-2 text-sm text-red-600 dark:text-red-400">
+                          {errors.firstName}
+                        </p>
                       )}
                     </div>
                   </FadeIn>
 
                   <FadeIn>
                     <div>
-                      <label htmlFor="lastName" className="block text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">
-                        {t('form.lastName.label')}
+                      <label
+                        htmlFor="lastName"
+                        className="block text-lg font-medium text-gray-900 dark:text-gray-100 mb-4"
+                      >
+                        {t("form.lastName.label")}
                       </label>
                       <input
                         id="lastName"
@@ -360,14 +386,16 @@ const ContactForm = () => {
                         onChange={handleInputChange}
                         autoComplete="family-name"
                         className={`block w-full rounded-2xl bg-transparent border-2 px-4 py-4 text-base text-gray-900 dark:text-gray-100 placeholder:text-gray-400 focus:outline-none focus:ring-0 transition-colors ${
-                          errors.lastName 
-                            ? 'border-red-500 focus:border-red-500' 
-                            : 'border-gray-300 dark:border-gray-600 focus:border-gray-500 dark:focus:border-gray-400'
+                          errors.lastName
+                            ? "border-red-500 focus:border-red-500"
+                            : "border-gray-300 dark:border-gray-600 focus:border-gray-500 dark:focus:border-gray-400"
                         }`}
                         disabled={isSubmitting}
                       />
                       {errors.lastName && (
-                        <p className="mt-2 text-sm text-red-600 dark:text-red-400">{errors.lastName}</p>
+                        <p className="mt-2 text-sm text-red-600 dark:text-red-400">
+                          {errors.lastName}
+                        </p>
                       )}
                     </div>
                   </FadeIn>
@@ -376,8 +404,11 @@ const ContactForm = () => {
                 {/* Email */}
                 <FadeIn>
                   <div>
-                    <label htmlFor="email" className="block text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">
-                      {t('form.email.label')}
+                    <label
+                      htmlFor="email"
+                      className="block text-lg font-medium text-gray-900 dark:text-gray-100 mb-4"
+                    >
+                      {t("form.email.label")}
                     </label>
                     <input
                       id="email"
@@ -387,14 +418,16 @@ const ContactForm = () => {
                       onChange={handleInputChange}
                       autoComplete="email"
                       className={`block w-full rounded-2xl bg-transparent border-2 px-4 py-4 text-base text-gray-900 dark:text-gray-100 placeholder:text-gray-400 focus:outline-none focus:ring-0 transition-colors ${
-                        errors.email 
-                          ? 'border-red-500 focus:border-red-500' 
-                          : 'border-gray-300 dark:border-gray-600 focus:border-gray-500 dark:focus:border-gray-400'
+                        errors.email
+                          ? "border-red-500 focus:border-red-500"
+                          : "border-gray-300 dark:border-gray-600 focus:border-gray-500 dark:focus:border-gray-400"
                       }`}
                       disabled={isSubmitting}
                     />
                     {errors.email && (
-                      <p className="mt-2 text-sm text-red-600 dark:text-red-400">{errors.email}</p>
+                      <p className="mt-2 text-sm text-red-600 dark:text-red-400">
+                        {errors.email}
+                      </p>
                     )}
                   </div>
                 </FadeIn>
@@ -403,10 +436,15 @@ const ContactForm = () => {
                 <FadeIn>
                   <div>
                     <div className="flex justify-between items-center mb-4">
-                      <label htmlFor="company" className="block text-lg font-medium text-gray-900 dark:text-gray-100">
-                        {t('form.company.label')}
+                      <label
+                        htmlFor="company"
+                        className="block text-lg font-medium text-gray-900 dark:text-gray-100"
+                      >
+                        {t("form.company.label")}
                       </label>
-                      <span className="text-sm text-gray-400">{t('form.company.optional')}</span>
+                      <span className="text-sm text-gray-400">
+                        {t("form.company.optional")}
+                      </span>
                     </div>
                     <input
                       id="company"
@@ -415,7 +453,7 @@ const ContactForm = () => {
                       value={formData.company}
                       onChange={handleInputChange}
                       autoComplete="organization"
-                      placeholder={t('form.company.placeholder')}
+                      placeholder={t("form.company.placeholder")}
                       className="block w-full rounded-2xl bg-transparent border-2 border-gray-300 dark:border-gray-600 px-4 py-4 text-base text-gray-900 dark:text-gray-100 placeholder:text-gray-400 focus:outline-none focus:ring-0 focus:border-gray-500 dark:focus:border-gray-400 transition-colors"
                       disabled={isSubmitting}
                     />
@@ -426,10 +464,15 @@ const ContactForm = () => {
                 <FadeIn>
                   <div>
                     <div className="flex justify-between items-center mb-4">
-                      <label htmlFor="phone" className="block text-lg font-medium text-gray-900 dark:text-gray-100">
-                        {t('form.phone.label')}
+                      <label
+                        htmlFor="phone"
+                        className="block text-lg font-medium text-gray-900 dark:text-gray-100"
+                      >
+                        {t("form.phone.label")}
                       </label>
-                      <span className="text-sm text-gray-400">{t('form.phone.optional')}</span>
+                      <span className="text-sm text-gray-400">
+                        {t("form.phone.optional")}
+                      </span>
                     </div>
                     <input
                       id="phone"
@@ -448,10 +491,15 @@ const ContactForm = () => {
                 <FadeIn>
                   <div>
                     <div className="flex justify-between items-center mb-4">
-                      <label htmlFor="message" className="block text-lg font-medium text-gray-900 dark:text-gray-100">
-                        {t('form.message.label')}
+                      <label
+                        htmlFor="message"
+                        className="block text-lg font-medium text-gray-900 dark:text-gray-100"
+                      >
+                        {t("form.message.label")}
                       </label>
-                      <span className="text-sm text-gray-400">{t('form.message.maxCharacters')}</span>
+                      <span className="text-sm text-gray-400">
+                        {t("form.message.maxCharacters")}
+                      </span>
                     </div>
                     <textarea
                       id="message"
@@ -460,15 +508,17 @@ const ContactForm = () => {
                       value={formData.message}
                       onChange={handleInputChange}
                       className={`block w-full rounded-2xl bg-transparent border-2 px-4 py-4 text-base text-gray-900 dark:text-gray-100 placeholder:text-gray-400 focus:outline-none focus:ring-0 transition-colors resize-none ${
-                        errors.message 
-                          ? 'border-red-500 focus:border-red-500' 
-                          : 'border-gray-300 dark:border-gray-600 focus:border-gray-500 dark:focus:border-gray-400'
+                        errors.message
+                          ? "border-red-500 focus:border-red-500"
+                          : "border-gray-300 dark:border-gray-600 focus:border-gray-500 dark:focus:border-gray-400"
                       }`}
                       disabled={isSubmitting}
                     />
                     <div className="mt-2 flex justify-between">
                       {errors.message && (
-                        <p className="text-sm text-red-600 dark:text-red-400">{errors.message}</p>
+                        <p className="text-sm text-red-600 dark:text-red-400">
+                          {errors.message}
+                        </p>
                       )}
                       <p className="text-sm text-gray-400 ml-auto">
                         {formData.message.length}/500
@@ -484,22 +534,38 @@ const ContactForm = () => {
                       disabled={isSubmitting || !isLoaded}
                       className={`w-full rounded-2xl px-6 py-4 text-center text-lg font-semibold text-white shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600 transition-all duration-200 ${
                         isSubmitting || !isLoaded
-                          ? 'bg-gray-400 cursor-not-allowed'
-                          : 'bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-200 transform hover:scale-[1.02]'
+                          ? "bg-gray-400 cursor-not-allowed"
+                          : "bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-200 transform hover:scale-[1.02]"
                       }`}
                     >
                       {isSubmitting ? (
                         <>
-                          <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          <svg
+                            className="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            ></circle>
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                            ></path>
                           </svg>
-                          {t('form.submit.sending')}
+                          {t("form.submit.sending")}
                         </>
                       ) : !isLoaded ? (
-                        t('form.submit.loading')
+                        t("form.submit.loading")
                       ) : (
-                        t('form.submit.button')
+                        t("form.submit.button")
                       )}
                     </button>
                   </div>
@@ -519,7 +585,7 @@ interface ContactFormClientProps {
 
 const ContactFormClient = ({ recaptchaSiteKey }: ContactFormClientProps) => {
   if (!recaptchaSiteKey) {
-    console.error('NEXT_PUBLIC_RECAPTCHA_SITE_KEY no está configurada');
+    console.error("NEXT_PUBLIC_RECAPTCHA_SITE_KEY no está configurada");
   }
 
   return (
@@ -529,4 +595,4 @@ const ContactFormClient = ({ recaptchaSiteKey }: ContactFormClientProps) => {
   );
 };
 
-export default ContactFormClient; 
+export default ContactFormClient;

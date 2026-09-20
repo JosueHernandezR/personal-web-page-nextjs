@@ -8,6 +8,7 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 import Navbar from "@/components/ui/Navbar";
 import Footer from "@/components/ui/Footer";
 import { SmoothScroll } from "@/components/ui/SmoothScroll";
+import Preloader from "@/components/ui/Preloader";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -164,6 +165,7 @@ export default async function RootLayout({
               </main>
               <Footer />
             </SmoothScroll>
+            <Preloader />
           </ThemeProvider>
         </LanguageProvider>
         <SpeedInsights />

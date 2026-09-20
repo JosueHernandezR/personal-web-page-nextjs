@@ -1,11 +1,8 @@
 "use client";
-import { Suspense, lazy } from "react";
 import HeroCarousel from "@/components/ui/HeroCarousel";
+import Experience from "./Experience";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTranslation } from "../i18n/client";
-
-// Lazy loading para componentes no críticos
-const Experience = lazy(() => import("./Experience"));
 
 export default function Home() {
   const { lng } = useLanguage();
@@ -50,16 +47,9 @@ export default function Home() {
         />
       </section>
 
-      {/* Sección no crítica - lazy loading */}
-      <Suspense
-        fallback={
-          <div className="w-full py-16">
-            <div className="max-w-4xl mx-auto h-96 bg-gray-200 dark:bg-gray-700 animate-pulse rounded-lg" />
-          </div>
-        }
-      >
-        <Experience />
-      </Suspense>
+      {/* Sección Experience — import directo: la carga diferida causaba un
+          jolt en Safari al cruzar el hero (import dinámico + cambio de altura) */}
+      <Experience />
     </main>
   );
 }

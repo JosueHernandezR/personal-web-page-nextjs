@@ -17,6 +17,7 @@
 - **2026-09-17 — Menú móvil: overlay propio con GSAP (reemplaza el Dialog de Headless UI).** El enfoque con `transition` + `data-closed` de Headless UI no funcionó (el Dialog monta el panel de forma asíncrona → `Invalid scope` y `GSAP target .menu-item not found`; el menú se abría sin transición). Se reemplazó por un **overlay custom siempre montado** con timeline de GSAP: apertura (backdrop fade 0.3s + panel slide `power3.out` 0.45s + items stagger 60ms) y cierre (items fade + panel slide out + backdrop fade). Se implementaron manualmente: cierre con Escape, bloqueo de scroll del body, foco al panel al abrir, `aria-modal`/`aria-hidden`/`inert`. El panel inicia fuera de pantalla con CSS (`-translate-x-full`) para evitar flash en SSR.
 - **2026-09-17 — Fixes del menú móvil:** (1) el overlay estaba dentro del `<nav>` y el `backdrop-blur` del nav (al hacer scroll) crea un _containing block_ que confinaba el overlay `fixed inset-0` al alto del nav (~64px) → solo se veía "Menú". Se movió el overlay **fuera del `<nav>`** (hermano, en un fragment). (2) El `syncTouch` de Lenis añadía lag en iOS/WebKit (Opera/Safari/Chrome iOS) → ahora se detecta iOS (incluye iPadOS vía `MacIntel` + `maxTouchPoints`) y se usa **scroll nativo** (ya suave); en Android se mantiene el glide de Lenis.
 - **2026-09-17 — Transición de tema suave (View Transitions API) + morph de icono luna↔sol (MorphIcons):** se agregó `morphicons` + `lucide`. El `ThemeSelector` ahora usa `<MorphIcon icon={dark ? Moon : Sun} spring="smooth" />` (morph con física de spring, `reducedMotion="user"`). El cambio de tema usa `document.startViewTransition(() => flushSync(setTheme))` con un **wipe circular** que crece desde el botón del tema (600ms, expo-out), con fallback a cambio directo si la API no existe o hay `prefers-reduced-motion`. Se reemplazó el hack `**:transition-none!` (probablemente inválido en Tailwind v4) por una clase `.disable-transitions` robusta en `globals.css`, y se agregó CSS para un wipe limpio (`::view-transition-old/new(root)` sin crossfade). `TranslateSelector`: `transition-colors` en los botones de idioma. Se eliminó `components/icons/ThemeIcons.tsx` (los iconos custom fueron reemplazados por datos de Lucide).
+- **2026-09-17 — Fix jolt en Safari (hero → Experience):** la sección Experience se cargaba con `Suspense` + `lazy(() => import(...))`. Al cruzar el límite del hero, el import dinámico se disparaba (Safari lo resuelve más lento → frame congelado) y el skeleton de 384px se reemplazaba por el contenido real (~2000px) → la altura de la página cambiaba → el scroll saltaba (además de un desajuste momentáneo en las dimensiones cacheadas de Lenis). Fix: **import directo** de Experience en `page.tsx` (sin lazy loading) — la altura queda estable desde el inicio.
 
 ## 1. Estado del MCP / Skills de GSAP ✅
 
@@ -278,6 +279,18 @@ Estas son las que separan un sitio "bonito" de uno **premiado** (referente: Bohd
 - [ ] Lighthouse ≥ 90 en performance, accesibilidad y best practices
 
 ---
+
+## ✅ Fase 1 — Progreso
+
+- **Preloader** (`components/ui/Preloader.tsx`, integrado en el layout): contador 00→100 (1.5s) + reveal de cortina que sube (0.8s, `power3.inOut`). Solo en la primera carga por sesión (flag de módulo `hasShownPreloader`), respeta `prefers-reduced-motion`, usa `bg-background`/`text-foreground` (tema dinámico).
+- **TextReveal** (`components/ui/TextReveal.tsx`): split de líneas con `SplitText` + máscara (`mask: "lines"`), las líneas entran desde `yPercent: 110` con stagger cuando el elemento cruza `top 85%` (una vez). Aplicado al título de la sección Experience.
+- **TextReveal extendido:** ahora acepta `as` (`h1`/`h2`/`h3`). Aplicado al título principal de **Projects** (h1) y al título de **Contacto** (h2, en `ContactFormClient`).
+- **Marquee** (`components/ui/Marquee.tsx`): creado pero **sin uso por ahora** (el usuario lo pidió quitar de la página; se mantiene el componente para después). Loop perfecto con `xPercent: -50` + `ease: "none"` y `mr-8` por item.
+- **Pendiente en Fase 1:** Hero v2 (timeline de entrada con SplitText) y migración de `Fade.tsx` a GSAP — se difieren por la sensibilidad del carrusel (restaurado a su implementación original aprobada).
+
+- **Fix preloader pegado en 00:** React StrictMode (doble mount en dev) revertía el timeline GSAP del primer mount, y el flag `hasShownPreloader` (que se ponía antes de crear el timeline) impedía que el segundo mount creara uno nuevo. Fix: el flag ahora se marca **solo en `onComplete`** + timeout de seguridad de 5s que fuerza el cierre si algo falla.
+
+**Ver el preloader en DevTools:** se muestra en cada _recarga completa_ (Cmd/Ctrl+Shift+R reinicia el flag de sesión). Para verlo lento: Chrome/Edge DevTools → pestaña **Performance** → engranaje ⚙️ → **CPU: 6x/20x** de throttling, o pestaña **Network** → throttling **Slow 3G**. Alternativa: subir temporalmente `duration: 1.5`/`0.8` en `Preloader.tsx`.
 
 ## Resumen ejecutivo
 
