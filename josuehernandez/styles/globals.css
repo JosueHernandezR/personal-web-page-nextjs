@@ -2,166 +2,166 @@
 @variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 :root {
-  --background: #ededed;
-  --foreground: #171717;
-  --pgf-ring-w: 4px;
+    --background: #ededed;
+    --foreground: #171717;
+    --pgf-ring-w: 4px;
 }
 [data-theme="dark"] {
-  --background: #171717;
-  --foreground: #ededed;
+    --background: #171717;
+    --foreground: #ededed;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --font-sans: var(--font-geist-sans);
+    --font-mono: var(--font-geist-mono);
 }
 
 /* Parallax Card Container */
 article[style*="--x"] {
-  perspective: 1000px;
-  transform-style: preserve-3d;
-  overflow: hidden;
+    perspective: 1000px;
+    transform-style: preserve-3d;
+    overflow: hidden;
 }
 
 /* Assets container */
 .assets {
-  overflow: hidden;
-  border-radius: inherit;
+    overflow: hidden;
+    border-radius: inherit;
 }
 
 /* Parallax effect for sky background - Mobile optimized */
 .assets > img:first-of-type {
-  object-position: calc(50% + (clamp(-1, var(--x), 1) * 15px))
-    calc(40% + (clamp(-1, var(--y), 1) * -15px));
-  transform: scale(1.2); /* Increased scale to avoid seeing edges */
-  transition: object-position 0ms linear;
-  will-change: object-position, transform;
+    object-position: calc(50% + (clamp(-1, var(--x), 1) * 15px))
+        calc(40% + (clamp(-1, var(--y), 1) * -15px));
+    transform: scale(1.2); /* Increased scale to avoid seeing edges */
+    transition: object-position 0ms linear;
+    will-change: object-position, transform;
 }
 
 /* Parallax effect for castle/temple image - Mobile optimized */
 .assets > img:last-of-type {
-  object-position: calc(50% + (clamp(-1, var(--x), 1) * 30px))
-    calc(75% + (clamp(-1, var(--y), 1) * -30px));
-  transform: scale(1.2); /* Increased scale to avoid seeing edges */
-  transition: object-position 0ms linear;
-  will-change: object-position, transform;
+    object-position: calc(50% + (clamp(-1, var(--x), 1) * 30px))
+        calc(75% + (clamp(-1, var(--y), 1) * -30px));
+    transform: scale(1.2); /* Increased scale to avoid seeing edges */
+    transition: object-position 0ms linear;
+    will-change: object-position, transform;
 }
 
 /* Parallax effect for title - Mobile optimized */
 .assets h3 {
-  transform: translate(
-    calc(-50% + (clamp(-1, var(--x), 1) * -25px)),
-    calc(0px + (clamp(-1, var(--y), 1) * -15px))
-  );
-  transition: transform 0ms linear;
-  letter-spacing: 0.05em;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  will-change: transform;
+    transform: translate(
+        calc(-50% + (clamp(-1, var(--x), 1) * -25px)),
+        calc(0px + (clamp(-1, var(--y), 1) * -15px))
+    );
+    transition: transform 0ms linear;
+    letter-spacing: 0.05em;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    will-change: transform;
 }
 
 /* Contenido y efecto blur */
 .content {
-  min-height: 32%;
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  color: white;
-  display: grid;
-  gap: 0.2rem;
-  place-items: center;
-  align-content: center;
-  padding-bottom: 0.5rem;
-  z-index: 20;
+    min-height: 32%;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    color: white;
+    display: grid;
+    gap: 0.2rem;
+    place-items: center;
+    align-content: center;
+    padding-bottom: 0.5rem;
+    z-index: 20;
 }
 
 .content svg {
-  width: 20px;
+    width: 20px;
 }
 
 .content p {
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 1.2rem;
-  position: relative;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.2rem;
+    position: relative;
 }
 
 .content p:first-of-type::after {
-  content: "";
-  position: absolute;
-  bottom: calc(100% + 1rem);
-  left: 50%;
-  width: 6ch;
-  background: white;
-  height: 1px;
-  translate: -50% 0;
+    content: "";
+    position: absolute;
+    bottom: calc(100% + 1rem);
+    left: 50%;
+    width: 6ch;
+    background: white;
+    height: 1px;
+    translate: -50% 0;
 }
 
 .content p:last-of-type {
-  opacity: 0.8;
+    opacity: 0.8;
 }
 
 /* Blurring - Exactamente como en el ejemplo proporcionado */
 .blurs .layer {
-  --blur: calc(
-    sin(((var(--layers) - var(--index)) / var(--layers)) * 45deg) * 30
-  );
-  --stop: calc(sin(((var(--index)) / var(--layers)) * 45deg) * 35);
-  backdrop-filter: blur(calc(var(--blur) * 1px));
-  mask: radial-gradient(
-    140% 130% at 45% 90%,
-    #fff 15%,
-    #0000 calc((15 + var(--stop)) * 1%)
-  );
-  -webkit-backdrop-filter: blur(calc(var(--blur) * 1px));
-  -webkit-mask: radial-gradient(
-    140% 130% at 45% 90%,
-    #fff 15%,
-    #0000 calc((15 + var(--stop)) * 1%)
-  );
-  opacity: 0.65;
-  z-index: 1;
-  pointer-events: none;
+    --blur: calc(
+        sin(((var(--layers) - var(--index)) / var(--layers)) * 45deg) * 30
+    );
+    --stop: calc(sin(((var(--index)) / var(--layers)) * 45deg) * 35);
+    backdrop-filter: blur(calc(var(--blur) * 1px));
+    mask: radial-gradient(
+        140% 130% at 45% 90%,
+        #fff 15%,
+        #0000 calc((15 + var(--stop)) * 1%)
+    );
+    -webkit-backdrop-filter: blur(calc(var(--blur) * 1px));
+    -webkit-mask: radial-gradient(
+        140% 130% at 45% 90%,
+        #fff 15%,
+        #0000 calc((15 + var(--stop)) * 1%)
+    );
+    opacity: 0.65;
+    z-index: 1;
+    pointer-events: none;
 }
 
 /* ---------- Card proyectos: marco degradado + tilt 3D (sólo contenedor imagen .pgf-view--media) ---------- */
 /* Permite que la sombra exterior del shell no la recorten los padres inmediatos. */
 .pgf-view.pgf-view--media {
-  overflow: visible;
+    overflow: visible;
 }
 
 .pgf-view {
-  perspective: 1380px;
-  perspective-origin: 50% 50%;
+    perspective: 1380px;
+    perspective-origin: 50% 50%;
 }
 
 .pgf-shell {
-  --pvx: 0;
-  --pvy: 0;
-  /* Marco concéntrico: outer = inner + gap (mismo gap en px en los cuatro lados). */
-  --pg-inner-radius: 0.75rem;
-  --pg-frame-gap: clamp(10px, 2.25vw, 16px);
-  --pg-outer-radius: calc(var(--pg-inner-radius) + var(--pg-frame-gap));
-  /* Posición normalizada para máscara tipo linterna (hereda al halo .ambient) */
-  --spot-x: 50%;
-  --spot-y: 50%;
-  transform-origin: center center;
-  will-change: transform;
-  transform: rotateY(calc(clamp(-1, var(--pvx, 0), 1) * 5deg))
-    rotateX(calc(clamp(-1, var(--pvy, 0), 1) * -9deg));
-  border-radius: var(--pg-outer-radius);
+    --pvx: 0;
+    --pvy: 0;
+    /* Marco concéntrico: outer = inner + gap (mismo gap en px en los cuatro lados). */
+    --pg-inner-radius: 0.75rem;
+    --pg-frame-gap: clamp(10px, 2.25vw, 16px);
+    --pg-outer-radius: calc(var(--pg-inner-radius) + var(--pg-frame-gap));
+    /* Posición normalizada para máscara tipo linterna (hereda al halo .ambient) */
+    --spot-x: 50%;
+    --spot-y: 50%;
+    transform-origin: center center;
+    will-change: transform;
+    transform: rotateY(calc(clamp(-1, var(--pvx, 0), 1) * 5deg))
+        rotateX(calc(clamp(-1, var(--pvy, 0), 1) * -9deg));
+    border-radius: var(--pg-outer-radius);
 }
 
 .pgf-frame {
-  border-radius: inherit;
+    border-radius: inherit;
 }
 
 .pgf-inner {
-  min-width: 0;
-  overflow: hidden;
+    min-width: 0;
+    overflow: hidden;
 }
 
 /*
@@ -169,175 +169,201 @@ article[style*="--x"] {
  * El fundido exterior es sólo sombra muy difusa; el interior se funde por máscara en .plate.
  */
 .pgf-inner--media {
-  padding: 0;
-  border-radius: inherit;
-  background: transparent;
+    padding: 0;
+    border-radius: inherit;
+    background: transparent;
 }
 
 [data-theme="dark"] .pgf-shell {
-  box-shadow: 0 40px 80px rgb(0 0 0 / 0.55), 0 16px 40px rgb(0 0 0 / 0.35);
+    box-shadow:
+        0 40px 80px rgb(0 0 0 / 0.55),
+        0 16px 40px rgb(0 0 0 / 0.35);
 }
 
 html:not([data-theme="dark"]) .pgf-shell {
-  box-shadow: 0 32px 72px rgb(15 23 42 / 0.14), 0 12px 28px rgb(15 23 42 / 0.06);
+    box-shadow:
+        0 32px 72px rgb(15 23 42 / 0.14),
+        0 12px 28px rgb(15 23 42 / 0.06);
 }
 
 @media (min-width: 640px) {
-  .pgf-inner--media {
-    padding: 0;
-  }
+    .pgf-inner--media {
+        padding: 0;
+    }
 }
 
 /* Halo de color en la foto (hereda --pvx / --pvy del shell) */
 .project-glow-thumb {
-  container-type: size;
-  isolation: isolate;
-  --pg-icon-blur: 32;
-  --pg-icon-scale: 4;
-  /*
+    container-type: size;
+    isolation: isolate;
+    --pg-icon-blur: 32;
+    --pg-icon-scale: 4;
+    /*
    * Base: suficiente croma para que rojos/verdes se perciban tras el blur.
    * brightness/contrast no deben repetir valores ~1.45/1.55 (clips a blanco en luces fuertes).
    */
-  --pg-icon-saturate: 4.4;
-  --pg-icon-brightness: 1.1;
-  --pg-icon-contrast: 1.24;
-  --pg-icon-opacity: 0.84;
+    --pg-icon-saturate: 4.4;
+    --pg-icon-brightness: 1.1;
+    --pg-icon-contrast: 1.24;
+    --pg-icon-opacity: 0.84;
 }
 
 /* Tema claro: el fondo de página aclara todo el marco perceptivo — sube saturate + opacidad; baja algo el brillo para no quemar. */
 html:not([data-theme="dark"]) .project-glow-thumb {
-  --pg-icon-saturate: 5.4;
-  --pg-icon-brightness: 1.04;
-  --pg-icon-contrast: 1.28;
-  --pg-icon-opacity: 0.94;
+    --pg-icon-saturate: 5.4;
+    --pg-icon-brightness: 1.04;
+    --pg-icon-contrast: 1.28;
+    --pg-icon-opacity: 0.94;
 }
 
 /* Tema oscuro: halo legible contra negro sin elevar tanto la luminancia (evita halo “tubo metálico”). */
 [data-theme="dark"] .project-glow-thumb {
-  --pg-icon-saturate: 4.6;
-  --pg-icon-brightness: 1.12;
-  --pg-icon-contrast: 1.22;
-  --pg-icon-opacity: 0.82;
+    --pg-icon-saturate: 4.6;
+    --pg-icon-brightness: 1.12;
+    --pg-icon-contrast: 1.22;
+    --pg-icon-opacity: 0.82;
 }
 
 .project-glow-thumb__plate {
-  transform: none;
-  /* Alfa suave hacia fuera (no es borde nuevo: es transparencia en el mismo recorte). */
-  -webkit-mask-image: radial-gradient(
-    ellipse farthest-corner at 50% 50%,
-    #000 0%,
-    #000 72%,
-    rgba(0, 0, 0, 0.52) 86%,
-    rgba(0, 0, 0, 0.1) 96%,
-    transparent 101%
-  );
-  mask-image: radial-gradient(
-    ellipse farthest-corner at 50% 50%,
-    #000 0%,
-    #000 72%,
-    rgba(0, 0, 0, 0.52) 86%,
-    rgba(0, 0, 0, 0.1) 96%,
-    transparent 101%
-  );
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
+    transform: none;
+    /* Alfa suave hacia fuera (no es borde nuevo: es transparencia en el mismo recorte). */
+    -webkit-mask-image: radial-gradient(
+        ellipse farthest-corner at 50% 50%,
+        #000 0%,
+        #000 72%,
+        rgba(0, 0, 0, 0.52) 86%,
+        rgba(0, 0, 0, 0.1) 96%,
+        transparent 101%
+    );
+    mask-image: radial-gradient(
+        ellipse farthest-corner at 50% 50%,
+        #000 0%,
+        #000 72%,
+        rgba(0, 0, 0, 0.52) 86%,
+        rgba(0, 0, 0, 0.1) 96%,
+        transparent 101%
+    );
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
 }
 
 .project-glow-thumb__ambient {
-  position: absolute;
-  inset: 0;
-  box-sizing: border-box;
-  overflow: hidden;
-  /*
+    position: absolute;
+    inset: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+    /*
    * Máscara tipo spotlight (sólo alfa): blanco/opaco = zona visible — no pinta tinte neutro sobre la foto.
    * Alcance corto (~118px máx desde --spot-*); el tinte perceptible viene del blur de la misma src.
    */
-  -webkit-mask-image: radial-gradient(
-    circle min(118px, 30cqi) at var(--spot-x, 50%) var(--spot-y, 50%),
-    rgb(255 255 255 / 1) 0%,
-    rgb(255 255 255 / 0.78) 42%,
-    rgb(255 255 255 / 0.1) 74%,
-    transparent 92%
-  );
-  mask-image: radial-gradient(
-    circle min(118px, 30cqi) at var(--spot-x, 50%) var(--spot-y, 50%),
-    rgb(255 255 255 / 1) 0%,
-    rgb(255 255 255 / 0.78) 42%,
-    rgb(255 255 255 / 0.1) 74%,
-    transparent 92%
-  );
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  mask-mode: alpha;
-  opacity: var(--pg-icon-opacity);
-  transform-origin: center center;
-  will-change: transform, filter;
-  /*
+    -webkit-mask-image: radial-gradient(
+        circle min(118px, 30cqi) at var(--spot-x, 50%) var(--spot-y, 50%),
+        rgb(255 255 255 / 1) 0%,
+        rgb(255 255 255 / 0.78) 42%,
+        rgb(255 255 255 / 0.1) 74%,
+        transparent 92%
+    );
+    mask-image: radial-gradient(
+        circle min(118px, 30cqi) at var(--spot-x, 50%) var(--spot-y, 50%),
+        rgb(255 255 255 / 1) 0%,
+        rgb(255 255 255 / 0.78) 42%,
+        rgb(255 255 255 / 0.1) 74%,
+        transparent 92%
+    );
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    mask-mode: alpha;
+    opacity: var(--pg-icon-opacity);
+    transform-origin: center center;
+    will-change: transform, filter;
+    /*
    * Fuente visual = la misma imagen (blur + saturate); sólo llega donde la máscara lo permite.
    * Orden escala→drift igual que antes.
    */
-  transform: scale(var(--pg-icon-scale, 4))
-    translate(
-      calc(clamp(-1, var(--pvx, 0), 1) * 42cqi / var(--pg-icon-scale, 4)),
-      calc(clamp(-1, var(--pvy, 0), 1) * 42cqh / var(--pg-icon-scale, 4))
-    );
-  filter: blur(calc(var(--pg-icon-blur, 32) * 1px))
-    saturate(var(--pg-icon-saturate, 4.4))
-    brightness(var(--pg-icon-brightness, 1.1))
-    contrast(var(--pg-icon-contrast, 1.24));
+    transform: scale(var(--pg-icon-scale, 4))
+        translate(
+            calc(clamp(-1, var(--pvx, 0), 1) * 42cqi / var(--pg-icon-scale, 4)),
+            calc(clamp(-1, var(--pvy, 0), 1) * 42cqh / var(--pg-icon-scale, 4))
+        );
+    filter: blur(calc(var(--pg-icon-blur, 32) * 1px))
+        saturate(var(--pg-icon-saturate, 4.4))
+        brightness(var(--pg-icon-brightness, 1.1))
+        contrast(var(--pg-icon-contrast, 1.24));
 }
 
 /* Imágenes centradas geométricamente (responsive); object-cover sólo después de centrar la caja. */
 .project-glow-thumb__layer-img,
 .project-glow-thumb__front {
-  box-sizing: border-box;
-  display: block;
-  margin: 0;
-  padding: 0;
-  object-fit: cover;
-  object-position: 50% 50%;
+    box-sizing: border-box;
+    display: block;
+    margin: 0;
+    padding: 0;
+    object-fit: cover;
+    object-position: 50% 50%;
 }
 
 /* Halo: sobredimensión centrada antes del blur+escala del padre (.ambient) */
 .project-glow-thumb__ambient .project-glow-thumb__layer-img {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: auto;
-  height: auto;
-  min-width: 118%;
-  min-height: 118%;
-  transform: translate(-50%, -50%);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: auto;
+    height: auto;
+    min-width: 118%;
+    min-height: 118%;
+    transform: translate(-50%, -50%);
 }
 
 /* Fotografía nítida: mismo --pg-frame-gap por lado heredado de .pgf-shell (longitud, no %). */
 .project-glow-thumb__front {
-  inset: unset;
-  left: 50%;
-  top: 50%;
-  width: calc(100% - 2 * var(--pg-frame-gap, 12px));
-  height: calc(100% - 2 * var(--pg-frame-gap, 12px));
-  transform: translate(-50%, -50%);
-  border-radius: var(--pg-inner-radius, 0.75rem);
-  z-index: 4;
-  will-change: auto;
+    inset: unset;
+    left: 50%;
+    top: 50%;
+    width: calc(100% - 2 * var(--pg-frame-gap, 12px));
+    height: calc(100% - 2 * var(--pg-frame-gap, 12px));
+    transform: translate(-50%, -50%);
+    border-radius: var(--pg-inner-radius, 0.75rem);
+    z-index: 4;
+    will-change: auto;
 }
 
 @layer utilities {
-  .custom-mask {
-    background: linear-gradient(
-      to top,
-      rgba(0, 0, 0, 0.6) 0%,
-      rgba(0, 0, 0, 0.3) 40%,
-      rgba(0, 0, 0, 0) 100%
-    );
-    mask-image: linear-gradient(to top, black 0%, black 40%, transparent 100%);
-    -webkit-mask-image: linear-gradient(
-      to top,
-      black 0%,
-      black 40%,
-      transparent 100%
-    );
-  }
+    .custom-mask {
+        background: linear-gradient(
+            to top,
+            rgba(0, 0, 0, 0.6) 0%,
+            rgba(0, 0, 0, 0.3) 40%,
+            rgba(0, 0, 0, 0) 100%
+        );
+        mask-image: linear-gradient(
+            to top,
+            black 0%,
+            black 40%,
+            transparent 100%
+        );
+        -webkit-mask-image: linear-gradient(
+            to top,
+            black 0%,
+            black 40%,
+            transparent 100%
+        );
+    }
 }
 
+/* ---------- Cambio de tema (View Transitions API) ---------- */
+
+/* Desactiva transiciones temporalmente durante el cambio de tema (evita flash).
+   Se agrega/remueve desde ThemeSelector con classList. */
+.disable-transitions *,
+.disable-transitions *::before,
+.disable-transitions *::after {
+    transition: none !important;
+}
+
+/* Wipe limpio del tema: sin crossfade por defecto — el JS anima el
+   clip-path circular de ::view-transition-new(root) desde el botón. */
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+}

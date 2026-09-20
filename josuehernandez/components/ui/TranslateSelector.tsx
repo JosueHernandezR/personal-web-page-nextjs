@@ -17,10 +17,10 @@ export default function TranslateSelector() {
     if (language === lng) {
       return;
     }
-    
+
     // Cambiar el idioma en el contexto
     changeLanguage(language);
-    
+
     // Navegar a la nueva URL con el idioma actualizado
     router.push(`/${language}${pathname.slice(3)}`);
   };
@@ -51,7 +51,7 @@ export default function TranslateSelector() {
                   {languages.map((item, i) => (
                     <div
                       key={i}
-                      className="flex flex-col px-2.5 py-1.5 rounded-2xl hover:bg-black/10"
+                      className="flex flex-col px-2.5 py-1.5 rounded-2xl transition-colors duration-200 hover:bg-black/10 dark:hover:bg-white/10"
                     >
                       <button
                         onClick={() => {
