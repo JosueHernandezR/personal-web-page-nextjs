@@ -2,15 +2,19 @@
   "mcp_servers": {
     "next-devtools": {
       "command": "npx",
-      "args": ["-y", "next-devtools-mcp@latest"]
+      "args": ["-y", "next-devtools-mcp@latest"],
     },
     "threejs-devtools": {
       "command": "npx",
-      "args": ["-y", "threejs-devtools-mcp"]
+      "args": ["-y", "threejs-devtools-mcp"],
     },
     "tailwindcss": {
       "command": "npx",
-      "args": ["-y", "mcp-tailwindcss"]
-    }
-  }
+      "args": ["-y", "mcp-tailwindcss"],
+    },
+    "motionprompts": {
+      "command": "npx",
+      "args": ["-y", "motionprompts-mcp"],
+    },
+  },
 }
