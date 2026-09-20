@@ -279,7 +279,7 @@ export default function HeroCarousel({
 
         {/* Overlay con textos y botón - Rediseñado */}
         <div
-          className={`absolute inset-0 z-10 p-6 md:p-8 lg:p-12 md:mt-[64px]
+          className={`absolute inset-0 z-10 p-6 md:p-8 lg:p-12 md:mt-16
           ${
             isMobile
               ? "flex flex-col justify-start items-start"
@@ -347,7 +347,7 @@ export default function HeroCarousel({
             {/* <FadeIn>
               <div className="text-left">
                 <Link href='/booking' className={`bg-secundary-dark hover:bg-secundary-dark/90 rounded-full shadow-lg ${
-                  isMobile ? 'text-white px-6 py-3 text-base font-medium' : 
+                  isMobile ? 'text-white px-6 py-3 text-base font-medium' :
                   'text-gray-100 px-6 py-3 lg:px-8 lg:py-4 text-lg lg:text-xl font-medium'}`}>
                   {buttonTexts && buttonTexts[currentIndex] ? buttonTexts[currentIndex] : buttonText}
                 </Link>
@@ -415,4 +415,3 @@ export default function HeroCarousel({
     </div>
   );
 }
-

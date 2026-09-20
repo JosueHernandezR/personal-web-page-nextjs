@@ -7,6 +7,7 @@ import React, {
   useState,
   useEffect,
   useMemo,
+  useCallback,
 } from "react";
 import { useTranslation as useClientTranslation } from "@/app/i18n/client";
 
@@ -47,11 +48,14 @@ export const LanguageProvider: React.FC<{
     }
   }, [lng]);
 
-  const changeLanguage = (newLng: string) => {
-    if (newLng !== lng) {
-      setLng(newLng);
-    }
-  };
+  const changeLanguage = useCallback(
+    (newLng: string) => {
+      if (newLng !== lng) {
+        setLng(newLng);
+      }
+    },
+    [lng],
+  );
 
   // Use useMemo to optimize performance by avoiding unnecessary re-renders
   const contextValue = useMemo(
@@ -59,7 +63,7 @@ export const LanguageProvider: React.FC<{
       lng,
       changeLanguage,
     }),
-    [lng]
+    [lng, changeLanguage],
   );
 
   return (

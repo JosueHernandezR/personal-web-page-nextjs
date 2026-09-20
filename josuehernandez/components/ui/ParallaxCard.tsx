@@ -277,7 +277,7 @@ export function ParallaxCard({
   return (
     <article
       ref={cardRef}
-      className="w-full aspect-4/3 max-h-[calc(100svh-1rem)] relative overflow-hidden max-w-[calc(100%)] portrait:min-h-[330px] rounded-2xl mx-auto md:mx-0"
+      className="w-full aspect-4/3 max-h-[calc(100svh-1rem)] relative overflow-hidden max-w-[calc(100%)] portrait:min-h-82.5 rounded-2xl mx-auto md:mx-0"
       style={
         {
           "--x": "0",
@@ -304,7 +304,7 @@ export function ParallaxCard({
         {/* Title - Responsive size and positioning */}
         <h3
           ref={titleRef}
-          className={`${beba.className} absolute top-[6%] left-[50%] -translate-x-[50%] m-0 text-[5rem] md:text-[8rem] uppercase text-white z-10 w-full text-center`}
+          className={`${beba.className} absolute top-[6%] left-[50%] translate-x-[-50%] m-0 text-[5rem] md:text-[8rem] uppercase text-white z-10 w-full text-center`}
         >
           {title}
         </h3>
