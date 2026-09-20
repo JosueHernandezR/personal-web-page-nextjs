@@ -7,6 +7,7 @@ import "@/styles/globals.css";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import Navbar from "@/components/ui/Navbar";
 import Footer from "@/components/ui/Footer";
+import { SmoothScroll } from "@/components/ui/SmoothScroll";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -39,10 +40,22 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: {
     default: "Josue Hernandez - Desarrollador FullStack & Fotógrafo",
-    template: "%s | Josue Hernandez"
+    template: "%s | Josue Hernandez",
   },
-  description: "Desarrollador FullStack especializado en Flutter, React, Next.js y AWS. Fotógrafo apasionado. Experiencia en arquitecturas robustas y microservicios. Líder de proyectos tecnológicos innovadores.",
-  keywords: ["desarrollador", "fullstack", "flutter", "react", "nextjs", "aws", "fotografía", "mobile", "typescript", "javascript"],
+  description:
+    "Desarrollador FullStack especializado en Flutter, React, Next.js y AWS. Fotógrafo apasionado. Experiencia en arquitecturas robustas y microservicios. Líder de proyectos tecnológicos innovadores.",
+  keywords: [
+    "desarrollador",
+    "fullstack",
+    "flutter",
+    "react",
+    "nextjs",
+    "aws",
+    "fotografía",
+    "mobile",
+    "typescript",
+    "javascript",
+  ],
   authors: [{ name: "Josue Hernandez" }],
   creator: "Josue Hernandez",
   publisher: "Josue Hernandez",
@@ -52,44 +65,46 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
     },
   },
   openGraph: {
-    type: 'website',
-    locale: 'es_ES',
-    alternateLocale: 'en_US',
-    url: 'https://josuehernandez.dev',
-    siteName: 'Josue Hernandez Portfolio',
-    title: 'Josue Hernandez - Desarrollador FullStack & Fotógrafo',
-    description: 'Desarrollador FullStack especializado en Flutter, React, Next.js y AWS. Fotógrafo apasionado. Experiencia en arquitecturas robustas y microservicios.',
+    type: "website",
+    locale: "es_ES",
+    alternateLocale: "en_US",
+    url: "https://josuehernandez.dev",
+    siteName: "Josue Hernandez Portfolio",
+    title: "Josue Hernandez - Desarrollador FullStack & Fotógrafo",
+    description:
+      "Desarrollador FullStack especializado en Flutter, React, Next.js y AWS. Fotógrafo apasionado. Experiencia en arquitecturas robustas y microservicios.",
     images: [
       {
-        url: '/photos/horizontal/personal_web_page-01.jpg',
+        url: "/photos/horizontal/personal_web_page-01.jpg",
         width: 1200,
         height: 630,
-        alt: 'Josue Hernandez - Desarrollador FullStack & Fotógrafo',
+        alt: "Josue Hernandez - Desarrollador FullStack & Fotógrafo",
       },
     ],
   },
   twitter: {
-    card: 'summary_large_image',
-    title: 'Josue Hernandez - Desarrollador FullStack & Fotógrafo',
-    description: 'Desarrollador FullStack especializado en Flutter, React, Next.js y AWS. Fotógrafo apasionado.',
-    images: ['/photos/horizontal/personal_web_page-01.jpg'],
-    creator: '@josue',
+    card: "summary_large_image",
+    title: "Josue Hernandez - Desarrollador FullStack & Fotógrafo",
+    description:
+      "Desarrollador FullStack especializado en Flutter, React, Next.js y AWS. Fotógrafo apasionado.",
+    images: ["/photos/horizontal/personal_web_page-01.jpg"],
+    creator: "@josue",
   },
   alternates: {
-    canonical: 'https://josuehernandez.dev',
+    canonical: "https://josuehernandez.dev",
     languages: {
-      'es-ES': 'https://josuehernandez.dev/es',
-      'en-US': 'https://josuehernandez.dev/en',
+      "es-ES": "https://josuehernandez.dev/es",
+      "en-US": "https://josuehernandez.dev/en",
     },
   },
   verification: {
-    google: 'your-google-verification-code',
+    google: "your-google-verification-code",
   },
 };
 
@@ -114,21 +129,27 @@ export default async function RootLayout({
       <head>
         {/* Preconnect para fuentes */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
 
-        
         {/* Favicon */}
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-        
+
         {/* DNS Prefetch para recursos externos */}
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         <link rel="dns-prefetch" href="//fonts.gstatic.com" />
-        
+
         {/* Preload de recursos críticos */}
-        <link rel="preload" href="/photos/horizontal/personal_web_page-01.jpg" as="image" type="image/jpeg" />
-        
+        <link
+          rel="preload"
+          href="/photos/horizontal/personal_web_page-01.jpg"
+          as="image"
+          type="image/jpeg"
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${bebasNeue.variable} antialiased`}
@@ -136,18 +157,17 @@ export default async function RootLayout({
       >
         <LanguageProvider initialLng={lng}>
           <ThemeProvider>
-            <Navbar />
-            <main id="main-content" role="main">
-              {children}
-            </main>
-            <Footer />
+            <SmoothScroll>
+              <Navbar />
+              <main id="main-content" role="main">
+                {children}
+              </main>
+              <Footer />
+            </SmoothScroll>
           </ThemeProvider>
         </LanguageProvider>
         <SpeedInsights />
         <Analytics />
-        
-
-
       </body>
     </html>
   );

@@ -1,51 +1,57 @@
-import { useEffect, useCallback, useState } from 'react';
+import { useEffect, useCallback, useState } from "react";
 
 interface ImagePreloaderOptions {
   priority?: boolean;
   quality?: number;
-  format?: 'webp' | 'avif' | 'auto';
+  format?: "webp" | "avif" | "auto";
 }
 
 export function useImagePreloader(
-  imageSources: string[], 
-  options: ImagePreloaderOptions = {}
+  imageSources: string[],
+  options: ImagePreloaderOptions = {},
 ) {
   const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
   const [isLoading, setIsLoading] = useState(true);
 
-  const preloadImage = useCallback((src: string, index: number = 0) => {
-    return new Promise<void>((resolve, reject) => {
-      const img = new Image();
-      
-      // Optimizar para diferentes formatos
-      if (options.format === 'webp' && src.includes('.jpg')) {
-        img.src = src.replace('.jpg', '.webp');
-      } else if (options.format === 'avif' && src.includes('.jpg')) {
-        img.src = src.replace('.jpg', '.avif');
-      } else {
-        img.src = src;
-      }
+  const preloadImage = useCallback(
+    (src: string, index: number = 0) => {
+      return new Promise<void>((resolve, reject) => {
+        const img = new Image();
 
-      img.onload = () => {
-        setLoadedImages(prev => new Set(prev).add(src));
-        resolve();
-      };
-
-      img.onerror = () => {
-        // Fallback a formato original si falla
-        if (options.format && src !== img.src) {
-          img.src = src;
+        // Optimizar para diferentes formatos
+        if (options.format === "webp" && src.includes(".jpg")) {
+          img.src = src.replace(".jpg", ".webp");
+        } else if (options.format === "avif" && src.includes(".jpg")) {
+          img.src = src.replace(".jpg", ".avif");
         } else {
-          reject(new Error(`Failed to load image: ${src}`));
+          img.src = src;
         }
-      };
 
-      // Priorizar las primeras imágenes
-      if (options.priority && index === 0) {
-        img.fetchPriority = 'high';
-      }
-    });
-  }, [options.format, options.priority]);
+        img.onload = () => {
+          setLoadedImages((prev) => new Set(prev).add(src));
+          resolve();
+        };
+
+        img.onerror = () => {
+          // Fallback a formato original si falla
+          if (options.format && src !== img.src) {
+            img.src = src;
+          } else {
+            reject(new Error(`Failed to load image: ${src}`));
+          }
+        };
+
+        // Priorizar las primeras imágenes
+        if (options.priority && index === 0) {
+          img.fetchPriority = "high";
+        }
+      });
+    },
+    [options.format, options.priority],
+  );
+
+  // Clave estable para comparar las fuentes por valor (no por identidad del array)
+  const imageSourcesKey = imageSources.join(",");
 
   useEffect(() => {
     if (imageSources.length === 0) {
@@ -55,7 +61,7 @@ export function useImagePreloader(
 
     const loadImages = async () => {
       setIsLoading(true);
-      
+
       try {
         // Cargar la primera imagen inmediatamente
         if (imageSources[0]) {
@@ -64,28 +70,29 @@ export function useImagePreloader(
 
         // Cargar el resto con un pequeño delay para no bloquear
         const remainingImages = imageSources.slice(1);
-        
+
         for (let i = 0; i < remainingImages.length; i++) {
           setTimeout(() => {
             preloadImage(remainingImages[i], i + 1).catch(console.error);
           }, i * 100); // 100ms entre cada imagen
         }
       } catch (error) {
-        console.error('Error preloading images:', error);
+        console.error("Error preloading images:", error);
       } finally {
         setIsLoading(false);
       }
     };
 
     loadImages();
-  }, [imageSources.join(','), options.format, options.priority]); // Evitar dependencia circular
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- imageSources se compara por valor (imageSourcesKey) para no re-ejecutar en cada render
+  }, [imageSourcesKey, options.format, options.priority, preloadImage]);
 
   return {
     loadedImages,
     isLoading,
     isImageLoaded: (src: string) => loadedImages.has(src),
-    preloadImage
+    preloadImage,
   };
 }
 
-export default useImagePreloader; 
+export default useImagePreloader;
